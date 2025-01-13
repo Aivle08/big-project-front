@@ -10,7 +10,13 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
+        black: "#31363B",
+        yellow: "#FDC435",
+        lightyellow: "#FFFAD8",
+        gray: "#828282"
+      },
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
       },
     },
   },
