@@ -18,6 +18,18 @@ export default {
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
       },
+      transitionDuration: {
+        '600': '600ms',
+      },
+      transitionTimingFunction: {
+        'in-out': 'ease-in-out',
+      },
+      zIndex: {
+        '1': '1',
+        '2': '2',
+        '5': '5',
+        '100': '100',
+      }
     },
   },
   plugins: [],
