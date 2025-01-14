@@ -1,5 +1,5 @@
 import React from 'react'
-import { BtnSpan } from './styles/pageStyled'
+import { BtnSpan } from './styles/componentStyled'
 
 type ButtonProps = {
     type : 'button' | 'submit';

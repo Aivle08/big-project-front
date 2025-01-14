@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
 import NavButton from './NavButton'
-import { Ul, Wrapper, Nav, NavButtons } from './styles/pageStyled'
+import { Ul, Wrapper, Nav, NavButtons } from './styles/componentStyled'
 
 export default function Navbar() {
   return (
