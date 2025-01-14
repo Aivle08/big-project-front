@@ -120,6 +120,42 @@ export default function Login() {
         setIsIdAvailable(false);
     };
 
+
+    // 비밀번호 췤 ----------------------------------------------------------------------------
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+
+    // 비밀번호 입력 핸들러
+    const handlePasswordChange = (e: { target: { value: string } }) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        
+        // 비밀번호 확인란이 비어있지 않은 경우에만 검증
+        if (confirmPassword) {
+        if (newPassword !== confirmPassword) {
+            setPasswordError('비밀번호가 일치하지 않습니다.');
+        } else {
+            setPasswordError('');
+        }
+        }
+    };
+
+    // 비밀번호 확인 입력 핸들러
+    const handleConfirmPasswordChange = (e: { target: { value: string } }) => {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+        
+        if (newConfirmPassword !== password) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+        } else {
+        setPasswordError('');
+        }
+    };
+
+
+    
+
   return (
     <Wrapper>
     
@@ -132,9 +168,12 @@ export default function Login() {
         <ContainerForm>
           <Title>회원가입</Title>
           <Detail>정보를 입력하세요.</Detail>
+
+            {/* 기업명 & 부서 */}
             <Form1 type="text" placeholder="기업명" />
             <Form1 type="text" placeholder="부서" /> 
-            {/* <Form1 type="email" placeholder="이메일(변경 불가)" className="mt-4" /> */}
+
+
             {/* 이메일 인증 섹션 */}
             <EmailContainer className="mt-4">
                 <EmailInputWrapper>
@@ -144,17 +183,17 @@ export default function Login() {
                     value={email}
                     onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
                     disabled={isVerified}
-                />
+                    />
                 <VerifyButton
                     onClick={handleSendVerification}
                     disabled={isVerified || !email}
-                >
+                    >
                     {isEmailSent ? '재전송' : '인증하기'}
                 </VerifyButton>
                 </EmailInputWrapper>
         
                 {isEmailSent && !isVerified && (
-                <EmailInputWrapper>
+                    <EmailInputWrapper>
                     <Form1
                     type="text"
                     placeholder="인증번호 6자리 입력"
@@ -173,10 +212,11 @@ export default function Login() {
         
                 {error && <ErrorMessage>{error}</ErrorMessage>}
                 {isVerified && (
-                <VerificationMessage>이메일 인증이 완료되었습니다.</VerificationMessage>
+                    <VerificationMessage>이메일 인증이 완료되었습니다.</VerificationMessage>
                 )}
             </EmailContainer>
-                
+            
+            {/* 아이디 */}
             <InputWrapper>
                 <Form1
                 type="text"
@@ -195,13 +235,27 @@ export default function Login() {
             {isIdAvailable && (
                 <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>
             )}
-
             {error && <ErrorMessage>{error}</ErrorMessage>}    
-          {/* <Form1 type="text" placeholder="아이디" /> */}
-          <Form1 type="password" placeholder="비밀번호(8자리 이상, 영문/숫자/기호 포함)" />
-          <Form1 type="password" placeholder="비밀번호 확인" />
+
+          {/* 비밀번호 */}
+          <Form1 
+                type="password" 
+                placeholder="비밀번호(8자리 이상, 영문/숫자/기호 포함)" 
+                value={password}
+                onChange={handlePasswordChange}
+            />
+            <Form1 
+                type="password" 
+                placeholder="비밀번호 확인" 
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+            />
+            {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+
+          {/* 이름 & 휴대폰 번호   */}
           <Form1 type="text" placeholder="이름" className="mt-4" /> 
           <Form1 type="tel" placeholder="휴대폰 번호" /> 
+
           <ContainerButton>
             회원가입
           </ContainerButton>
