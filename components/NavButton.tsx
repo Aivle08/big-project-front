@@ -9,17 +9,19 @@ type ButtonProps = {
     borderColor : 'border-yellow-200' | 'border-black';
 }
 
-const NavBtn = ({type, title, bgColor, txtColor, borderColor}: ButtonProps) => {
+export default function NavBtn ({type, title, bgColor, txtColor, borderColor}: ButtonProps) {
   return (
     <button
         className={`
-            bg-[${bgColor}] text-[${txtColor}] border-${borderColor} 
-            `}
+          gap-30 
+          rounded-md  
+          w-[120px] 
+          h-[42px]
+          border-3
+          border bg-[${bgColor}] text-[${txtColor}] ${borderColor}`}
         type={type}
     >
         <BtnSpan>{title}</BtnSpan>
     </button>
   )
 }
-
-export default NavBtn
