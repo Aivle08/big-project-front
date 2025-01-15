@@ -1,9 +1,10 @@
 'use client'
 import Image from "next/image";
 import { SetStateAction, useState } from "react";
-import Link from "next/link";
-import { CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
+import { ArrowLeft } from 'lucide-react';
+import { BackButton, BackContainer, CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
 import logo from "../../logo.png";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
 
@@ -18,13 +19,15 @@ export default function Login() {
     setIsRightPanelActive(false);
   };
 
+  // 라우팅 (뒤로가기 화살표)
+  const router = useRouter();
 
   // 이메일 인증 구현  ---------------------------------------------------------------------------
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
-  const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   // 이메일 형식 췤
   const isValidEmail = (email: string) => {
@@ -34,33 +37,33 @@ export default function Login() {
   // 인증 메일 발송
   const handleSendVerification = () => {
     if (!email) {
-      setError('이메일을 입력해주세요.');
+      setEmailError('이메일을 입력해주세요.');
       return;
     }
     
     if (!isValidEmail(email)) {
-      setError('올바른 이메일 형식이 아닙니다.');
+      setEmailError('올바른 이메일 형식이 아닙니다.');
       return;
     }
 
     // 여기에 실제 이메일 발송 로직 구현
     setIsEmailSent(true);
-    setError('');
+    setEmailError('');
   };
 
   // 인증번호 확인
   const handleVerifyCode = () => {
     if (!verificationCode) {
-      setError('인증번호를 입력해주세요.');
+      setEmailError('인증번호를 입력해주세요.');
       return;
     }
 
-    // 여기에 실제 인증번호 확인 로직 구현
-    if (verificationCode === '123456') { // 예시 코드
+    // 여기에 실제 인증번호 확인 로직 구현 (인증번호 입력 관련한 코드 수정할 필요 有)
+    if (verificationCode === '') { 
       setIsVerified(true);
-      setError('');
+      setEmailError('');
     } else {
-      setError('잘못된 인증번호입니다.');
+      setEmailError('잘못된 인증번호입니다.');
     }
   };
 
@@ -69,6 +72,7 @@ export default function Login() {
    const [userId, setUserId] = useState('');
    const [isIdChecked, setIsIdChecked] = useState(false);
    const [isIdAvailable, setIsIdAvailable] = useState(false);
+   const [idError, setIdError] = useState('');
 
     // 아이디 형식 췤 (4-20자의 영문, 숫자만 ok)
     const isValidId = (id: string) => {
@@ -79,12 +83,12 @@ export default function Login() {
     // 아이디 중복 체크
     const handleIdCheck = async () => {
         if (!userId) {
-        setError('아이디를 입력해주세요.');
+        setIdError('아이디를 입력해주세요.');
         return;
         }
 
         if (!isValidId(userId)) {
-        setError('아이디는 4-20자의 영문과 숫자만 사용 가능합니다.');
+        setIdError('아이디는 4-20자의 영문과 숫자만 사용 가능합니다.');
         return;
         }
 
@@ -103,13 +107,13 @@ export default function Login() {
         if (isAvailable) {
             setIsIdAvailable(true);
             setIsIdChecked(true);
-            setError('');
+            setIdError('');
         } else {
             setIsIdAvailable(false);
-            setError('이미 사용 중인 아이디입니다.');
+            setIdError('이미 사용 중인 아이디입니다.');
         }
         } catch (err) {
-        setError('아이디 중복 확인 중 오류가 발생했습니다.');
+        setIdError('아이디 중복 확인 중 오류가 발생했습니다.');
         }
     };
 
@@ -166,6 +170,11 @@ export default function Login() {
       <div className="absolute top-0 h-full transition-all duration-600 ease-in-out left-0 w-1/2 opacity-0 z-1 
         transform sign-up-container ${isRightPanelActive ? 'translate-x-full opacity-100 z-5 animate-show' : ''}">
         <ContainerForm>
+          <BackContainer>
+              <BackButton onClick={() => router.back()} aria-label="뒤로 가기">
+                <ArrowLeft size={24} />
+              </BackButton>
+          </BackContainer>
           <Title>회원가입</Title>
           <Detail>정보를 입력하세요.</Detail>
 
@@ -210,7 +219,7 @@ export default function Login() {
                 </EmailInputWrapper>
                 )}
         
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
                 {isVerified && (
                     <VerificationMessage>이메일 인증이 완료되었습니다.</VerificationMessage>
                 )}
@@ -235,7 +244,7 @@ export default function Login() {
             {isIdAvailable && (
                 <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>
             )}
-            {error && <ErrorMessage>{error}</ErrorMessage>}    
+            {idError && <ErrorMessage>{idError}</ErrorMessage>}    
 
           {/* 비밀번호 */}
           <Form1 
@@ -283,6 +292,9 @@ export default function Login() {
         <OverlayBox $isActive={isRightPanelActive}>
             {/* 왼쪽 패널 - 회원가입 */}
             <OverlayPanel $position="left" $isActive={isRightPanelActive}>
+                <BackButton onClick={() => router.back()} className="mt-7 ml-7">
+                 <ArrowLeft size={24} />
+                </BackButton>
                 <Image src={logo} alt="logo" />
                 <Description>아직 픽업의 회원이 아니시라고요?</Description>
                 <OverlayButton onClick={handleSignInClick}>회원가입</OverlayButton>

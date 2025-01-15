@@ -38,12 +38,30 @@ export const ContainerForm = tw.form`
 `;
 
 
+export const BackContainer = tw.div`
+relative 
+w-full
+`;
+
+
+export const BackButton = tw.button`
+  absolute 
+  left-0 
+  top-0 
+  p-2 
+  hover:bg-gray-100 
+  rounded-full 
+  transition-colors
+`;
+
+
 export const Title = tw.h1`
   font-montserrat 
   font-bold 
   text-2xl
   m-1
 `;
+
 
 export const Detail = tw.span`
   text-xs
@@ -65,6 +83,7 @@ export const Form1 = tw.input`
   w-[85%]
   font-montserrat 
 `;
+
 
 export const Form2 = tw.input`
   bg-[#fffff] 
