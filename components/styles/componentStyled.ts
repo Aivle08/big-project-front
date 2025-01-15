@@ -31,18 +31,10 @@ export const NavButtons = tw.div`
   flex 
   items-center 
   gap-3
+  ml-20
 `;
 
 export const BtnSpan = tw.span`
   font-bold whitespace-nowrap
-`;
-
-export const NavBtn = tw.button`
-  gap-30 
-  rounded-md 
-  border 
-  w-[120px] 
-  h-[42px]
-  border-3
 `;
 

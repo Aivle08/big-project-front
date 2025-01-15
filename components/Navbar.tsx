@@ -2,7 +2,7 @@ import { NAV_LINK } from '@/constants'
 import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
-import NavButton from './NavButton'
+import NavBtn from './NavButton'
 import { Ul, Wrapper, Nav, NavButtons } from './styles/componentStyled'
 
 export default function Navbar() {
@@ -27,15 +27,15 @@ export default function Navbar() {
 
         {/* 버튼 */}
         <NavButtons>
-          <NavButton
+          <NavBtn
             type="button"
             title="회원가입"
             bgColor="#FFFFFF"
             txtColor="#000000"
             borderColor="border-black"
           />
-
-          <NavButton
+  
+          <NavBtn
             type="button"
             title="로그인"
             bgColor="#FFBD26"
