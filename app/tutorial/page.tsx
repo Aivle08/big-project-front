@@ -1,24 +1,14 @@
 import React from 'react';
 import { BackgroundSection, CenteredHeading, Heading, HeroBackground, HeroTextSection, ImageContainer, LargeParagraph, MainContainer, Paragraph, SectionContainer, TextBox, YellowBox } from './styles/pageStyled';
 import Image from 'next/image';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <>
-        {/* navbar 자리 */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            maxWidth: '100%',
-            minHeight: '80px',
-            marginTop: '20px',
-            backgroundColor: '#f0f0f0',
-          }}
-        >
-            navBar
-        </div>
+        {/* navbar */}
+        <Navbar/>
 
         <MainContainer>
             {/* 배경과 텍스트 */}
@@ -125,14 +115,8 @@ export default function Home() {
             </BackgroundSection>
         </MainContainer>
 
-    
-        {/* Footer 자리*/}
-        <footer className="flex flex-col justify-center items-center w-full bg-gray-300 py-4">
-            <div className="w-[192px] h-[102px] flex flex-col justify-center items-center gap-[32px]">
-                <div className="w-full h-full border border-gray-500 flex items-center justify-center">
-                </div>
-            </div>
-        </footer>
+        {/* Footer */}
+        <Footer/>
     </>
   );
 }
