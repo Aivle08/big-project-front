@@ -23,7 +23,14 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
           type="button"
           onClick={handleModal}
         >
-          모달열기
+          <Image
+              src="/paper.png"
+              alt="Resume Link"
+              layout="intrinsic"
+              width={24}
+              height={24}
+              className="object-cover"
+          />
         </button>
         {openModal && (
           <ModalBackground>
