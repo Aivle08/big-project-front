@@ -5,21 +5,6 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <>
-        {/* navbar 자리 */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            maxWidth: '100%',
-            minHeight: '80px',
-            marginTop: '20px',
-            backgroundColor: '#f0f0f0',
-          }}
-        >
-            navBar
-        </div>
-
         <MainContainer>
             {/* 배경과 텍스트 */}
             <HeroBackground>
@@ -124,15 +109,6 @@ export default function Home() {
                 </ImageContainer>
             </BackgroundSection>
         </MainContainer>
-
-    
-        {/* Footer 자리*/}
-        <footer className="flex flex-col justify-center items-center w-full bg-gray-300 py-4">
-            <div className="w-[192px] h-[102px] flex flex-col justify-center items-center gap-[32px]">
-                <div className="w-full h-full border border-gray-500 flex items-center justify-center">
-                </div>
-            </div>
-        </footer>
     </>
   );
 }

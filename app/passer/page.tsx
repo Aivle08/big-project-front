@@ -17,8 +17,6 @@ import {
   SmallTitle,
   SmallContent,
 } from './styles/pageStyled';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
 
 export default function Home() {
     // 지원자 데이터
@@ -167,9 +165,6 @@ export default function Home() {
 
     return (
         <>
-            {/* Navbar 자리 */}
-            <Navbar />
-
             <MainContainer>
                 {/* 섹션 제목 */}
                 <SectionHeader className="mt-[10vh]">
@@ -223,9 +218,6 @@ export default function Home() {
                 {/* 하단 라인 */}
                 <FooterLine />
             </MainContainer>
-
-            {/* Footer 자리 */}
-            <Footer />
         </>
     );
 }
