@@ -1,7 +1,36 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Box1, Box2, Box3, Container, EvaluationInput, InputContent, Label1, Label2, Left, Right, Section, SectionLine, SubLabel, Title } from "./styles/Page.styled"
+import { Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer, Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, PassButton, PassList, People, Right, Score, Section, SectionLine, SubLabel, TableContainer, TableHeader, Title, Title1, Title2, YesButton } from "./styles/Page.styled"
+import Image from "next/image";
+import Appliant from "../../TotalAppliant.png";
+import Paper from "../../paper.png";
+import Add_Before from "../../add_before.png";
+import Add_After from "../../add_after.png";
+import Info from "../../Info.png";
+import _ from 'lodash';
+
+// 전체 평점 계산 함수
+const calculateOverallAverage = (applicants: {
+    name: string; // 이름
+    // 이름
+    jobFit: number; // 채용공고 부합
+    // 채용공고 부합
+    idealCandidate: number; // 인재상
+    // 인재상
+    education: number; // 학력
+    // 학력
+    extracurricular: number; // 대외활동 및 기타
+    // 대외활동 및 기타
+    experience: number; // 경력
+    // 경력
+    overallScore: number; // 종합 평점
+  }[]) => {
+  const average = _.meanBy(applicants, 'overallScore');
+  return average.toFixed(2); // 소수점 2자리까지 표시
+};
+
+
 
 
 export default function Result() {
@@ -63,6 +92,195 @@ export default function Result() {
   };
 
 
+  // 모달 상태 관리
+  const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  // 합격 상태 관리
+  const [approvedApplicants, setApprovedApplicants] = useState<number[]>([]);
+
+  // 모달 열기
+  const handleAddClick = (index: number) => {
+    setSelectedApplicant(index);
+    setShowModal(true);
+  };
+
+  // 모달에서 "예" 선택
+  const handleApprove = () => {
+    if (selectedApplicant !== null) {
+      setApprovedApplicants([...approvedApplicants, selectedApplicant]);
+    }
+    setShowModal(false);
+  };
+
+  // 모달에서 "아니오" 선택
+  const handleReject = () => {
+    setShowModal(false);
+  };
+
+  
+  // 지원자 데이터
+  type Applicant = {
+    name: string; // 이름
+    jobFit: number; // 채용공고 부합
+    idealCandidate: number; // 인재상
+    education: number; // 학력
+    extracurricular: number; // 대외활동 및 기타
+    experience: number; // 경력
+    overallScore: number; // 종합 평점
+  };
+
+
+  
+
+  // 지원자 목록 생성
+  const renderApplicantRows = (applicants: Applicant[]) => {
+    return applicants.map((applicant, idx) => (
+      <ApplicantRow key={idx}>
+        <ImageCell>
+          <button>
+            <Image
+              src={Paper}
+              alt="Resume Link"
+              layout="intrinsic"
+              width={24}
+              height={24}
+              className="object-cover"
+            />
+          </button>
+        </ImageCell>
+        <Cell>{applicant.name}</Cell>
+        <Cell>{applicant.jobFit}</Cell>
+        <Cell>{applicant.idealCandidate}</Cell>
+        <Cell>{applicant.education}</Cell>
+        <Cell>{applicant.extracurricular}</Cell>
+        <Cell>{applicant.experience}</Cell>
+        <Cell>{applicant.overallScore}</Cell>
+        <ImageCell>
+          <button onClick={() => handleAddClick(idx)}>
+            <Image
+              src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
+              alt="Details"
+              width={27}
+              height={27}
+              className="object-cover"
+            />
+          </button>
+          {/* <button>
+            <Image
+              src={Add_Before}
+              alt="Details"
+              layout="intrinsic"
+              width={27}
+              height={27}
+              className="object-cover"
+            />
+          </button> */}
+        </ImageCell>
+      </ApplicantRow>
+    ));
+};
+
+// 임시 데이터
+const mockApplicants: Applicant[] = [
+  {
+    name: '유창현',
+    jobFit: 4.5,
+    idealCandidate: 4.2,
+    education: 4.8,
+    extracurricular: 4.0,
+    experience: 4.3,
+    overallScore: 4.7,
+  },
+  {
+    name: '김유라',
+    jobFit: 4.0,
+    idealCandidate: 4.1,
+    education: 4.6,
+    extracurricular: 4.3,
+    experience: 4.1,
+    overallScore: 4.4,
+  },
+  {
+    name: '강해찬',
+    jobFit: 4.5,
+    idealCandidate: 4.2,
+    education: 4.8,
+    extracurricular: 4.0,
+    experience: 4.3,
+    overallScore: 4.7,
+  },
+  {
+    name: '박수민',
+    jobFit: 4.0,
+    idealCandidate: 4.1,
+    education: 4.6,
+    extracurricular: 4.3,
+    experience: 4.1,
+    overallScore: 4.4,
+},
+{
+    name: '유창현',
+    jobFit: 4.5,
+    idealCandidate: 4.2,
+    education: 4.8,
+    extracurricular: 4.0,
+    experience: 4.3,
+    overallScore: 4.7,
+  },
+  {
+    name: '심용훈',
+    jobFit: 4.0,
+    idealCandidate: 4.1,
+    education: 4.6,
+    extracurricular: 4.3,
+    experience: 4.1,
+    overallScore: 4.4,
+  },
+  {
+    name: '최찬',
+    jobFit: 4.5,
+    idealCandidate: 4.2,
+    education: 4.8,
+    extracurricular: 4.0,
+    experience: 4.3,
+    overallScore: 4.7,
+  },
+  {
+    name: '강해찬',
+    jobFit: 4.0,
+    idealCandidate: 4.1,
+    education: 4.6,
+    extracurricular: 4.3,
+    experience: 4.1,
+    overallScore: 4.4,
+  },
+  {
+    name: '이정하',
+    jobFit: 4.5,
+    idealCandidate: 4.2,
+    education: 4.8,
+    extracurricular: 4.0,
+    experience: 4.3,
+    overallScore: 4.7,
+  },
+  {
+    name: '유창현',
+    jobFit: 4.0,
+    idealCandidate: 4.1,
+    education: 4.6,
+    extracurricular: 4.3,
+    experience: 4.1,
+    overallScore: 4.4,
+  },
+];
+
+
+// 전체 평점 계산
+const totalAverage = calculateOverallAverage(mockApplicants);
+
+
+  
+
   return (
     <Container>
       <Title>이력서 분석 및 평가 결과</Title>
@@ -112,25 +330,114 @@ export default function Result() {
     <Section></Section>
 
     <Section>
+      <BoxContainer>
       <Left>
-        <Box1></Box1>
+        <Box1>
+          <Title1>총 지원자 수</Title1>
+          <Box1Container>
+            <People>544</People>
+            <Num>명</Num>
+            <Img> {/* 원하는 크기로 조절 */}
+              <Image 
+                src={Appliant} 
+                alt="사진" 
+                className="w-[100%] h-[100%] object-contain"
+              />
+            </Img>
+            {/* <Image src={Appliant} alt={"사진"} className="flex-1 w-55" /> */}
+           
+          </Box1Container>
+
+        </Box1>
       </Left>
 
       <Right>
-        <Box2></Box2>
+        <Box2>
+          <Title2>전체 평점</Title2>
+          {/* 추후에 전체 평점 계산하는 로직 추가해야함 */}
+          <Score>{totalAverage}</Score>
 
-        <Box3></Box3>
+        </Box2>
+
+        <Box3>
+          <Title2>합격 명단</Title2>
+          <PassList>이력서를 제출한 지원자 중 합격된 지원자의 정보만 저장한 리스트입니다.</PassList>
+          <div className="flex justify-end"><PassButton>바로가기</PassButton></div>
+        </Box3>
         
       </Right>
 
-
+      </BoxContainer>
     </Section>
 
+    <Section></Section>
+    <br />
 
     <Section>
       <Label1>평점 리스트</Label1>
+      <Section></Section>
 
+      <div className="relative">
+        {/* 테이블 */}
+        <TableContainer>
+            {/* 헤더 */}
+            <TableHeader>
+                <BoldCell></BoldCell>
+                <BoldCell>이름</BoldCell>
+                <BoldCell>채용공고 부합</BoldCell>
+                <BoldCell>인재상</BoldCell>
+                <BoldCell>학력</BoldCell>
+                <BoldCell>대외활동 및 기타</BoldCell>
+                <BoldCell>경력</BoldCell>
+                <BoldCell>종합 평점</BoldCell>
+                <BoldCell>합격</BoldCell>
+            </TableHeader>
+
+            {/* 평균 점수 행 */}
+            <AverageRow>
+                <Cell></Cell>
+                <BoldCell>평균점수</BoldCell>
+                <Cell>5.0</Cell>
+                <Cell>5.0</Cell>
+                <Cell>5.0</Cell>
+                <Cell>5.0</Cell>
+                <Cell>5.0</Cell>
+                <Cell>5.0</Cell>
+                <Cell></Cell>
+            </AverageRow>
+
+            {/* 지원자 행 */}
+            {renderApplicantRows(mockApplicants)}
       
+        </TableContainer>
+
+
+        {/* 확인 모달 */}
+        {showModal && (
+          <ModalOverlay>
+            <ModalContent>
+              {/* 모달 헤더 */}
+              <ModalHeader>
+                <ModalHeader2>
+                  <Image src={Info} alt={"알림"} className="flex-1 w-55" />
+                  {/* <span className="text-gray-500">!</span> */}
+                </ModalHeader2>
+                <Alarm>알림</Alarm>
+              </ModalHeader>
+              <p>선택한 지원자를 합격자 명단에 추가하시겠습니까?</p>
+              <Section></Section>
+              <hr />
+
+              <ModalButtons>
+                <NoButton onClick={handleReject}>취소</NoButton>
+                <YesButton onClick={handleApprove}>추가</YesButton>
+              </ModalButtons>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+    </div>
+
+
     </Section>
 
 
