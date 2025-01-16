@@ -7,9 +7,6 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <>
-        {/* navbar */}
-        <Navbar/>
-
         <MainContainer>
             {/* 배경과 텍스트 */}
             <HeroBackground>
@@ -114,9 +111,6 @@ export default function Home() {
                 </ImageContainer>
             </BackgroundSection>
         </MainContainer>
-
-        {/* Footer */}
-        <Footer/>
     </>
   );
 }
