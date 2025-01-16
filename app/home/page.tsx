@@ -26,9 +26,6 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <>
-    {/* navbar */}
-    <Navbar/>
-
     <MainContainer>
       {/* 인사말 */}
       <GreetingContainer>
@@ -88,9 +85,6 @@ export default function Home() {
         </Card>
       </CardContainer>
     </MainContainer>
-
-      {/* Footer */}
-      <Footer/>
     </>
   );
 }
