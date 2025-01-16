@@ -13,6 +13,7 @@ export const ModalBackground = tw.div`
   justify-center 
   pt-16 
   pb-16
+  z-10
 `;
 
 export const ModalContainer = tw.div`
@@ -21,7 +22,8 @@ export const ModalContainer = tw.div`
   bg-white 
   shadow-lg 
   py-2 
-  rounded-md
+  rounded-md 
+  z-20
 `;
 
 export const ModalHeader = tw.div`
