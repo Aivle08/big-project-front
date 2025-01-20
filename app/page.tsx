@@ -1,13 +1,8 @@
-'use client';
-
-
+"use client"
 
 export default function Home() {
-  
-
+ 
   return (
-
-    <div>홈페이지다ㅋ</div>
-
+    <h1 className="text-7xl">홈페이지임 ㅋ </h1>
   );
 }
