@@ -1,8 +1,8 @@
+"use client"
+
 import React from 'react';
 import { BackgroundSection, CenteredHeading, Heading, HeroBackground, HeroTextSection, ImageContainer, LargeParagraph, MainContainer, Paragraph, SectionContainer, TextBox, YellowBox } from './styles/pageStyled';
 import Image from 'next/image';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
