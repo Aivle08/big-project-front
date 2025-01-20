@@ -1,7 +1,12 @@
 "use client";
 import { 
+    CenterRow,
     FloatingButton, 
+    InfoRow, 
     MainContainer, 
+    QuestionListItem, 
+    QuestionListSection, 
+    QuestionSection, 
     QustionTitle, 
     SectionHeader, 
     SectionLine, 
@@ -116,33 +121,33 @@ export default function Home() {
                         <SectionTitle>상세사항</SectionTitle>
                         <SectionLine />
                     </SectionHeader>
-                    <div className="flex justify-between items-center">
+                    <InfoRow>
                         <SmallTitle>학력</SmallTitle>
                         <p className="text-gray-600">{summary.educationScore}점</p>
-                    </div>
+                    </InfoRow>
                     <p>{summary.education}</p>
-                    <div className="flex justify-between items-center">
+                    <InfoRow>
                         <SmallTitle>인재상</SmallTitle>
                         <p className="text-gray-600">{summary.teamFitScore}점</p>
-                    </div>
+                    </InfoRow>
                     <p>{summary.teamFit}</p>
-                    <div className="flex justify-between items-center">
+                    <InfoRow>
                         <SmallTitle>대외활동 + 수상내역 + 어학 + 자격증</SmallTitle>
                         <p className="text-gray-600">{summary.activityScore}점</p>
-                    </div>
+                    </InfoRow>
                     <p>{summary.activity}</p>
-                    <div className="flex justify-between items-center">
+                    <InfoRow>
                         <SmallTitle>경력</SmallTitle>
                         <p className="text-gray-600">{summary.experienceScore}점</p>
-                    </div>
+                    </InfoRow>
                     <p>{summary.experience}</p>
                 </TextContent>
-                <div className="flex justify-center items-center">
+                <CenterRow>
                     <YellowButton 
                     className="mt-[10vh]"
                     onClick={handleGenerateQuestions}
                     >질문 생성</YellowButton>
-                </div>
+                </CenterRow>
 
                 <FloatingButton>
                     <div className="mt-1">
@@ -162,19 +167,18 @@ export default function Home() {
                     {/* figma에서는 흰색 네모이나, 구문을 위해 회색 네모로 해둠. */}
                     {/* 추후 변경 필요 */}
                     {questionsVisible && (
-                      <div className="bg-gray-100 rounded-md p-4 shadow-md mt-10 max-h-[70vh]">
+                      <QuestionSection>
                         <QustionTitle>맞춤 질문 리스트</QustionTitle>
-                        <div className="max-h-[57vh] mt-3 overflow-y-auto">
+                        <QuestionListSection>
                           {questions.questions.map((question, index) => (
-                            <div
+                            <QuestionListItem
                               key={index}
-                              className="bg-gray-200 rounded-md p-3 shadow-sm flex items-center justify-between my-1"
                             >
                               <p>{`${question}`}</p>
-                            </div>
+                            </QuestionListItem>
                           ))}
-                        </div>
-                      </div>
+                        </QuestionListSection>
+                      </QuestionSection>
                     )}
                 </TextContent>
             </MainContainer>

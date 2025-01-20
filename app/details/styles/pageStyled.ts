@@ -184,6 +184,18 @@ export const FloatingButton = tw.button`
     border-black
 `;
 
+export const InfoRow = tw.div`
+  flex 
+  justify-between 
+  items-center
+`;
+
+export const CenterRow = tw.div`
+  flex 
+  justify-center 
+  items-center
+`;
+
 // 질문 목록을 위한 친구들
 export const QustionTitle = tw.div`
     bg-[#FFD167]
@@ -196,3 +208,28 @@ export const QustionTitle = tw.div`
     font-bold
 `;
 
+export const QuestionSection = tw.div`
+  bg-gray-100 
+  rounded-md 
+  p-4 
+  shadow-md 
+  mt-10 
+  max-h-[70vh]
+`;
+
+export const QuestionListSection = tw.div`
+  max-h-[57vh] 
+  mt-3 
+  overflow-y-auto
+`;
+
+export const QuestionListItem = tw.div`
+  bg-gray-200 
+  rounded-md 
+  p-3 
+  shadow-sm 
+  flex 
+  items-center 
+  justify-between 
+  my-1
+`;
