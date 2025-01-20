@@ -17,6 +17,9 @@ export default {
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
+        gray: "#828282",
+        orange: "#FF7342",
+        lightorange: "#FFD09B"
       },
       transitionDuration: {
         '600': '600ms',
