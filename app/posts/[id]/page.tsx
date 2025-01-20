@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { BackButton, Container, Content, Detail, Section, Section2, Title } from './styles/Page.styled';
 
 interface Post {
   id: number;
@@ -56,28 +57,25 @@ export default function PostDetail({ params }: PostDetailProps) {
 
 
   return (
-    <div className="mx-20 px-20 py-8">
-      <div className="mb-6">
-        <button
-          onClick={() => router.back()}
-          className="text-gray hover:text-black"
-        >
+    <Container>
+      <Section>
+        <BackButton onClick={() => router.back()}>
           ←  목록으로 돌아가기
-        </button>
-      </div>
+        </BackButton>
+      </Section>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
+      <Section2>
+        <Title>{post.title}</Title>
         
-        <div className="flex justify-between text-gray-600 mb-6 pb-4 border-b">
+        <Detail>
           <div>작성자: {post.author}</div>
           <div>작성일: {post.date}</div>
-        </div>
+        </Detail>
 
-        <div className="min-h-[200px] whitespace-pre-wrap">
+        <Content>
           {post.content}
-        </div>
-      </div>
-    </div>
+        </Content>
+      </Section2>
+    </Container>
   );
 }
