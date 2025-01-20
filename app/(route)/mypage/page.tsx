@@ -86,7 +86,7 @@ export default function Mypage() {
           </CategoryContainer>
         ))}
       </Category>
-s
+
     </Container>
   )
 }

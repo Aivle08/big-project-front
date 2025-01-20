@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import {
   MainContainer,
-  SectionHeader,
+
   SectionLine,
   SectionTitle,
   TextBox,
@@ -20,6 +20,8 @@ import {
   SmallContent,
 } from './styles/pageStyled';
 import ResumeModal from '@/components/ResumeModal';
+import detailicon from '../../../public/images/details_icon.png';
+
 
 export default function Home() {
     // 지원자 데이터
@@ -54,7 +56,7 @@ export default function Home() {
                 <ImageCell>
                     <a href='/details'>
                         <Image
-                            src="/details_icon.png"
+                            src={detailicon}
                             alt="Details"
                             layout="intrinsic"
                             width={27}
@@ -172,60 +174,57 @@ export default function Home() {
     ];
 
     return (
-        <>
-            <MainContainer>
-                {/* 섹션 제목 */}
-                <SectionHeader className="mt-[10vh]">
-                    <SectionTitle>합격 명단</SectionTitle>
-                    <SectionLine />
-                </SectionHeader>
 
-                <TextBox>
-                    <SmallTitle>
-                        직무
-                    </SmallTitle>
-                    <SmallContent>
-                        2024년 하반기 CJ제일제당(식품/공통부문) 신입사원
-                    </SmallContent>
-                </TextBox>
+        <MainContainer>
+            {/* 섹션 제목 */}
+            <SectionTitle>합격 명단</SectionTitle>
+            <SectionLine />
 
-                <div className="relative">
-                    {/* 테이블 */}
-                    <TableContainer>
-                        {/* 헤더 */}
-                        <TableHeader>
-                            <BoldCell></BoldCell>
-                            <BoldCell>이름</BoldCell>
-                            <BoldCell>채용공고 부합</BoldCell>
-                            <BoldCell>인재상</BoldCell>
-                            <BoldCell>학력</BoldCell>
-                            <BoldCell>대외활동 및 기타</BoldCell>
-                            <BoldCell>경력</BoldCell>
-                            <BoldCell>종합 평점</BoldCell>
-                            <BoldCell>상세</BoldCell>
-                        </TableHeader>
+            <TextBox>
+                <SmallTitle>
+                    직무
+                </SmallTitle>
+                <SmallContent>
+                    2024년 하반기 CJ제일제당(식품/공통부문) 신입사원
+                </SmallContent>
+            </TextBox>
 
-                        {/* 평균 점수 행 */}
-                        <AverageRow>
-                            <Cell></Cell>
-                            <BoldCell>평균점수</BoldCell>
-                            <Cell>5.0</Cell>
-                            <Cell>5.0</Cell>
-                            <Cell>5.0</Cell>
-                            <Cell>5.0</Cell>
-                            <Cell>5.0</Cell>
-                            <Cell>5.0</Cell>
-                            <Cell></Cell>
-                        </AverageRow>
+            <div className="relative">
+                {/* 테이블 */}
+                <TableContainer>
+                    {/* 헤더 */}
+                    <TableHeader>
+                        <BoldCell></BoldCell>
+                        <BoldCell>이름</BoldCell>
+                        <BoldCell>채용공고 부합</BoldCell>
+                        <BoldCell>인재상</BoldCell>
+                        <BoldCell>학력</BoldCell>
+                        <BoldCell>대외활동 및 기타</BoldCell>
+                        <BoldCell>경력</BoldCell>
+                        <BoldCell>종합 평점</BoldCell>
+                        <BoldCell>상세</BoldCell>
+                    </TableHeader>
 
-                        {/* 지원자 행 */}
-                        {renderApplicantRows(mockApplicants)}
-                    </TableContainer>
-                </div>
+                    {/* 평균 점수 행 */}
+                    <AverageRow>
+                        <Cell></Cell>
+                        <BoldCell>평균점수</BoldCell>
+                        <Cell>5.0</Cell>
+                        <Cell>5.0</Cell>
+                        <Cell>5.0</Cell>
+                        <Cell>5.0</Cell>
+                        <Cell>5.0</Cell>
+                        <Cell>5.0</Cell>
+                        <Cell></Cell>
+                    </AverageRow>
 
-                {/* 하단 라인 */}
-                <FooterLine />
-            </MainContainer>
-        </>
+                    {/* 지원자 행 */}
+                    {renderApplicantRows(mockApplicants)}
+                </TableContainer>
+            </div>
+
+            {/* 하단 라인 */}
+            <FooterLine />
+        </MainContainer>
     );
 }

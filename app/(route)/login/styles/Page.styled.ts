@@ -18,7 +18,7 @@ export const Container = tw.div`
   shadow-2xl 
   relative
   overflow-hidden 
-  w-[768px] 
+  w-[800px] 
   max-w-full 
   min-h-[480px]
   font-montserrat 

@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer, Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, PassButton, PassList, People, Right, Score, Section, SectionLine, SubLabel, TableContainer, TableHeader, Title, Title1, Title2, YesButton } from "./styles/Page.styled"
 import Image from "next/image";
-import Appliant from "../../TotalAppliant.png";
-import Paper from "../../paper.png";
-import Add_Before from "../../add_before.png";
-import Add_After from "../../add_after.png";
-import Info from "../../Info.png";
+import Appliant from "../../../public/images/TotalAppliant.png";
+import Paper from "../../../public/images/paper.png";
+import Add_Before from "../../../public/images/add_before.png";
+import Add_After from "../../../public/images/add_after.png";
+import Info from "../../../public/images/Info.png";
 import _ from 'lodash';
+import { useRouter } from "next/navigation";
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
@@ -31,9 +32,9 @@ const calculateOverallAverage = (applicants: {
 };
 
 
-
-
 export default function Result() {
+
+  const router = useRouter();
 
   // 일단 더미 데이터 넣어놓으려고 해놓음
   const [evaluationData, setEvaluationData] = useState({
@@ -274,12 +275,13 @@ const mockApplicants: Applicant[] = [
   },
 ];
 
-
 // 전체 평점 계산
 const totalAverage = calculateOverallAverage(mockApplicants);
 
-
-  
+// 합격자 페이지로 이동하는 함수
+const handlePasserClick = () => {
+  router.push('/passer');
+};
 
   return (
     <Container>
@@ -362,7 +364,7 @@ const totalAverage = calculateOverallAverage(mockApplicants);
         <Box3>
           <Title2>합격 명단</Title2>
           <PassList>이력서를 제출한 지원자 중 합격된 지원자의 정보만 저장한 리스트입니다.</PassList>
-          <div className="flex justify-end"><PassButton>바로가기</PassButton></div>
+          <div className="flex justify-end"><PassButton  onClick={handlePasserClick}>바로가기</PassButton></div>
         </Box3>
         
       </Right>

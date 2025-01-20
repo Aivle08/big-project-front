@@ -10,7 +10,7 @@ export const Wrapper = tw.div`
 `;
 
 export const Ul = tw.ul`
-  flex gap-5 
+  flex gap-14
   list-none 
   m-0 
   p-0 

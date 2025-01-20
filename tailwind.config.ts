@@ -9,24 +9,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
+        background: "#F9FAFF",
         black: "#31363B",
         yellow: "#FDC435",
         lightyellow: "#FFFAD8",
-        gray: "#828282"
-      },
-      fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
-        gray: "#828282",
-        orange: "#FF7342",
-        lightorange: "#FFD09B"
         gray: "#828282",
         orange: "#FF7342",
         lightorange: "#FFD09B"
       },
       fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
+        pretendard: ['Pretendard', 'sans-serif'],
       },
+
       transitionDuration: {
         '600': '600ms',
       },

@@ -27,21 +27,27 @@ export default function Navbar() {
 
         {/* 버튼 */}
         <NavButtons>
-          <NavBtn
-            type="button"
-            title="회원가입"
-            bgColor="#FFFFFF"
-            txtColor="#000000"
-            borderColor="border-black"
-          />
-  
-          <NavBtn
-            type="button"
-            title="로그인"
-            bgColor="#FFBD26"
-            txtColor="#FFFFFF"
-            borderColor="border-yellow-200"
-          />
+          <Link href="/login?form=signin">
+            <NavBtn
+              type="button"
+              title="회원가입"
+              bgColor="#FFFFFF"
+              txtColor="#000000"
+              borderColor="border-black"
+
+            />
+          </Link>
+          
+
+          <Link href="/login">
+            <NavBtn
+              type="button"
+              title="로그인"
+              bgColor="#FFBD26"
+              txtColor="#FFFFFF"
+              borderColor="border-yellow-200"
+            />
+          </Link>
         </NavButtons>
       </Nav>
     </Wrapper>

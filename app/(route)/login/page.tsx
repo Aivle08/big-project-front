@@ -1,15 +1,27 @@
 'use client'
 import Image from "next/image";
-import { SetStateAction, useState } from "react";
+import { useSearchParams } from 'next/navigation';
+import { SetStateAction, useEffect, useState } from "react";
 import { ArrowLeft } from 'lucide-react';
 import { BackButton, BackContainer, CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
-import logo from "../../logo.png";
+import logo from "../../../public/images/logo.png";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const searchParams = useSearchParams();
 
   // 로그인/회원가입 창 왔다리갔다리 구현
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+
+  // URL 파라미터를 확인하여 초기 상태 설정
+  useEffect(() => {
+    const form = searchParams.get('form');
+    if (form === 'signin') {
+      setIsRightPanelActive(false);  // 로그인 폼 표시
+    } else {
+      setIsRightPanelActive(true);   // 회원가입 폼 표시
+    }
+  }, [searchParams]);
 
   const handleSignUpClick = () => {
     setIsRightPanelActive(true);

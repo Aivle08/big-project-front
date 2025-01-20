@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useCallback, useState } from 'react';
-import { Container, FileList, SectionLine, Section, Label1, Input1, Input2, SubLabel, UploadContainer, FileItem, FileIcon, FileInfo, FileSize, DeleteButton, Title, FirstContainer, Left, Right, SecondContainer, Detail, Label2, FileContainer, FileContainer2, EvaluationHeader, Span, Progress, Bar, AnalysisButton, ButtonArea } from "./styles/Page.styled";
+import { Container, FileList, SectionLine, Section, Label1, Input1, Input2, SubLabel, UploadContainer, FileItem, FileIcon, FileInfo, FileSize, DeleteButton, Title, FirstContainer, Left, Right, SecondContainer, Detail, Label2, FileContainer, FileContainer2, EvaluationHeader, Span, Progress, Bar, AnalysisButton, ButtonArea, CharCount } from "./styles/Page.styled";
 import { X } from "lucide-react";
 
     
@@ -31,23 +31,46 @@ export default function Resume() {
   }, [setFiles]);
 
 
-  const simulateFileUpload = (fileIndex: number) => {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 5;
-      if (progress <= 100) {
-        setFiles(prev => prev.map((file, index) => 
-          index === fileIndex ? { ...file, progress } : file
-        ));
-      } else {
-        clearInterval(interval);
-      }
-    }, 200);
-  };
+  // const simulateFileUpload = (fileIndex: number) => {
+  //   let progress = 0;
+  //   const interval = setInterval(() => {
+  //     progress += 5;
+  //     if (progress <= 100) {
+  //       setFiles(prev => prev.map((file, index) => 
+  //         index === fileIndex ? { ...file, progress } : file
+  //       ));
+  //     } else {
+  //       clearInterval(interval);
+  //     }
+  //   }, 200);
+  // };
 
   const handleFileDelete = (index: number) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
+
+
+  // 각 입력 필드의 값을 관리할 상태 추가
+  const [inputs, setInputs] = useState({
+    jobPosting: '',     // 채용 공고
+    ideals: '',         // 인재상
+    education: '',      // 학력
+    activities: '',     // 대외활동 등
+    experience: ''      // 경력
+  });
+
+  // 입력 핸들러
+  const handleInputChange = (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 200) {  // 200자 제한
+      setInputs(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
+  };
+
+
 
 
   return (
@@ -128,27 +151,108 @@ export default function Resume() {
         {/* 1. 채용 공고 */}
         <Section>
           <Label2>채용 공고</Label2>
-          <Input2 type="text" placeholder="채용 공고를 입력하세요." />
+          <div className="relative">
+            <Input2 
+              type="text" 
+              placeholder="채용 공고를 입력하세요." 
+              value={inputs.jobPosting}
+              onChange={handleInputChange('jobPosting')}
+            />
+            <CharCount
+              style={{
+                color: inputs.jobPosting.length >= 200 ? '#ef4444' : 
+                      inputs.jobPosting.length >= 180 ? '#f59e0b' : 
+                      '#888'
+              }}
+            >
+              {inputs.jobPosting.length}/200
+            </CharCount>
+          </div>
         </Section>
         {/* 2. 인재상 */}
         <Section>
           <Label2>인재상</Label2>
-          <Input2 type="text" placeholder="인재상 부문의 평가 내용을 입력하세요." />
+          <div className="relative">
+            <Input2
+              type="text" 
+              placeholder="인재상 부문의 평가 내용을 입력하세요." 
+              value={inputs.ideals}
+              onChange={handleInputChange('ideals')}
+            />
+            <CharCount
+              style={{
+                color: inputs.ideals.length >= 200 ? '#ef4444' : 
+                      inputs.ideals.length >= 180 ? '#f59e0b' : 
+                      '#888'
+              }}
+            >
+              {inputs.ideals.length}/200
+            </CharCount>
+          </div>
         </Section>
         {/* 3. 학력 */}
         <Section>
           <Label2>학력</Label2>
-          <Input2 type="text" placeholder="학력 부문의 평가 내용을 입력하세요." />
+          <div className="relative">
+            <Input2 
+              type="text" 
+              placeholder="학력 부문의 평가 내용을 입력하세요."
+              value={inputs.education}
+              onChange={handleInputChange('education')}
+            />
+            <CharCount
+              style={{
+                color: inputs.education.length >= 200 ? '#ef4444' : 
+                      inputs.education.length >= 180 ? '#f59e0b' : 
+                      '#888'
+              }}
+            >
+              {inputs.education.length}/200
+            </CharCount>
+          </div>
         </Section>
         {/* 4. 대외활동 + 수상내역 + 어학 + 대외활동 */}
         <Section>
           <Label2>대외활동&nbsp;/&nbsp;수상내역&nbsp;/&nbsp;어학&nbsp;/&nbsp;자격증</Label2>
-          <Input2 type="text" placeholder="대외활동/ 수상내역/ 어학/ 자격증 부문의 평가 내용을 입력하세요." />
+          <div className="relative">
+            <Input2 
+              type="text" 
+              placeholder="대외활동/ 수상내역/ 어학/ 자격증 부문의 평가 내용을 입력하세요." 
+              value={inputs.activities}
+              onChange={handleInputChange('activities')}
+            />
+
+            <CharCount
+                style={{
+                  color: inputs.activities.length >= 200 ? '#ef4444' : 
+                        inputs.activities.length >= 180 ? '#f59e0b' : 
+                        '#888'
+                }}
+              >
+                {inputs.activities.length}/200
+              </CharCount>
+            </div>
         </Section>
         {/* 5. 경력 */}
         <Section>
           <Label2>경력</Label2>
-          <Input2 type="text" placeholder="경력 부문의 평가 내용을 입력하세요." />
+          <div className="relative">
+            <Input2 
+              type="text" 
+              placeholder="경력 부문의 평가 내용을 입력하세요." 
+              value={inputs.experience}
+              onChange={handleInputChange('experience')}
+            />
+            <CharCount
+              style={{
+                color: inputs.experience.length >= 200 ? '#ef4444' : 
+                      inputs.experience.length >= 180 ? '#f59e0b' : 
+                      '#888'
+              }}
+            >
+              {inputs.experience.length}/200
+            </CharCount>
+          </div>
         </Section>
       </SecondContainer>
       

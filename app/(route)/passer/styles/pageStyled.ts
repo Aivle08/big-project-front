@@ -2,35 +2,24 @@ import tw from 'tailwind-styled-components';
 
 // 본 단락
 export const MainContainer = tw.div`
-  flex 
-  flex-col 
-  relative 
-  justify-center 
-  w-full
-  ml-[10vw]
-  mr-[10vw]
+  mx-20
+  px-20
+  
+  py-8
 `;
 
-// 단락 제목
-export const SectionHeader = tw.div`
-  flex 
-  flex-col 
-  mt-[770px]
-`;
 
-export const SectionTitle = tw.div`
-  w-[250px] 
-  h-[72px] 
+export const SectionTitle = tw.h1`
+  text-2xl 
   font-bold 
-  text-[48px] 
-  leading-[72px] 
-  text-[#25282B]
+  pb-2
 `;
 
 export const SectionLine = tw.div`
-  w-[100px] 
-  h-[4px] 
-  bg-[#FDC435] 
+  ml-1
+  w-[60px] 
+  h-[3px] 
+  bg-yellow
   rounded-[2px]
 `;
 
@@ -43,19 +32,18 @@ export const TextBox = tw.div`
 `;
 
 // 작은 제목(직무)
-export const SmallTitle = tw.div`
-    font-semibold 
-    text-[35px] 
-    leading-[48px] 
-    text-[#25282B]
+export const SmallTitle = tw.label`
+  block 
+  text-xl
+  font-semibold 
+  mb-2
 `;
 
 // 작은 내용
-export const SmallContent = tw.div`
-    font-normal 
-    text-[24px] 
-    leading-[150%] 
-    text-[#828282]
+export const SmallContent = tw.p`
+  text-gray
+  text-md
+  mb-4
 `;
 
 // 테이블 컨테이너

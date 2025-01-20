@@ -140,7 +140,7 @@ export default function NoticeBoard() {
 
   return (
     <Container>
-      <Title>Q & A</Title>
+      <Title>게시판</Title>
       <SectionLine />
 
       <TitleContainer>
