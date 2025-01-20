@@ -20,6 +20,12 @@ export default {
         gray: "#828282",
         orange: "#FF7342",
         lightorange: "#FFD09B"
+        gray: "#828282",
+        orange: "#FF7342",
+        lightorange: "#FFD09B"
+      },
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"], // Montserrat 글꼴 설정
       },
       transitionDuration: {
         '600': '600ms',
