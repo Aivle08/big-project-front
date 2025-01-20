@@ -11,7 +11,7 @@ import {
     YellowButton 
 } from "./styles/pageStyled";
 import ResumeModal from "@/components/ResumeModal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
     type Summary = {
@@ -25,6 +25,11 @@ export default function Home() {
         activity: string;
         experienceScore: number;
         experience: string
+    };
+
+    type Questions = {
+        name: string;
+        questions: string[];
     };
 
     // 나중에 요청 후 받아오는 방식으로 변경 필요.
@@ -70,19 +75,43 @@ export default function Home() {
         };
     };
 
+    // 나중에 요청 후 받아오는 방식으로 변경 필요.
+    const getQustions = (): Questions =>{
+        return {
+            name: '유창현',
+            questions: [
+                '본인을 간단히 소개해주세요.', 
+                '가장 어려웠던 프로젝트와 그 문제를 어떻게 해결했는지 설명해주세요.', 
+                "팀 프로젝트에서 발생했던 갈등 상황을 공유하고, 이를 어떻게 해결했는지 말씀해주세요.",
+                "지금까지의 경험 중 지원하신 직무에 가장 적합한 사례를 이야기해주세요.",
+                "우리 회사에서 이루고 싶은 목표는 무엇이며, 그를 위해 어떻게 기여할 수 있다고 생각하나요?"
+            ]
+        }
+    }
+
+    // 요약 생성
     const summary = getSummary();
+
+    const [questions, setQuestions] = useState<Questions>({
+        name: "",
+        questions: [],
+    });
 
     // 질문 생성
     const [questionsVisible, setQuestionsVisible] = useState(false);
 
     const handleGenerateQuestions = () => {
-      setQuestionsVisible(true);
+        setQuestionsVisible(true);
     };
+
+    useEffect(()=>{
+        setQuestions(getQustions());
+    }, [questionsVisible]);
 
     return (
         <>
             <MainContainer>
-                <TextContent className="border">
+                <TextContent>
                     <SectionHeader className="mt-[1vh]">
                         <SectionTitle>상세사항</SectionTitle>
                         <SectionLine />
@@ -135,13 +164,13 @@ export default function Home() {
                     {questionsVisible && (
                       <div className="bg-gray-100 rounded-md p-4 shadow-md mt-10 max-h-[70vh]">
                         <QustionTitle>맞춤 질문 리스트</QustionTitle>
-                        <div className="max-h-[57vh] mt-5 overflow-y-auto">
-                          {[...Array(5)].map((_, index) => (
+                        <div className="max-h-[57vh] mt-3 overflow-y-auto">
+                          {questions.questions.map((question, index) => (
                             <div
                               key={index}
                               className="bg-gray-200 rounded-md p-3 shadow-sm flex items-center justify-between my-1"
                             >
-                              <p>질문 {index + 1}: 다른 사람들은 지원자님을 어떤 사람이라고 이야기하나요?</p>
+                              <p>{`${question}`}</p>
                             </div>
                           ))}
                         </div>
