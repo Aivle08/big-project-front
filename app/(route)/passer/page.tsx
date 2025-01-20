@@ -19,6 +19,7 @@ import {
   SmallTitle,
   SmallContent,
 } from './styles/pageStyled';
+import ResumeModal from '@/components/ResumeModal';
 
 export default function Home() {
     // 지원자 데이터
@@ -30,6 +31,7 @@ export default function Home() {
         extracurricular: number; // 대외활동 및 기타
         experience: number; // 경력
         overallScore: number; // 종합 평점
+        resumeURL: string;
     };
 
     // 지원자 목록 생성성
@@ -37,16 +39,10 @@ export default function Home() {
         return applicants.map((applicant, idx) => (
             <ApplicantRow key={idx}>
                 <ImageCell>
-                    <button>
-                        <Image
-                            src="/paper.png"
-                            alt="Resume Link"
-                            layout="intrinsic"
-                            width={24}
-                            height={24}
-                            className="object-cover"
-                        />
-                    </button>
+                    <ResumeModal 
+                      name={applicant.name}
+                      pdfUrl={applicant.resumeURL}
+                    />
                 </ImageCell>
                 <Cell>{applicant.name}</Cell>
                 <Cell>{applicant.jobFit}</Cell>
@@ -56,7 +52,7 @@ export default function Home() {
                 <Cell>{applicant.experience}</Cell>
                 <Cell>{applicant.overallScore}</Cell>
                 <ImageCell>
-                    <button>
+                    <a href='/details'>
                         <Image
                             src="/details_icon.png"
                             alt="Details"
@@ -65,7 +61,7 @@ export default function Home() {
                             height={27}
                             className="object-cover"
                         />
-                    </button>
+                    </a>
                 </ImageCell>
             </ApplicantRow>
         ));
@@ -81,6 +77,7 @@ export default function Home() {
             extracurricular: 4.0,
             experience: 4.3,
             overallScore: 4.7,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -90,6 +87,7 @@ export default function Home() {
             extracurricular: 4.3,
             experience: 4.1,
             overallScore: 4.4,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -99,6 +97,7 @@ export default function Home() {
             extracurricular: 4.0,
             experience: 4.3,
             overallScore: 4.7,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -108,6 +107,7 @@ export default function Home() {
             extracurricular: 4.3,
             experience: 4.1,
             overallScore: 4.4,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -117,6 +117,7 @@ export default function Home() {
             extracurricular: 4.0,
             experience: 4.3,
             overallScore: 4.7,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -126,6 +127,7 @@ export default function Home() {
             extracurricular: 4.3,
             experience: 4.1,
             overallScore: 4.4,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -135,6 +137,7 @@ export default function Home() {
             extracurricular: 4.0,
             experience: 4.3,
             overallScore: 4.7,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -144,6 +147,7 @@ export default function Home() {
             extracurricular: 4.3,
             experience: 4.1,
             overallScore: 4.4,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -153,6 +157,7 @@ export default function Home() {
             extracurricular: 4.0,
             experience: 4.3,
             overallScore: 4.7,
+            resumeURL: '/File.pdf'
         },
         {
             name: '유창현',
@@ -162,6 +167,7 @@ export default function Home() {
             extracurricular: 4.3,
             experience: 4.1,
             overallScore: 4.4,
+            resumeURL: '/File.pdf'
         },
     ];
 
