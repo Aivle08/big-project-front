@@ -10,8 +10,28 @@ export default {
     extend: {
       colors: {
         background: "var(--background)",
-        foreground: "var(--foreground)",
+        black: "#31363B",
+        yellow: "#FDC435",
+        lightyellow: "#FFFAD8",
+        gray: "#828282",
+        orange: "#FF7342",
+        lightorange: "#FFD09B"
       },
+      fontFamily: {
+        pretendard: ['Pretendard', 'sans-serif'],
+      },
+      transitionDuration: {
+        '600': '600ms',
+      },
+      transitionTimingFunction: {
+        'in-out': 'ease-in-out',
+      },
+      zIndex: {
+        '1': '1',
+        '2': '2',
+        '5': '5',
+        '100': '100',
+      }
     },
   },
   plugins: [],
