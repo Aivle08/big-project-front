@@ -1,5 +1,6 @@
 import tw from 'tailwind-styled-components';
 
+// common
 export const ModalBackground = tw.div`
   fixed 
   top-0 
@@ -66,6 +67,7 @@ export const ModalContent = tw.div`
   pb-4
 `;
 
+// pdf viewer
 export const PDFViewer = tw.div`
   border 
   rounded-md 
@@ -74,3 +76,44 @@ export const PDFViewer = tw.div`
   w-[58vw]
 `;
 
+export const TextContent = tw.div`
+  px-10
+  pb-4
+  max-h-[78vh] 
+  overflow-y-auto 
+  p-4
+  mx-[3vw]
+`;
+
+// details modal
+// 단락 제목
+export const SectionHeader = tw.div`
+  flex 
+  flex-col 
+`;
+
+export const SectionTitle = tw.div`
+  w-[250px] 
+  h-[72px] 
+  font-bold 
+  text-[30px] 
+  leading-[72px] 
+  text-[#25282B]
+`;
+
+export const SectionLine = tw.div`
+  w-[100px] 
+  h-[4px] 
+  bg-[#FDC435] 
+  rounded-[2px]
+  mt-0
+`;
+
+// 단랙 내 소제목목
+export const SmallTitle = tw.div`
+    font-semibold 
+    mt-5
+    text-[24px] 
+    leading-[48px] 
+    text-[#25282B]
+`;
