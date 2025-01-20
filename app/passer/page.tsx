@@ -50,7 +50,7 @@ export default function Home() {
                 <Cell>{applicant.experience}</Cell>
                 <Cell>{applicant.overallScore}</Cell>
                 <ImageCell>
-                    <button>
+                    <a href='/details'>
                         <Image
                             src="/details_icon.png"
                             alt="Details"
@@ -59,7 +59,7 @@ export default function Home() {
                             height={27}
                             className="object-cover"
                         />
-                    </button>
+                    </a>
                 </ImageCell>
             </ApplicantRow>
         ));
