@@ -45,11 +45,12 @@ export const TitleContainer = tw.div`
 export const ModalTitle = tw.h2`
   text-4xl 
   font-bold
+  text-black
 `;
 
 export const ModalSubtitle = tw.p`
   text-lg 
-  text-gray-500
+  text-gray
 `;
 
 export const CloseButton = tw.button`
