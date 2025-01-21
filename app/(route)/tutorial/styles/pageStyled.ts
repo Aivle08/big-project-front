@@ -5,7 +5,9 @@ export const MainContainer = tw.div`
     flex 
     flex-col 
     relative 
-    w-full
+    mx-20
+    px-20
+    py-8
 `;
 
 // 배경과 텍스트 섹션
@@ -13,7 +15,6 @@ export const BackgroundSection = tw.div`
     flex 
     items-center 
     justify-end 
-    h-screen 
     pr-[5vw] 
     mt-80
 `;
@@ -24,6 +25,13 @@ export const Heading = tw.h1`
     text-[64px] 
     leading-[96px] 
     text-[#25282B]
+`;
+
+export const CenterHeadSection = tw.div`
+    flex 
+    justify-center 
+    items-center 
+    mt-[8vh]
 `;
 
 // 큰 제목 (중앙 정렬)
@@ -51,6 +59,7 @@ export const LargeParagraph = tw.p`
     leading-[150%] 
     text-black 
     mt-60 
+    mx-20
     text-left
 `;
 
@@ -75,7 +84,7 @@ export const SectionContainer = tw.div`
     items-center 
     gap-8 
     pl-[10vw] 
-    mt-[50vh]
+    mt-[20vh]
 `;
 
 // 텍스트 박스 섹션
@@ -83,11 +92,12 @@ export const TextBox = tw.div`
     flex 
     flex-col 
     mt-[20vh]
+    mx-20
 `;
 
 export const HeroBackground = tw.div`
     w-[100%] 
-    h-[673px] 
+    h-[70vh] 
     bg-[#FFD167] 
     mt-[10vh] 
 `;
@@ -95,9 +105,8 @@ export const HeroBackground = tw.div`
 export const HeroTextSection = tw.div`
     relative 
     w-[858px] 
-    h-[369px] 
-    left-[20vh] 
-    top-[30vh] 
+    left-[32vh] 
+    top-[10vh] 
     flex 
     flex-col 
     items-start 

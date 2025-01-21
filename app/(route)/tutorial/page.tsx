@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { BackgroundSection, CenteredHeading, Heading, HeroBackground, HeroTextSection, ImageContainer, LargeParagraph, MainContainer, Paragraph, SectionContainer, TextBox, YellowBox } from './styles/pageStyled';
+import { BackgroundSection, CenteredHeading, CenterHeadSection, Heading, HeroBackground, HeroTextSection, ImageContainer, LargeParagraph, MainContainer, Paragraph, SectionContainer, TextBox, YellowBox } from './styles/pageStyled';
 import Image from 'next/image';
 import big1 from "../../../public/images/big_1.png";
 import big2 from "../../../public/images/big_2.png";
@@ -11,29 +11,28 @@ import image120 from "../../../public/images/image120.png";
 export default function Home() {
   return (
     <>
+        {/* 배경과 텍스트 */}
+        <HeroBackground>
+            <HeroTextSection>
+                <Heading>
+                    기업의 채용 시스템에 도움을 주는 최고의 서비스
+                </Heading>
+                <Paragraph>
+                    기업의 채용 기준에 따른 종합적인 점수 부여와 인재상에 맞는지 여부에 따라 지원자를 <br/>
+                    평가하는 데 도움을 줍니다. 또한, 이력서와 포트폴리오를 세밀하게 분석해 채용 면접 시 <br/>
+                    필요한 질문 리스트를 출력합니다. <br/>
+                </Paragraph>
+            </HeroTextSection>
+        </HeroBackground>
         <MainContainer>
-            {/* 배경과 텍스트 */}
-            <HeroBackground>
-                <HeroTextSection>
-                    <Heading>
-                        기업의 채용 시스템에 도움을 주는 최고의 서비스
-                    </Heading>
-                    <Paragraph>
-                        기업의 채용 기준에 따른 종합적인 점수 부여와 인재상에 맞는지 여부에 따라 지원자를 <br/>
-                        평가하는 데 도움을 줍니다. 또한, 이력서와 포트폴리오를 세밀하게 분석해 채용 면접 시 <br/>
-                        필요한 질문 리스트를 출력합니다. <br/>
-                    </Paragraph>
-                </HeroTextSection>
-            </HeroBackground>
-            
             {/* 중앙 텍스트 */}
-            <div className="flex justify-center items-center mt-[30vh]">
+            <CenterHeadSection>
                 <CenteredHeading>
                     채용 기준에 맞게 지원자를 평가하고<br />
                     면접 질문 리스트를 만들어<br />
                     최적의 인재 선발에 도움을 제공합니다.
                 </CenteredHeading>
-            </div>
+            </CenterHeadSection>
             
             {/* 왼쪽 텍스트와 이미지 섹션 */}
             <SectionContainer>
@@ -57,20 +56,20 @@ export default function Home() {
             
             {/* 오른쪽 텍스트와 배경 */}
             <BackgroundSection>
-                <LargeParagraph className="mr-96 ml-5">
+                <LargeParagraph className="mr-[12vw]">
                     AI를 이용한 <br />
                     이력서 분석 및 평가 결과를 <br />
                     제공합니다.
                 </LargeParagraph>
                 <ImageContainer>
-                    <YellowBox className="top-[-20vh] right-[0] w-[50vw] h-[107.3vh]" />
+                    <YellowBox className="top-[-20vh] right-0 w-[40vw] h-[100vh]" />
                     <Image
                         src={image115}
                         alt="2"
                         layout="intrinsic"
                         width={500}
                         height={500}
-                        className="object-cover relative z-10"
+                        className="object-cover relative z-10 mt-[-7vh]"
                     />
                 </ImageContainer>
             </BackgroundSection>
@@ -97,7 +96,7 @@ export default function Home() {
             
             {/* 오른쪽 텍스트와 이미지 */}
             <BackgroundSection className="mt-60">
-                <LargeParagraph className="mr-96 ml-5">
+                <LargeParagraph className="mr-[15vw]">
                     각 면접자에 알맞는<br />
                     AI 맞춤 질문을<br />
                     항목별로 제공합니다.
