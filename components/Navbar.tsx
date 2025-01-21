@@ -16,7 +16,11 @@ export default function Navbar() {
     <Wrapper>
       <Nav>
         {/* 로고 */}
-        <Image src="/logo.png" alt="logo" width={309} height={74} />
+        <Link
+          href="/"
+        >
+          <Image src="/logo.png" alt="logo" width={300} height={50} />
+        </Link>
 
         {/* 링크 리스트 */}
         <Ul>
