@@ -7,7 +7,7 @@ export const ModalBackground = tw.div`
   left-0 
   w-full 
   min-h-screen 
-  bg-gray-900 
+  bg-black
   bg-opacity-50 
   overflow-y-auto 
   flex 

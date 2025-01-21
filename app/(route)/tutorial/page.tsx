@@ -3,6 +3,10 @@
 import React from 'react';
 import { BackgroundSection, CenteredHeading, Heading, HeroBackground, HeroTextSection, ImageContainer, LargeParagraph, MainContainer, Paragraph, SectionContainer, TextBox, YellowBox } from './styles/pageStyled';
 import Image from 'next/image';
+import big1 from "../../../public/images/big_1.png";
+import big2 from "../../../public/images/big_2.png";
+import image115 from "../../../public/images/image115.png";
+import image120 from "../../../public/images/image120.png";
 
 export default function Home() {
   return (
@@ -35,7 +39,7 @@ export default function Home() {
             <SectionContainer>
                 <ImageContainer>
                     <Image
-                        src="/big_1.png"
+                        src={big1}
                         alt="1"
                         layout="intrinsic"
                         width={200}
@@ -61,7 +65,7 @@ export default function Home() {
                 <ImageContainer>
                     <YellowBox className="top-[-20vh] right-[0] w-[50vw] h-[107.3vh]" />
                     <Image
-                        src="/image115.png"
+                        src={image115}
                         alt="2"
                         layout="intrinsic"
                         width={500}
@@ -75,7 +79,7 @@ export default function Home() {
             <SectionContainer>
                 <ImageContainer>
                     <Image
-                        src="/big_2.png"
+                        src={big2}
                         alt="2"
                         layout="intrinsic"
                         width={200}
@@ -101,7 +105,7 @@ export default function Home() {
                 <ImageContainer>
                     <YellowBox className="top-[-2.8vh] right-[0] w-[40vw] h-[80vh]" />
                     <Image
-                        src="/image120.png"
+                        src={image120}
                         alt="question list"
                         layout="intrinsic"
                         width={500}

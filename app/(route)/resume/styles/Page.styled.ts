@@ -242,6 +242,15 @@ export const Input2 = tw.textarea`
   h-32
 `;
 
+export const CharCount = tw.span`
+  absolute 
+  bottom-2 
+  right-3 
+  text-xs 
+  text-gray-500 
+  pointer-events-none
+`;
+
 export const AnalysisButton = tw.button`
   text-md
   bg-yellow

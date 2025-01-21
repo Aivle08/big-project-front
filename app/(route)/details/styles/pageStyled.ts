@@ -2,44 +2,41 @@ import tw from 'tailwind-styled-components';
 
 // 본 단락
 export const MainContainer = tw.div`
-  flex 
-  flex-col 
-  relative 
-  justify-center 
-  w-full
-  ml-[10vw]
-  mr-[10vw]
-  w-[80vw]
+  mx-20
+  px-20
+
+  py-8
 `;
 export const SectionHeader = tw.div`
   flex 
   flex-col 
 `;
 
-export const SectionTitle = tw.div`
-  w-[250px] 
-  h-[72px] 
+export const SectionTitle = tw.h1`
+  text-2xl 
   font-bold 
-  text-[30px] 
-  leading-[72px] 
-  text-[#25282B]
+  pb-2
 `;
 
 export const SectionLine = tw.div`
-  w-[100px] 
-  h-[4px] 
-  bg-[#FDC435] 
+  ml-1
+  w-[60px] 
+  h-[3px] 
+  bg-yellow
   rounded-[2px]
-  mt-0
+`;
+
+
+export const Section = tw.section`
+  mb-8
 `;
 
 // 단랙 내 소제목목
 export const SmallTitle = tw.div`
-    font-semibold 
-    mt-5
-    text-[24px] 
-    leading-[48px] 
-    text-[#25282B]
+  block 
+  text-xl
+  font-semibold 
+  mb-2
 `;
 
 // 텍스트 박스
@@ -152,15 +149,14 @@ export const TextContent = tw.div`
 
 // 노란버튼(질문생성)
 export const YellowButton = tw.button`
-    bg-yellow-400 
+    bg-yellow 
     text-black 
     font-bold 
-    py-2 
-    px-4 
-    w-[10vw]
-    h-[6vh]
-    rounded-lg 
-    hover:bg-yellow-500 
+    py-3
+    px-6
+    shadow-sm
+    rounded-xl
+    hover:bg-lightorange
     active:scale-95 
     transition
 `;
@@ -198,13 +194,16 @@ export const CenterRow = tw.div`
 
 // 질문 목록을 위한 친구들
 export const QustionTitle = tw.div`
-    bg-[#FFD167]
-    rounded-full
-    px-4
-    py-2
-    shadow-md
-    w-[10vw]
-    h-[5vh]
+  flex
+  items-center
+  justify-center
+  bg-yellow
+  rounded-full
+  px-4
+  py-2
+  shadow-sm
+  w-[10vw]
+  h-[5vh]
     font-bold
 `;
 
@@ -224,7 +223,7 @@ export const QuestionListSection = tw.div`
 `;
 
 export const QuestionListItem = tw.div`
-  bg-gray-200 
+  bg-black/5
   rounded-md 
   p-3 
   shadow-sm 

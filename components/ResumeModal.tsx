@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image"
+import Image from "next/image";
 import { CloseButton, ModalBackground, ModalContainer, ModalContent, ModalHeader, ModalSubtitle, ModalTitle, PDFViewer, TitleContainer } from "./styles/modalStyled";
+import modalcloseicon from '../public/images/modalclose_icon.png';
+import paper from '../public/images/paper.png';
 
 type ResumeModalProps = {
   name: string;
@@ -19,19 +21,19 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
       <div>
 
         {/* 이 버튼은 나중에 지원서 아이콘 이미지를 넣을거임임 */}
-        <button
-          type="button"
+        <div
           onClick={handleModal}
+          className="cursor-pointer"
         >
           <Image
-              src="/paper.png"
+              src={paper}
               alt="Resume Link"
               layout="intrinsic"
               width={24}
               height={24}
               className="object-cover"
           />
-        </button>
+        </div>
         {openModal && (
           <ModalBackground>
             <ModalContainer>
@@ -42,7 +44,7 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
                   <ModalSubtitle>지원자</ModalSubtitle>
                 </TitleContainer>
                 <CloseButton onClick={handleModal}>
-                  <Image src="/modalclose_icon.png" alt="close" width={32} height={32} />
+                  <Image src={modalcloseicon} alt="close" width={32} height={32} />
                 </CloseButton>
               </ModalHeader>
   
