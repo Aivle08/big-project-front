@@ -1,4 +1,5 @@
 import tw from 'tailwind-styled-components';
+import { motion } from "framer-motion";
 
 // 본 단락
 export const MainContainer = tw.div`
@@ -6,14 +7,16 @@ export const MainContainer = tw.div`
   flex-col 
   relative 
   justify-center 
-  w-full
+  mx-20
+  px-20
+  items-center
 `;
 
 // 인사말 컨테이너
-export const GreetingContainer = tw.div`
+export const GreetingContainer = tw(motion.div)`
   absolute 
   left-[181px] 
-  top-[300px] 
+  top-[20vh] 
   w-[858px] 
   h-[408px] 
   flex 
@@ -73,7 +76,7 @@ export const SectionHeader = tw.div`
   flex-col 
   justify-center 
   items-center 
-  mt-[770px]
+  mt-[85vh]
 `;
 
 export const SectionTitle = tw.div`
@@ -95,13 +98,12 @@ export const SectionLine = tw.div`
 
 
 // 카드 컨테이너
-export const CardContainer = tw.div`
+export const CardContainer = tw(motion.div)`
   flex 
   justify-center 
   items-center 
   w-full 
-  h-screen 
-  m-2
+  my-[10vh]
 `;
 
 export const Card = tw.div`
@@ -161,10 +163,13 @@ export const CardButton = tw.button`
   border 
   border-[#25282B] 
   rounded-[24px]
+  text-[#25282B] 
+  hover:bg-black
+  hover:text-white
+  hover:scale-105
 `;
 
 export const CardButtonText = tw.span`
-  text-[#25282B] 
   font-medium 
   text-[18px]
 `;
