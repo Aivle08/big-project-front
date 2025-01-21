@@ -1,4 +1,5 @@
 import tw from 'tailwind-styled-components';
+import { motion } from "framer-motion";
 
 // 본 단락
 export const MainContainer = tw.div`
@@ -20,7 +21,7 @@ export const BackgroundSection = tw.div`
 `;
 
 // 큰 제목
-export const Heading = tw.h1`
+export const Heading = tw(motion.h1)`
     font-bold 
     text-[64px] 
     leading-[96px] 
@@ -31,11 +32,11 @@ export const CenterHeadSection = tw.div`
     flex 
     justify-center 
     items-center 
-    mt-[8vh]
+    mt-[8vh] 
 `;
 
 // 큰 제목 (중앙 정렬)
-export const CenteredHeading = tw.h1`
+export const CenteredHeading = tw(motion.h1)`
     w-[80vw] 
     font-bold 
     text-[64px] 
@@ -45,7 +46,7 @@ export const CenteredHeading = tw.h1`
 `;
 
 // 작은 본문 텍스트
-export const Paragraph = tw.p`
+export const Paragraph = tw(motion.p)`
     text-[18px] 
     leading-[28px] 
     text-[#828282] 
@@ -53,18 +54,18 @@ export const Paragraph = tw.p`
 `;
 
 // 노란박스 옆 본문
-export const LargeParagraph = tw.p`
+export const LargeParagraph = tw(motion.p)`
     text-[30px] 
     font-bold 
     leading-[150%] 
     text-black 
     mt-60 
     mx-20
-    text-left
+    text-left 
 `;
 
 // 이미지 컨테이너
-export const ImageContainer = tw.div`
+export const ImageContainer = tw(motion.div)`
     relative 
     flex-shrink-0
 `;
@@ -78,7 +79,7 @@ export const YellowBox = tw.div`
 `;
 
 // 왼쪽 텍스트와 이미지 섹션
-export const SectionContainer = tw.div`
+export const SectionContainer = tw(motion.div)`
     flex 
     justify-start 
     items-center 
