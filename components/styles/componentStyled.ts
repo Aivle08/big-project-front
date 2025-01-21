@@ -38,3 +38,31 @@ export const BtnSpan = tw.span`
   font-bold whitespace-nowrap
 `;
 
+// 검은 버튼
+export const BlackButton = tw.button`
+  w-[120px]
+  h-[42px]
+  rounded-md
+  border
+  border-black
+  bg-black
+  text-white
+  transition-all
+  duration-300
+  hover:bg-white
+  hover:text-black
+`;
+
+// 노란 버튼
+export const YellowButton = tw.button`
+  w-[120px]
+  h-[42px]
+  rounded-md
+  border
+  border-[#fde047]
+  bg-yellow
+  text-black
+  transition-all
+  duration-300
+  hover:bg-[#fde047]
+`;
