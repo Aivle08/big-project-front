@@ -6,14 +6,16 @@ export const MainContainer = tw.div`
   flex-col 
   relative 
   justify-center 
-  w-full
+  mx-20
+  px-20
+  items-center
 `;
 
 // 인사말 컨테이너
 export const GreetingContainer = tw.div`
   absolute 
   left-[181px] 
-  top-[300px] 
+  top-[20vh] 
   w-[858px] 
   h-[408px] 
   flex 
@@ -73,7 +75,7 @@ export const SectionHeader = tw.div`
   flex-col 
   justify-center 
   items-center 
-  mt-[770px]
+  mt-[85vh]
 `;
 
 export const SectionTitle = tw.div`
@@ -100,8 +102,7 @@ export const CardContainer = tw.div`
   justify-center 
   items-center 
   w-full 
-  h-screen 
-  m-2
+  my-[10vh]
 `;
 
 export const Card = tw.div`

@@ -22,6 +22,7 @@ import {
     CardButtonText,
     ImageContainer
   } from './styles/pageStyled';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -50,13 +51,17 @@ export default function Home() {
         <Card>
           <CardDescriptionContainer>
             <CardDescription>
-              <CardTitle>채용 평가기준 반영 시스템</CardTitle>
+              <CardTitle>채용 평가기준 반영 <br />시스템</CardTitle>
               <CardText>
                 이력서에 기재된 항목과 회사가 기입한 인재상 및 우대 사항 등을 기반으로 점수를 부여해 제공합니다.
               </CardText>
-              <CardButton>
-                <CardButtonText>Get Started</CardButtonText>
-              </CardButton>
+              <Link
+                href='/login?form=signin'
+                >
+                  <CardButton>
+                  <CardButtonText>Get Started</CardButtonText>
+                </CardButton>
+              </Link>
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tr-[24px] rounded-br-[24px]'>
@@ -70,13 +75,17 @@ export default function Home() {
         <Card className="flex-row-reverse">
           <CardDescriptionContainer>
             <CardDescription>
-              <CardTitle className='w-[80%]'>채용 질문 생성 시스템</CardTitle>
+              <CardTitle className='w-[80%]'>채용 질문 생성 <br />시스템</CardTitle>
               <CardText>
                 채용 시 지원자의 포트폴리오와 이력서를 대조해 보다 구체적인 검증 질문 생성을 통해서 채용 면접 시 면접관의 업무에 편리함을 더합니다.
               </CardText>
-              <CardButton>
-                <CardButtonText>Get Started</CardButtonText>
-              </CardButton>
+                <Link
+                href='/login?form=signin'
+                >
+                  <CardButton>
+                  <CardButtonText>Get Started</CardButtonText>
+                </CardButton>
+                </Link>
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tl-[24px] rounded-bl-[24px]'>
