@@ -23,13 +23,20 @@ import {
     ImageContainer
   } from './styles/pageStyled';
 import Link from 'next/link';
-
 export default function Home() {
   return (
     <>
     <MainContainer>
       {/* 인사말 */}
-      <GreetingContainer>
+      <GreetingContainer
+        initial={{ x: -200, opacity: 0 }} // 시작: 왼쪽으로 이동, 투명
+        whileInView={{ x: 0, opacity: 1}} // whileInView : 뷰포트에 들어오면 실행할 것.
+        transition={{
+          duration: 1, // 애니메이션 지속 시간
+          ease: "easeOut", // 부드러운 애니메이션
+        }}
+        viewport={{ once: true }}
+      >
         <GreetingText>안녕하세요, 채용 시스템 어시스턴트 pick up 입니다.</GreetingText>
         <GreetingContent>
           <GreetingTitle>기업의 채용 시스템에 도움을 주는 최고의 서비스</GreetingTitle>
@@ -47,7 +54,12 @@ export default function Home() {
       </SectionHeader>
 
       {/* 첫째 카드 */}
-      <CardContainer>
+      <CardContainer
+        initial={{ y: 100, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         <Card>
           <CardDescriptionContainer>
             <CardDescription>
@@ -71,7 +83,12 @@ export default function Home() {
       </CardContainer>
 
       {/* 둘째 카드 */}
-      <CardContainer>
+      <CardContainer
+        initial={{ y: 200, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         <Card className="flex-row-reverse">
           <CardDescriptionContainer>
             <CardDescription>
@@ -82,7 +99,7 @@ export default function Home() {
                 <Link
                 href='/login?form=signin'
                 >
-                  <CardButton>
+                <CardButton>
                   <CardButtonText>Get Started</CardButtonText>
                 </CardButton>
                 </Link>
