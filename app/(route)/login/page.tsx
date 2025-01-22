@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { FormEvent, SetStateAction, useEffect, useState, } from "react";
 import { ArrowLeft } from 'lucide-react';
-import { BackButton, BackContainer, CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
+import { BackButton, BackContainer, CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, JobContainer, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
 import logo from "@/public/images/logo.png";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +13,9 @@ import { authAPI } from '../../api/authAPI';
 
 interface FormElements extends HTMLFormControlsCollection {
   companyName: HTMLInputElement;
-  department: HTMLInputElement;
-  name: HTMLInputElement;
-  phone: HTMLInputElement;
+  departmentName: HTMLInputElement;
+  username: HTMLInputElement;
+  contact: HTMLInputElement;
 }
 
 interface SignUpForm extends HTMLFormElement {
@@ -32,9 +32,10 @@ export default function Login() {
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
   // 회원가입 시 필요함------------------------------------------------------------------------
   const [companyName, setCompanyName] = useState('');
-  const [department, setDepartment] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [departmentName, setDepartmentName] = useState('');
+  const [username, setUserName] = useState('');
+  const [contact, setContact] = useState('');
+  const [position, setPosition] = useState('');
   // 이메일 인증 구현  ---------------------------------------------------------------------------
   const [email, setEmail] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -225,11 +226,14 @@ export default function Login() {
     
       try {
         const result = await dispatch(loginUser({
-          userId: loginUserId,
+          id: loginUserId,
           password: loginPassword
         })).unwrap();
         
-        if (result.success) {
+        console.log(result);
+
+        if (result.status===200) {
+          console.log("로그인 성공 확인!");
           router.push('/'); // 로그인 성공 시 홈페이지로 이동
         }
       } catch (err: any) {
@@ -242,60 +246,70 @@ export default function Login() {
       e.preventDefault();
 
       // 필수 필드 검사
-      if (!companyName || !department || !email || !userId || !password || !name || !phone) {
+      if (!companyName || !departmentName || !position || !email || !userId || !password || !username || !contact) {
         alert('모든 필드를 입력해주세요.');
         return;
       }
     
       const formData = {
         companyName,
-        department,
+        departmentName,
+        position,
         email,
         userId,
         password,
-        name,
-        phone,
+        username,
+        contact,
       };
     
       try {
+        // dispatch 대신 직접 API 호출
         const response = await authAPI.register(formData);
-        if (response.success) {
+        console.log('Registration response:', response); // 응답 확인용
+    
+        if (response.success || response.status === 201) {
           alert('회원가입이 완료되었습니다.');
-          handleSignInClick(); // 로그인 폼으로 전환
+          // 입력 필드 초기화
+          setCompanyName('');
+          setDepartmentName('');
+          setPosition('');
+          setEmail('');
+          setUserId('');
+          setPassword('');
+          setConfirmPassword('');
+          setUserName('');
+          setContact('');
+          setIsEmailSent(false);
+          setVerificationCode('');
+          setIsVerified(false);
+          setIsIdChecked(false);
+          setIsIdAvailable(false);
+          
+          // 회원가입한 아이디와 비밀번호를 로그인 폼에 자동 입력
+          setLoginUserId(userId);
+          setLoginPassword(password);
+          
+          // 로그인 폼으로 전환
+          handleSignUpClick();
+          // setIsRightPanelActive(false);
+          
+          // URL 업데이트 (선택사항)
+          window.history.pushState({}, '', '/login?form=signin');
+        } else {
+          throw new Error(response.message || '회원가입에 실패했습니다.');
         }
       } catch (error: any) {
-        console.error('Registration error:', error);
-        alert(error.message || '회원가입에 실패했습니다.');
+        console.error('Registration error details:', error); // 에러 상세 확인용
+        
+        // 에러 메시지 상세 처리
+        const errorMessage = error.response?.data?.message 
+          || error.message 
+          || '회원가입 처리 중 오류가 발생했습니다.';
+        
+        alert(errorMessage);
       }
-    };
-    // const handleRegister = async (e: FormEvent) => {
-    //   e.preventDefault();
-    
-    //   // 유효성 검사
-    //   if (!isVerified || !isIdAvailable || password !== confirmPassword) {
-    //     setEmailError('모든 인증 절차를 완료해주세요.');
-    //     return;
-    //   }
-    
-    //   const form = e.target as SignUpForm;
-    //   const registerData = {
-    //     email,
-    //     userId,
-    //     password,
-    //     companyName: form.elements.companyName.value,
-    //     department: form.elements.department.value,
-    //     name: form.elements.name.value,
-    //     phone: form.elements.phone.value,
-    //   };
-    
-    //   try {
-    //     await dispatch(registerUser(registerData)).unwrap();
-    //     alert('회원가입이 완료되었습니다.');
-    //     handleSignInClick(); // 로그인 폼으로 전환
-    //   } catch (err: any) {
-    //     setEmailError(err.message || '회원가입에 실패했습니다.');
-    //   }
-    // };
+    }
+
     
 
   return (
@@ -324,14 +338,22 @@ export default function Login() {
               value={companyName}
               onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setCompanyName(e.target.value)}
             />
-            <Form1 
-              name="department" 
-              type="text" 
-              placeholder="부서"
-              value={department}
-              onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDepartment(e.target.value)}
-            /> 
-
+            <JobContainer>
+              <Form1 
+                name="departmentName" 
+                type="text" 
+                placeholder="부서"
+                value={departmentName}
+                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDepartmentName(e.target.value)}
+              /> 
+              <Form1 
+                name="position" 
+                type="text" 
+                placeholder="직무"
+                value={position}
+                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPosition(e.target.value)}
+              /> 
+            </JobContainer>
 
             {/* 이메일 인증 섹션 */}
             <EmailContainer className="mt-4">
@@ -407,31 +429,31 @@ export default function Login() {
             type="password" 
             placeholder="비밀번호(8자리 이상, 영문/숫자/기호 포함)" 
             value={password}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             />
             <Form1 
               type="password" 
               placeholder="비밀번호 확인" 
               value={confirmPassword}
-              onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setConfirmPassword(e.target.value)}
+              onChange={handleConfirmPasswordChange}
             />
             {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
 
           {/* 이름 & 휴대폰 번호   */}
           <Form1 
-            name="name" 
+            name="username" 
             type="text" 
             placeholder="이름" 
             className="mt-4" 
-            value={name}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}
+            value={username}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserName(e.target.value)}
           /> 
           <Form1 
-            name="phone" 
+            name="contact" 
             type="tel" 
             placeholder="휴대폰 번호" 
-            value={phone}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone(e.target.value)}
+            value={contact}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setContact(e.target.value)}
           /> 
 
           <ContainerButton type="submit">

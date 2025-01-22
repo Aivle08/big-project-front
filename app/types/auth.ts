@@ -1,4 +1,4 @@
-// src/types/auth.ts
+
 export interface User {
   id: string;
   email: string;
@@ -17,18 +17,19 @@ export interface AuthState {
 }
 
 export interface LoginCredentials {
-  userId: string;
+  id: string;
   password: string;
 }
 
 export interface RegisterFormData {
-  email: string;
   userId: string;
   password: string;
+  username: string;
+  email: string;
+  position: string;
   companyName: string;
-  department: string;
-  name: string;
-  phone: string;
+  departmentName: string;
+  contact: string;
 }
 
 export interface EmailVerificationData {
@@ -50,6 +51,7 @@ export interface LoginResponse {
 }
 
 export interface RegisterResponse {
+  status: number;
   message: string;
   success: boolean;
 }

@@ -27,7 +27,9 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    if (token && config.headers) {
+    
+    // 회원가입 API 요청인 경우 Authorization 헤더 추가 안함.
+    if (token && config.headers && !config.url?.includes('/users/register')) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -37,20 +39,21 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-
 export const authAPI = {
   // 로그인 API
-  login: async (credentials: LoginCredentials): Promise<ApiResponse<LoginResponse>> => {
+  login: async (credentials: LoginCredentials): Promise<AxiosResponse<ApiResponse<LoginResponse>>> => {
     try {
+      console.log(credentials);
       const response: AxiosResponse<ApiResponse<LoginResponse>> = 
         await axiosInstance.post('/users/login', credentials);
+      console.log(response);
       
       // 로그인 성공 시 토큰 저장
       if (response.data.data?.token) {
         localStorage.setItem('token', response.data.data.token);
       }
       
-      return response.data;
+      return response; 
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw {
@@ -66,20 +69,43 @@ export const authAPI = {
   // 회원가입 API
   register: async (userData: RegisterFormData): Promise<ApiResponse<RegisterResponse>> => {
     try {
-      const response: AxiosResponse<ApiResponse<RegisterResponse>> = 
-        await axiosInstance.post('/users/register', userData);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw {
-          success: false,
-          message: error.response?.data?.message || '회원가입에 실패했습니다.',
-          data: null
+      const response = await axiosInstance.post('/users/register', userData);
+      console.log('API response:', response);
+
+        return {
+          success: true,
+          message: '회원가입이 완료되었습니다!',
+          data: response.data,
+          status: response.status
         };
-      }
-      throw error;
+      
+    } catch (error: any) {
+      console.error('API error:', error);
+
+      throw {
+        success: false,
+        message: error.response?.data?.message || '회원가입 처리 중 오류가 발생했습니다.',
+        status: error.response?.status
+      };
     }
   },
+  // register: async (userData: RegisterFormData): Promise<AxiosResponse<ApiResponse<RegisterResponse>>> => {
+  //   try {
+  //     const response: AxiosResponse<ApiResponse<RegisterResponse>> = 
+  //       await axiosInstance.post('/users/register', userData);
+  //     return response; // AxiosResponse 자체를 반환
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       throw {
+  //         success: false,
+  //         message: error.response?.data?.message || '회원가입에 실패했습니다.',
+  //         data: null,
+  //         status: error.response?.status || 500, // 상태 코드 포함
+  //       };
+  //     }
+  //     throw error;
+  //   }
+  // },
 
   // 로그아웃 API
   logout: () => {

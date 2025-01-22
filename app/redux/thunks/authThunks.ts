@@ -18,13 +18,16 @@ export const loginUser = createAsyncThunk(
     try {
       dispatch(loginStart());
       const response = await authAPI.login(credentials);
-      const { data } = response;
-      
-      // 토큰 저장
-      localStorage.setItem('token', data.token);
-      dispatch(loginSuccess(data.user));
-      
-      return data;
+
+      // HTTP status 200인 경우에만 성공
+      if (response.status === 200) {
+        const { data } = response;
+        localStorage.setItem('token', data.token);
+        dispatch(loginSuccess(data.user));
+        return response; // 전체 AxiosResponse 반환
+      } else {
+        throw new Error('로그인 실패');
+      }
     } catch (error: any) {
       const message = error.response?.data?.message || '로그인 실패';
       dispatch(loginFailure(message));
@@ -40,8 +43,14 @@ export const registerUser = createAsyncThunk(
     try {
       dispatch(registerStart());
       const response = await authAPI.register(userData);
-      dispatch(registerSuccess());
-      return response.data;
+
+      // HTTP status 201일 때 성공임
+      if (response.status === 201) {
+        dispatch(registerSuccess());
+        return response.data;
+      } else {
+        throw new Error('회원가입 실패');
+      }
     } catch (error: any) {
       const message = error.response?.data?.message || '회원가입 실패';
       dispatch(registerFailure(message));
