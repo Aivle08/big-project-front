@@ -1,16 +1,26 @@
-import { NAV_LINK } from '@/constants'
-import Link from 'next/link'
-import Image from 'next/image'
-import React from 'react'
-import NavBtn from './NavButton'
-import { Ul, Wrapper, Nav, NavButtons } from './styles/componentStyled'
+import { NAV_LINK } from '@/constants';
+import Link from 'next/link';
+import Image from 'next/image';
+import React from 'react';
+import { 
+  Ul, 
+  Wrapper, 
+  Nav, 
+  NavButtons, 
+  BlackButton, 
+  YellowButton 
+} from './styles/componentStyled';
 
 export default function Navbar() {
   return (
     <Wrapper>
       <Nav>
         {/* 로고 */}
-        <Image src="/logo.png" alt="logo" width={309} height={74} />
+        <Link
+          href="/"
+        >
+          <Image src="/logo.png" alt="logo" width={300} height={50} />
+        </Link>
 
         {/* 링크 리스트 */}
         <Ul>
@@ -28,29 +38,14 @@ export default function Navbar() {
         {/* 버튼 */}
         <NavButtons>
           <Link href="/login?form=signin">
-            <NavBtn
-              type="button"
-              title="회원가입"
-              bgColor="#FFFFFF"
-              txtColor="#000000"
-              borderColor="border-black"
-
-            />
+            <BlackButton>회원가입</BlackButton>
           </Link>
-          
 
           <Link href="/login">
-            <NavBtn
-              type="button"
-              title="로그인"
-              bgColor="#FFBD26"
-              txtColor="#FFFFFF"
-              borderColor="border-yellow-200"
-            />
+            <YellowButton>로그인</YellowButton>
           </Link>
         </NavButtons>
       </Nav>
     </Wrapper>
-  )
+  );
 }
-

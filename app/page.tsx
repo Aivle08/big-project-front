@@ -22,13 +22,21 @@ import {
     CardButtonText,
     ImageContainer
   } from './styles/pageStyled';
-
+import Link from 'next/link';
 export default function Home() {
   return (
     <>
     <MainContainer>
       {/* 인사말 */}
-      <GreetingContainer>
+      <GreetingContainer
+        initial={{ x: -200, opacity: 0 }} // 시작: 왼쪽으로 이동, 투명
+        whileInView={{ x: 0, opacity: 1}} // whileInView : 뷰포트에 들어오면 실행할 것.
+        transition={{
+          duration: 1, // 애니메이션 지속 시간
+          ease: "easeOut", // 부드러운 애니메이션
+        }}
+        viewport={{ once: true }}
+      >
         <GreetingText>안녕하세요, 채용 시스템 어시스턴트 pick up 입니다.</GreetingText>
         <GreetingContent>
           <GreetingTitle>기업의 채용 시스템에 도움을 주는 최고의 서비스</GreetingTitle>
@@ -46,17 +54,26 @@ export default function Home() {
       </SectionHeader>
 
       {/* 첫째 카드 */}
-      <CardContainer>
+      <CardContainer
+        initial={{ y: 100, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         <Card>
           <CardDescriptionContainer>
             <CardDescription>
-              <CardTitle>채용 평가기준 반영 시스템</CardTitle>
+              <CardTitle>채용 평가기준 반영 <br />시스템</CardTitle>
               <CardText>
                 이력서에 기재된 항목과 회사가 기입한 인재상 및 우대 사항 등을 기반으로 점수를 부여해 제공합니다.
               </CardText>
-              <CardButton>
-                <CardButtonText>Get Started</CardButtonText>
-              </CardButton>
+              <Link
+                href='/login?form=signin'
+                >
+                  <CardButton>
+                  <CardButtonText>Get Started</CardButtonText>
+                </CardButton>
+              </Link>
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tr-[24px] rounded-br-[24px]'>
@@ -66,17 +83,26 @@ export default function Home() {
       </CardContainer>
 
       {/* 둘째 카드 */}
-      <CardContainer>
+      <CardContainer
+        initial={{ y: 200, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         <Card className="flex-row-reverse">
           <CardDescriptionContainer>
             <CardDescription>
-              <CardTitle className='w-[80%]'>채용 질문 생성 시스템</CardTitle>
+              <CardTitle className='w-[80%]'>채용 질문 생성 <br />시스템</CardTitle>
               <CardText>
                 채용 시 지원자의 포트폴리오와 이력서를 대조해 보다 구체적인 검증 질문 생성을 통해서 채용 면접 시 면접관의 업무에 편리함을 더합니다.
               </CardText>
-              <CardButton>
-                <CardButtonText>Get Started</CardButtonText>
-              </CardButton>
+                <Link
+                href='/login?form=signin'
+                >
+                <CardButton>
+                  <CardButtonText>Get Started</CardButtonText>
+                </CardButton>
+                </Link>
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tl-[24px] rounded-bl-[24px]'>
