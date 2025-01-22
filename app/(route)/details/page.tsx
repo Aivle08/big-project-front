@@ -154,7 +154,7 @@ export default function Home() {
             </CenterRow>
 
             <FloatingButton>
-                <div className="mt-1">
+                <div>
                     <ResumeModal
                         name={"유창현"}
                         pdfUrl={"/File.pdf"} 
