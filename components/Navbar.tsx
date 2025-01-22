@@ -70,7 +70,7 @@ export default function Navbar() {
                 <span>{user.name} / </span>
               </span>
             )}
-            <Link href="/" >
+            <Link href="/" onClick={handleLogout}>
               <span>로그아웃</span>
             </Link>
           </NavButtons>
