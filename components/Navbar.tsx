@@ -19,6 +19,7 @@ import { logout } from '@/app/redux/features/authSlice';
 export default function Navbar() {
   // Redux 상태 가져오기
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+  console.log(isAuthenticated, user);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -58,18 +59,16 @@ export default function Navbar() {
           </NavButtons>
         ) : (
           <NavButtons className="mr-5">
-            {user && (
-              <span className="flex items-center">
-                <Image
-                  src="/images/avatar.png"
-                  alt="profile"
-                  width={32}
-                  height={32}
-                  className="mr-2"
-                />
-                <span>{user.name} / </span>
-              </span>
-            )}
+            <span className="flex items-center">
+              <Image
+                src="/images/avatar.png"
+                alt="profile"
+                width={32}
+                height={32}
+                className="mr-2"
+              />
+              <span>kt기업회원 / </span>
+            </span>
             <Link href="/" onClick={handleLogout}>
               <span>로그아웃</span>
             </Link>
