@@ -37,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Providers>
         {!excludeRoutes.includes(pathname) && <Navbar />}
-        <Providers>{children}</Providers>
+        {children}
         {!excludeRoutes.includes(pathname) && <Footer />}
+        </Providers>
       </body>
     </html>
   );
