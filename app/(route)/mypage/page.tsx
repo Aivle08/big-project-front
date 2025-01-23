@@ -1,5 +1,8 @@
-import { ButtonContainer, CateButton, Category, CategoryContainer, CateTitle, Company, Container, Dept, Etc, Section, SectionLine, Title, UserArea, UserContainer, UserName } from "./styles/Page.styled";
+"use client"
 
+import { ButtonContainer, CateButton, Category, CategoryContainer, CateTitle, Company, Container, Dept, Etc, Section, SectionLine, Title, UserArea, UserContainer, UserName } from "./styles/Page.styled";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store/store';
 
 interface JobPosting {
   id: number;
@@ -10,13 +13,7 @@ interface JobPosting {
 
 export default function Mypage() {
 
-  const userInfo = {
-    company: 'KT',
-    dept_name: 'IT관제/보안관제',
-    username: '최우식',
-    phone: '010-5787-0422',
-    email: 'chany0422@kt.com'
-  };
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const jobPostings: JobPosting[] = [
     {
@@ -63,12 +60,12 @@ export default function Mypage() {
       {/* 사용자 개인 정보 입력칸 */}
       <UserContainer>
         <UserArea>
-          <Company>{userInfo.company}</Company>
-          <Dept>{userInfo.dept_name}</Dept>
-          <UserName>{userInfo.username}</UserName>
+          <Company>{user?.company?.name}</Company>
+          <Dept>{user?.department?.name}</Dept>
+          <UserName>{user?.name}</UserName>
           <Etc>
-            <p>{userInfo.phone}</p>
-            <p>{userInfo.email}</p>
+            <p>{user?.contact}</p>
+            <p>{user?.email}</p>
           </Etc>
         </UserArea>
       </UserContainer>
