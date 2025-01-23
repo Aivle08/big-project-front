@@ -1,12 +1,17 @@
 
 export interface User {
-  id: string;
-  email: string;
-  userId: string;
+  id: number;
+  username: string;
   name: string;
-  companyName: string;
-  department: string;
-  phone: string;
+  email: string;
+  position: string;
+  contact: string;
+  company: {
+    id: number;
+    name: string;
+    departmentList: Department[];
+  };
+  department: Department;
 }
 
 export interface AuthState {
@@ -65,3 +70,15 @@ export interface IdCheckResponse {
   available: boolean;
   message: string;
 }
+
+interface Department {
+  id: number;
+  name: string;
+  recruitmentList: Recruitment[];
+  applicantList: Applicant[];
+}
+
+// 아래 둘은 공고랑 지원자 반형식 보고 적어줄 예정
+type Recruitment = object
+
+type Applicant = object

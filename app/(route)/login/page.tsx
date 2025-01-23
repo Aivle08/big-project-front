@@ -223,16 +223,18 @@ export default function Login() {
         setEmailError('아이디와 비밀번호를 모두 입력해주세요.');
         return;
       }
+
+      console.log("로그인 시도");
     
       try {
         const result = await dispatch(loginUser({
           id: loginUserId,
           password: loginPassword
-        })).unwrap();
+        }));
         
         console.log(result);
 
-        if (result.status===200) {
+        if (result.payload.status === 200) {
           console.log("로그인 성공 확인!");
           router.push('/'); // 로그인 성공 시 홈페이지로 이동
         }
