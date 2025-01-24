@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store/store';
 import { logout } from '@/app/redux/features/authSlice';
+import { authAPI } from '@/app/api/authAPI';
 
 export default function Navbar() {
   // Redux 상태 가져오기
@@ -23,7 +24,9 @@ export default function Navbar() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    authAPI.logout();
     dispatch(logout());
+    console.log('로그아웃 완료');
   };
 
   return (
