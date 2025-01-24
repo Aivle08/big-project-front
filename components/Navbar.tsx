@@ -15,15 +15,18 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store/store';
 import { logout } from '@/app/redux/features/authSlice';
+import { authAPI } from '@/app/api/authAPI';
 
 export default function Navbar() {
   // Redux 상태 가져오기
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-  console.log(isAuthenticated, user);
+  // console.log(isAuthenticated, user);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    authAPI.logout();
     dispatch(logout());
+    console.log('로그아웃 완료');
   };
 
   return (
@@ -67,7 +70,7 @@ export default function Navbar() {
                 height={32}
                 className="mr-2"
               />
-              <span>kt기업회원 / </span>
+              <span>{user?.name || "kt기업회원"} / </span>
             </span>
             <Link href="/" onClick={handleLogout}>
               <span>로그아웃</span>

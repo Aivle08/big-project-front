@@ -18,12 +18,27 @@ export const loginUser = createAsyncThunk(
     try {
       dispatch(loginStart());
       const response = await authAPI.login(credentials);
+      console.log("loginUser");
+      console.log("로그인 정보:", response);
 
       // HTTP status 200인 경우에만 성공
       if (response.status === 200) {
-        const { data } = response;
-        localStorage.setItem('token', data.token);
-        dispatch(loginSuccess(data.user));
+        // user data 받아오기
+        // (loginSuccess 슬라이스로 상태 저장)
+        try {
+          const user = await authAPI.getUserInfo(); // authAPI.getUserInfo() 호출
+          
+          console.log(user);
+          if(user.status === 200){
+            console.log("사용자 정보:", user.data);
+
+            dispatch(loginSuccess(user.data));
+          }
+        } catch (error: any) {
+          console.error("사용자 정보 가져오기 실패:", error);
+          throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
+        }
+
         return response; // 전체 AxiosResponse 반환
       } else {
         throw new Error('로그인 실패');
