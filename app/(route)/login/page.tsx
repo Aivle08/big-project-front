@@ -312,6 +312,29 @@ export default function Login() {
       }
     }
 
+    // 전화번호 입력할 떄 - 추가해주고, 글자수 제한해주는 핸들러임
+    // contact state 관리하는 부분은 그대로 두고 새로운 핸들러 함수 추가
+    const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      // 숫자만 추출
+      const numbers = value.replace(/[^\d]/g, '');
+      
+      // 최대 11자리까지만 허용 (010-1234-5678 형식)
+      const trimmed = numbers.slice(0, 11);
+      
+      let formattedNumber = '';
+      if (trimmed.length <= 3) {
+        formattedNumber = trimmed;
+      } else if (trimmed.length <= 7) {
+        formattedNumber = `${trimmed.slice(0, 3)}-${trimmed.slice(3)}`;
+      } else {
+        formattedNumber = `${trimmed.slice(0, 3)}-${trimmed.slice(3, 7)}-${trimmed.slice(7)}`;
+      }
+      
+      setContact(formattedNumber);
+    };
+
+
     
 
   return (
@@ -455,7 +478,8 @@ export default function Login() {
             type="tel" 
             placeholder="휴대폰 번호" 
             value={contact}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setContact(e.target.value)}
+            onChange={handleContactChange}
+            maxLength={13} // 하이픈 포함 13자리
           /> 
 
           <ContainerButton type="submit">
