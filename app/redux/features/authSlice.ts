@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, User } from '../../types/auth';
 
+const storedUser = localStorage.getItem('user');
+const storedAuth = localStorage.getItem('isAuthenticated');
+
 const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
+  user: storedUser ? JSON.parse(storedUser) : null,
+  isAuthenticated: storedAuth === 'true',
   loading: false,
-  error: null
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -21,6 +24,8 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
       state.error = null;
+      localStorage.setItem('user', JSON.stringify(action.payload));  // 로컬 스토리지에 저장해주기
+      localStorage.setItem('isAuthenticated', JSON.stringify(state.isAuthenticated));
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
@@ -43,6 +48,8 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
+      localStorage.removeItem('user');  // 로그아웃 시 제거
+      localStorage.removeItem('isAuthenticated');
     }
   }
 });

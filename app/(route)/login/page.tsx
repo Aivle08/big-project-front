@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import React, { FormEvent, SetStateAction, useEffect, useState, } from "react";
+import React, { FormEvent, SetStateAction, useEffect, useState } from "react";
 import { ArrowLeft } from 'lucide-react';
 import { BackButton, BackContainer, CheckButton, Container, ContainerButton, ContainerForm, Description, Detail, EmailContainer, EmailInputWrapper, ErrorMessage, Form1, Form2, InputWrapper, JobContainer, OverlayBox, OverlayButton, OverlayContainer, OverlayPanel, SuccessMessage, Title, VerificationMessage, VerifyButton, Wrapper } from "./styles/Page.styled";
 import logo from "@/public/images/logo.png";
@@ -517,7 +517,6 @@ export default function Login() {
 
   );
 }
-
 
 
 

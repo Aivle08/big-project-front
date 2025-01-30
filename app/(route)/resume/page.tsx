@@ -1,8 +1,12 @@
 'use client'
 
 import { ChangeEvent, useCallback, useState } from 'react';
-import { Container, FileList, SectionLine, Section, Label1, Input1, Input2, SubLabel, UploadContainer, FileItem, FileIcon, FileInfo, FileSize, DeleteButton, Title, FirstContainer, Left, Right, SecondContainer, Detail, Label2, FileContainer, FileContainer2, EvaluationHeader, Span, Progress, Bar, AnalysisButton, ButtonArea, CharCount } from "./styles/Page.styled";
+import { Container, FileList, SectionLine, Section, Label1, Input1, Input2, SubLabel, UploadContainer, FileItem, FileIcon, FileSize, DeleteButton, Title, FirstContainer, Left, Right, SecondContainer, Detail, Label2, FileContainer, FileContainer2, EvaluationHeader, Span, Progress, Bar, AnalysisButton, ButtonArea, CharCount } from "./styles/Page.styled";
 import { X } from "lucide-react";
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store/store';
+import { submitResumeAnalysis } from '../../redux/features/resumeSlice';
+import { ResumeAnalysisRequest } from '../../types/resume';
 
     
 interface FileData {
@@ -15,7 +19,48 @@ interface FileData {
 
 export default function Resume() {
 
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.resume);
+
   const [files, setFiles] = useState<FileData[]>([]);
+  const [job, setJob] = useState('');
+  // 각 입력 필드의 값을 관리할 상태 추가
+  const [inputs, setInputs] = useState({
+    jobPosting: '',     // 채용 공고
+    ideals: '',         // 인재상
+    education: '',      // 학력
+    activities: '',     // 대외활동 등
+    experience: ''      // 경력
+  });
+
+  const handleJobChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setJob(e.target.value);
+  };
+
+  const handleAnalysis = async() => {
+    const evaluationList = [
+      { item: '인재상', detail: inputs.ideals },
+      { item: '학력', detail: inputs.education },
+      { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
+      { item: '경력', detail: inputs.experience }
+    ];
+
+    const analysisData: ResumeAnalysisRequest = {
+      title: inputs.jobPosting,
+      job: job,
+      evaluationList: evaluationList
+    };
+
+    try {
+      await dispatch(submitResumeAnalysis(analysisData)).unwrap();
+      // 성공 처리(라우팅 나중에 넣어야지)
+    } catch (err) {
+      // 에러 처리
+      console.error('분석 결과 조회 실패:', err);
+    }
+
+  }
+
 
   const handleFileUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -50,14 +95,6 @@ export default function Resume() {
   };
 
 
-  // 각 입력 필드의 값을 관리할 상태 추가
-  const [inputs, setInputs] = useState({
-    jobPosting: '',     // 채용 공고
-    ideals: '',         // 인재상
-    education: '',      // 학력
-    activities: '',     // 대외활동 등
-    experience: ''      // 경력
-  });
 
   // 입력 핸들러
   const handleInputChange = (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +123,12 @@ export default function Resume() {
           {/* 직무 섹션 */}
           <Section>
             <Label1>직무</Label1>
-            <Input1 type="text" placeholder="채용 직무를 입력하세요." />
+            <Input1 
+              type="text" 
+              placeholder="채용 직무를 입력하세요."
+              value={job}
+              onChange={handleJobChange}
+            />
           </Section>
 
           {/* 이력서 업로드 섹션 */}
@@ -257,7 +299,12 @@ export default function Resume() {
       </SecondContainer>
       
       <ButtonArea>
-        <AnalysisButton>분석하기</AnalysisButton>
+        <AnalysisButton
+          onClick={handleAnalysis}
+          disabled={loading || !job || !inputs.jobPosting}
+        >
+          {loading ? '분석 중 ..' : '분석하기'}
+        </AnalysisButton>
       </ButtonArea>
 
     </Container>
