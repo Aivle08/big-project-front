@@ -4,8 +4,6 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
 
-//   console.log(token);
-
   const protectedPaths = [ // 이 경로는 로그인 되어야만 점근 가능능
     '/mypage', 
     '/details', 
