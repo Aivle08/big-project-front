@@ -32,3 +32,13 @@ export const analyzeResume = async (data: ResumeAnalysisRequest) => {
   //   throw error;
   // }
 };
+
+export const getRecruitmentList = async () => {
+  const token = getAccessToken();
+  const response = await api.get('/recruitment', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data; // 서버로부터 받은 리스트
+};
