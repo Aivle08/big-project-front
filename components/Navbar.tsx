@@ -29,16 +29,16 @@ export default function Navbar() {
   const dispatch = useDispatch();
 
   // 로그인 안 된 경우는 튜토리얼 제외한 navbar의 페이지는 전부 다 로그인으로 라우팅되게 하려고 함
-  const handleNavigation = (href: string) => {
-    // 로그인 필요한 페이지 목록
-    const authRequiredPages = ['/resume', '/notice_board', '/mypage'];
+  // const handleNavigation = (href: string) => {
+  //   // 로그인 필요한 페이지 목록
+  //   const authRequiredPages = ['/resume', '/notice_board', '/mypage'];
 
-    if (!isAuthenticated && authRequiredPages.includes(href)) {
-      router.push('/login');
-    } else {
-      router.push(href);
-    }
-  };
+  //   if (!isAuthenticated && authRequiredPages.includes(href)) {
+  //     router.push('/login');
+  //   } else {
+  //     router.push(href);
+  //   }
+  // };
 
   const handleLogout = () => {
     authAPI.logout();
@@ -57,13 +57,13 @@ export default function Navbar() {
         {/* 링크 리스트 */}
         <Ul>
           {NAV_LINK.map((link) => (
-            <div
+            <Link
               key={link.key}
-              onClick={() => handleNavigation(link.href)}
+              href={link.href}
               className="text-black text-xl cursor-pointer transition-all hover:font-bold"
             >
               {link.label}
-            </div>
+            </Link>
           ))}
         </Ul>
 

@@ -12,8 +12,8 @@ export function middleware(request: NextRequest) {
     '/notice_board', 
     '/passer', 
     'posts', 
-    'result', 
-    'resume'
+    '/result', 
+    '/resume'
     ]; 
   const isProtectedPath = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
