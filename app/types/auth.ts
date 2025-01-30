@@ -82,3 +82,4 @@ interface Department {
 type Recruitment = object
 
 type Applicant = object
+

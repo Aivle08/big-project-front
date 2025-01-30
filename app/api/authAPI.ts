@@ -1,4 +1,3 @@
-
 import axios, { AxiosResponse } from 'axios';
 import {
   LoginCredentials,
@@ -9,6 +8,7 @@ import {
   IdCheckResponse,
   UserInfoResponse
 } from '../types/auth';
+import Cookies from 'js-cookie';
 
 
 interface EmailVerificationResponse {
@@ -24,14 +24,22 @@ const axiosInstance = axios.create({
   }
 });
 
-// 토큰 요청
+const cookieOptions:object = {
+  path: '/',
+  secure: false,
+  sameSite: 'Strict',
+};
+
+// 인터셉터 (쿠키 가져옴)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    
-    if (token && config.headers && !config.url?.includes('/users/register')&&!config.url?.includes('/users/login') ) {
+    const token = Cookies.get('token');
+
+    // 토큰이 있고 특정 경로가 아닌 경우 Authorization 헤더 설정
+    if (token && config.headers && !config.url?.includes('/users/register') && !config.url?.includes('/users/login')) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => {
@@ -53,7 +61,7 @@ export const authAPI = {
       // const token = response.headers['authorization'].replace('Bearer ', '').trim();
       // 로그인 성공 시 토큰 저장
       if (token) {
-        localStorage.setItem('token', token);
+        Cookies.set('token', token, cookieOptions);
       }
       
       return response; 
@@ -135,8 +143,7 @@ export const authAPI = {
 
   // 로그아웃 API
   logout: () => {
-    localStorage.removeItem('token');
-    // 추가적인 로그아웃 로직 (예: 서버에 로그아웃 요청 등)
+    Cookies.remove('token', cookieOptions);
     return { success: true, message: '로그아웃 되었습니다.', data: null };
   },
 
