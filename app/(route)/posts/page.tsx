@@ -8,11 +8,10 @@ import {
   fetchPosts,
   createPost,
   updatePost,
-  deletePost,
-  setCurrentPost,
-  clearError
+  deletePost
 } from '@/app/redux/features/postSlice';
 import { Post } from '@/app/types/post';
+import { title } from "process";
 
 
 
@@ -20,26 +19,77 @@ export default function NoticeBoard() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { posts, loading, error } = useSelector((state: RootState) => state.post);
+  const { posts = [], loading, error } = useSelector((state: RootState) => state.post);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPost, setNewPost] = useState({
     title: "",
     content: "",
-    // author: user
+    authorName: user?.username || ""
   });
   const [editingPost, setEditingPost] = useState<Post | null>(null);
-  
-  useEffect(() => {
-    if (error) {
-      alert(error);
-      dispatch(clearError());
-    }
-  }, [error, dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+  
+  // 1번째에 했던 코드
+  // useEffect(() => {
+    //   if (error) {
+  //     alert(error);
+  //     dispatch(clearError());
+  //   }
+  // }, [error, dispatch]);
+  
+  // useEffect(() => {
+    //   dispatch(fetchPosts());
+    // }, [dispatch]);
+    
+    // 2번째에 했던 코드
+    // useEffect(() => {
+    //   // 로그인 상태 확인
+    //   if (!user) {
+    //     alert('로그인이 필요한 서비스입니다.');
+    //     router.push('/login'); // 로그인 페이지로 리다이렉트
+    //     return;
+    //   }
+  
+    //   const fetchData = async () => {
+    //     try {
+    //       await dispatch(fetchPosts()).unwrap();
+    //     } catch (error: any) {
+    //       if (error.message.includes('로그인이 필요합니다')) {
+    //         router.push('/login');
+    //       }
+    //     }
+    //   };
+  
+    //   fetchData();
+    // }, [dispatch, user, router]);
+
+    useEffect(() => {
+      const checkAuthAndFetchData = async () => {
+        try {
+          const token = localStorage.getItem('accessToken');
+          
+          // 토큰이 없고 user도 없는 경우
+          if (!token && !user) {
+            return; // 조용히 리턴하고 아래 JSX에서 처리
+          }
+
+          // 토큰이 있으면 게시글 데이터 요청
+          if (token) {
+            await dispatch(fetchPosts()).unwrap();
+          }
+        } catch (error: any) {
+          console.error('Fetch error:', error);
+          if (error.message?.includes('접근 권한이 없습니다') || error.message?.includes('만료')) {
+            localStorage.removeItem('accessToken');
+            // 얼럿 메시지 제거하고 리다이렉트만 수행
+            router.push('/login');
+          }
+        }
+      };
+
+      checkAuthAndFetchData();
+    }, [dispatch, user, router]);
 
 
   // 게시글 상세 페이지로 이동
@@ -50,48 +100,100 @@ export default function NoticeBoard() {
   };
 
   const handleCreate = async () => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
-    if (newPost.title.length > 15) {
-      alert('제목은 15글자 이내로 작성해주세요.');
-      return;
-    }
-
     try {
-      await dispatch(createPost({
-        ...newPost,
-        author: user.username,
-        date: ""
-      })).unwrap();
-      setNewPost({ title: "", content: "" });
+      // const token = localStorage.getItem('accessToken');
+      // console.log('현재 토큰 : ', token);
+      // console.log('현재 유저 : ', user);
+
+      // 로그인 체크 
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        router.push('/login');
+        return;
+      }
+
+      if (newPost.title.length > 15) {
+        alert('제목은 15글자 이내로 작성해주세요.');
+        return;
+      }
+
+      if (!newPost.title.trim() || !newPost.content.trim()) {
+        alert('제목과 내용을 모두 입력해주세요.');
+        return;
+      }
+
+      const postData = {
+        title: newPost.title.trim(),
+        content: newPost.content.trim(),
+        authorName: user.username
+      };
+      console.log('전송할 데이터 : ', postData);
+
+      const result = await dispatch(createPost(postData)).unwrap();
+      console.log('Create post result:', result);
+
+      // 성공시
+      await dispatch(fetchPosts());
+      setNewPost({ title: "", content: "", authorName: user.username });
       setIsModalOpen(false);
-    } catch (error) {
-      // slice에서 에러 처리되도록 처리해놓음
+      
+    } catch (error: any) {
+      console.error('handleCreate 에러 : ', error);
+      if (error.message?.includes('로그인')) {
+        router.push('/login');
+      } else {
+        alert(error.message || '게시글 작성에 실패했습니다.');
+      }
     }
   };
+  // const handleCreate = async () => {
+  //   if (!user) {
+  //     alert('로그인이 필요합니다.');
+  //     return;
+  //   }
+
+  //   if (newPost.title.length > 15) {
+  //     alert('제목은 15글자 이내로 작성해주세요.');
+  //     return;
+  //   }
+
+  //   try {
+  //     await dispatch(createPost({
+  //       title: newPost.title,
+  //       content: newPost.content,
+  //       authorName: user.username
+  //     })).unwrap();
+
+  //     // 글 작성 성공 후 목록 새로고침
+  //     await dispatch(fetchPosts());
+  //     setNewPost({ title: "", content: "", authorName: user.username });
+  //     setIsModalOpen(false);
+  //   } catch (error: any) {
+  //     alert(error.message || '게시글 작성에 실패했습니다.');
+  //   }
+  // };
 
 
   const handleUpdate = async (post: Post) => {
-    if (!user || post.author !== user.username) {
+    if (!user || post.authorName !== user.username) {
       alert('자신의 게시글만 수정할 수 있습니다.');
       return;
     }
 
     try {
       await dispatch(updatePost(post)).unwrap();
+      // 수정 성공 후 목록 새로고침
+      await dispatch(fetchPosts());
       setEditingPost(null);
-    } catch (error) {
-      // 얘도 똑같음
+    } catch (error: any) {
+      alert(error.message || '게시글 수정에 실패했습니다.');
     }
   };
 
   
   const handleDelete = async (id: number) => {
     const post = posts.find((p: { id: number; }) => p.id === id);
-    if (!user || post?.author !== user.username) {
+    if (!user || post?.authorName !== user.username) {
       alert('자신의 게시글만 삭제할 수 있습니다.');
       return;
     }
@@ -199,7 +301,7 @@ export default function NoticeBoard() {
 
       <TitleContainer>
         <span>총</span>
-        <Num>{posts.length}</Num>
+        <Num>{posts?.length || 0}</Num>
         <span>건의 글이 있습니다.</span>
       </TitleContainer>
 
@@ -230,7 +332,7 @@ export default function NoticeBoard() {
           </tr>
         </thead>
         <tbody>
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <tr key={post.id}>
               <TableDetail2>{post.id}</TableDetail2>
               <TableDetail2 
@@ -239,10 +341,10 @@ export default function NoticeBoard() {
               >
                 {post.title}
               </TableDetail2>
-              <TableDetail2>{post.author}</TableDetail2>
-              <TableDetail2>{post.date}</TableDetail2>
+              <TableDetail2>{post.authorName}</TableDetail2>
+              <TableDetail2>{new Date(post.createdAt).toLocaleDateString()}</TableDetail2>
               <TableDetail2>
-                {user && post.author === user.username && (
+                {user && post.authorName === user.username && (
                   <>
                     <FixButton onClick={() => setEditingPost(post)}>
                       수정

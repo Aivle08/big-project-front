@@ -30,7 +30,7 @@ export default function Navbar() {
   // 로그인 안 된 경우는 튜토리얼 제외한 navbar의 페이지는 전부 다 로그인으로 라우팅되게 하려고 함
   // const handleNavigation = (href: string) => {
   //   // 로그인 필요한 페이지 목록
-  //   const authRequiredPages = ['/resume', '/notice_board', '/mypage'];
+  //   const authRequiredPages = ['/resume', '/', '/mypage'];
 
   //   if (!isAuthenticated && authRequiredPages.includes(href)) {
   //     router.push('/login');

@@ -6,18 +6,10 @@ import type { AppDispatch, RootState } from '@/app/redux/store/store';
 import { fetchPostById } from '@/app/redux/features/postSlice';
 import { BackButton, Container, Content, Detail, Section, Section2, Title } from './styles/Page.styled';
 
-// interface Post {
-//   id: number;
-//   title: string;
-//   content: string;
-//   author: string;
-//   date: string;
-// }
-
 interface PostDetailProps {
-  params: Promise<{
+  params: {
     id: string;
-  }>
+  }
 }
 
 export default function PostDetail({ params }: PostDetailProps) {
@@ -29,8 +21,7 @@ export default function PostDetail({ params }: PostDetailProps) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { currentPost: post, loading, error } = useSelector((state: RootState) => state.post);
-  const resolvedParams = React.use(params);
-  const postId = parseInt(resolvedParams.id);
+  const postId = parseInt(params.id);
 
   useEffect(() => {
     dispatch(fetchPostById(postId));
@@ -106,8 +97,8 @@ export default function PostDetail({ params }: PostDetailProps) {
         <Title>{post.title}</Title>
         
         <Detail>
-          <div>작성자: {post.author}</div>
-          <div>작성일: {post.date}</div>
+          <div>작성자: {post.authorName}</div>
+          <div>작성일: {new Date(post.createdAt).toLocaleDateString()}</div>
         </Detail>
 
         <Content>
