@@ -1,43 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, User } from '../../types/auth';
 
-
-// const storedUser = localStorage.getItem('user');
-// const storedAuth = localStorage.getItem('isAuthenticated');
-
-// const initialState: AuthState = {
-//   user: storedUser ? JSON.parse(storedUser) : null,
-//   isAuthenticated: storedAuth === 'true',
-//   loading: false,
-//   error: null,
-// };
-
-// // 초기 상태를 함수로 만들어서 실행 시점에 localStorage를 체크하도록 수정
-// const getInitialState = (): AuthState => {
-//   // 서버사이드 렌더링인지 확인
-//   if (typeof window === 'undefined') {
-//     return {
-//       user: null,
-//       isAuthenticated: false,
-//       loading: false,
-//       error: null,
-//     };
-//   }
-
-//   // 클라이언트 사이드에서만 localStorage 접근
-//   const storedUser = localStorage.getItem('user');
-//   const storedAuth = localStorage.getItem('isAuthenticated');
-
-//   return {
-//     user: storedUser ? JSON.parse(storedUser) : null,
-//     isAuthenticated: storedAuth === 'true',
-//     loading: false,
-//     error: null,
-//   };
-// };
-
-// ---------------------------------------------------------
-
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
