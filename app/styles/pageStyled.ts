@@ -7,33 +7,32 @@ export const MainContainer = tw.div`
   flex-col 
   relative 
   justify-center 
-  mx-20
-  px-20
+  mx-[5vw] 
+  px-[5vw] 
   items-center
 `;
 
 // 인사말 컨테이너
 export const GreetingContainer = tw(motion.div)`
   absolute 
-  left-[181px] 
+  left-[13vw] 
   top-[20vh] 
-  w-[858px] 
-  h-[408px] 
+  w-[60vw] 
+  h-[55vh] 
   flex 
   flex-col 
   items-start 
   p-0 
-  gap-[12px] 
+  gap-[1rem] 
 `;
 
 // 인사말 텍스트
 export const GreetingText = tw.p`
-  w-[858px] 
-  h-[27px] 
+  w-full 
   font-nunito 
   font-bold 
-  text-[20px] 
-  leading-[27px] 
+  text-[1.5rem] 
+  leading-[2rem] 
   text-[#FDC435] 
 `;
 
@@ -42,31 +41,27 @@ export const GreetingContent = tw.div`
   flex 
   flex-col 
   items-start 
-  p-0 
-  gap-[32px] 
-  w-[858px] 
-  h-[369px] 
+  gap-[2rem] 
+  w-full 
 `;
 
 // 인사말 제목
 export const GreetingTitle = tw.h1`
-  w-[853px] 
-  h-[154px] 
+  w-full 
   font-montserrat 
   font-bold 
-  text-[64px] 
-  leading-[77px] 
+  text-[4.5vw] 
+  leading-[5vw] 
   text-[#25282B]
 `;
 
 // 인사말 설명
 export const GreetingDescription = tw.p`
-  w-[853px] 
-  h-[108px] 
+  w-full 
   font-nunito 
   font-normal 
-  text-[24px] 
-  leading-[36px] 
+  text-[1.7vw] 
+  leading-[2.5vw] 
   text-[#828282]
 `;
 
@@ -80,22 +75,19 @@ export const SectionHeader = tw.div`
 `;
 
 export const SectionTitle = tw.div`
-  w-[162px] 
-  h-[72px] 
+  text-[3vw] 
   font-bold 
-  text-[48px] 
-  leading-[72px] 
+  leading-[3vw] 
   text-center 
   text-[#25282B]
 `;
 
 export const SectionLine = tw.div`
-  w-[100px] 
-  h-[4px] 
+  w-[7vw] 
+  h-[0.5vh] 
   bg-[#FDC435] 
-  rounded-[2px]
+  rounded-[0.3vw]
 `;
-
 
 // 카드 컨테이너
 export const CardContainer = tw(motion.div)`
@@ -104,81 +96,85 @@ export const CardContainer = tw(motion.div)`
   items-center 
   w-full 
   my-[10vh]
+  flex-wrap
 `;
 
+// 카드
 export const Card = tw.div`
   flex 
-  flex-row 
+  flex-col 
+  md:flex-row 
   items-start 
-  p-0 
-  w-[1020px] 
-  h-[524px] 
-  rounded-[24px] 
+  w-[85vw] 
+  max-w-[1020px]
+  h-[72vh] 
+  rounded-[2vw] 
   shadow-xl
 `;
 
 // 카드 설명 컨테이너
 export const CardDescriptionContainer = tw.div`
-  w-[496px] 
-  h-[524px] 
+  flex-1 
   bg-[#FFFFFF] 
-  flex-none 
-  order-0 
-  overflow-hidden
+  p-[3vw]
+  flex 
+  flex-col
+  h-full
 `;
 
+// 카드 설명
 export const CardDescription = tw.div`
   relative 
   flex 
   flex-col 
   items-start 
-  p-0 
-  gap-[24px] 
-  left-[5%] 
-  right-[7.84%] 
-  top-[30%] 
-  bottom-[27.67%] 
-  w-[90%]
+  gap-[1.5rem] 
 `;
 
+// 카드 제목
 export const CardTitle = tw.h1`
   text-[#25282B] 
   font-bold 
-  text-[50px] 
-  leading-[100%]
+  text-[2.5vw] 
+  leading-[1.2]
 `;
 
+// 카드 텍스트
 export const CardText = tw.p`
   text-[#828282] 
   font-normal 
-  text-[18px] 
-  leading-[150%]
+  text-[1.2vw] 
+  leading-[1.5]
 `;
 
+// 버튼
 export const CardButton = tw.button`
   flex 
   items-center 
-  px-[24px] 
-  py-[8px] 
+  px-[1.5vw] 
+  py-[0.8vw] 
   border 
   border-[#25282B] 
-  rounded-[24px]
+  rounded-[2vw]
   text-[#25282B] 
   hover:bg-black
   hover:text-white
   hover:scale-105
+  transition-all
 `;
 
+// 버튼 텍스트
 export const CardButtonText = tw.span`
   font-medium 
-  text-[18px]
+  text-[1.2vw]
 `;
 
+// 이미지 컨테이너
 export const ImageContainer = tw.div`
-  w-[530px] 
-  h-[524px] 
-  flex-none 
-  order-1 
+  flex-1 
+  h-full 
   relative 
-  overflow-hidden 
+  overflow-hidden
+  max-w-[50%]
+  md:max-w-none
 `;
