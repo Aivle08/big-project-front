@@ -142,7 +142,7 @@ export default function NoticeBoard() {
 
       <TitleContainer>
         <span>총</span>
-        <Num>{posts?.length || 0}</Num>
+        <Num>{posts[0].list.length || 0}</Num>
         <span>건의 글이 있습니다.</span>
       </TitleContainer>
 
