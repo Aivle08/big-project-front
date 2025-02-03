@@ -79,6 +79,8 @@ export const authAPI = {
   // 회원가입 API
   register: async (userData: RegisterFormData): Promise<ApiResponse<RegisterResponse>> => {
     try {
+      console.log(userData);
+
       const response = await axiosInstance.post('/users/register', userData);
       console.log('API response:', response);
 
@@ -121,25 +123,6 @@ export const authAPI = {
       };
     }
   },
-  
-
-  // register: async (userData: RegisterFormData): Promise<AxiosResponse<ApiResponse<RegisterResponse>>> => {
-  //   try {
-  //     const response: AxiosResponse<ApiResponse<RegisterResponse>> = 
-  //       await axiosInstance.post('/users/register', userData);
-  //     return response; // AxiosResponse 자체를 반환
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       throw {
-  //         success: false,
-  //         message: error.response?.data?.message || '회원가입에 실패했습니다.',
-  //         data: null,
-  //         status: error.response?.status || 500, // 상태 코드 포함
-  //       };
-  //     }
-  //     throw error;
-  //   }
-  // },
 
   // 로그아웃 API
   logout: () => {
@@ -147,35 +130,24 @@ export const authAPI = {
     return { success: true, message: '로그아웃 되었습니다.', data: null };
   },
 
-  // 이메일 인증 코드 발송
-  sendVerificationEmail: async (email: string): Promise<EmailVerificationResponse> => {
-    try {
-      const response = await axiosInstance.post('/users/email/verify', { email });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw {
-          success: false,
-          message: error.response?.data?.message || '이메일 전송에 실패했습니다.',
-        };
-      }
-      throw error;
-    }
+  // 이메일 인증코드 발송
+  sendVerificationEmail: async (email: string)=> {
+    console.log(email);
+    const response = await axiosInstance.post(`/users/initiate-email?email=${encodeURIComponent(email)}`);
+    
+    return response;
   },
 
   // 이메일 인증 코드 확인
-  verifyEmailCode: async (email: string, code: string): Promise<EmailVerificationResponse> => {
+  verifyEmailCode: async (code: string)=> {
     try {
-      const response = await axiosInstance.post('/users/email/verify-code', {
-        email,
-        code
-      });
-      return response.data;
+      const response = await axiosInstance.get(`/users/verify-email?token=${encodeURIComponent(code)}`);
+      return response;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw {
           success: false,
-          message: error.response?.data?.message || '인증 코드 확인에 실패했습니다.',
+          message: error.response?.data?.message || '인증 코드 확인 실패.',
         };
       }
       throw error;
