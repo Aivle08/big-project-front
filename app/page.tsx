@@ -23,6 +23,10 @@ import {
     ImageContainer
   } from './styles/pageStyled';
 import Link from 'next/link';
+import image111 from '@/public/images/image_111.png';
+import image110 from '@/public/images/image_110.png';
+
+
 export default function Home() {
   return (
     <>
@@ -77,7 +81,7 @@ export default function Home() {
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tr-[24px] rounded-br-[24px]'>
-            <Image src="/image_111.png" alt="Project Image" layout="fill" objectFit="cover" />
+            <Image src={image111} alt="Project Image" layout="fill" objectFit="cover" />
           </ImageContainer>
         </Card>
       </CardContainer>
@@ -106,7 +110,7 @@ export default function Home() {
             </CardDescription>
           </CardDescriptionContainer>
           <ImageContainer className='rounded-tl-[24px] rounded-bl-[24px]'>
-            <Image src="/image_110.png" alt="Project Image" layout="fill" objectFit="cover" />
+            <Image src={image110} alt="Project Image" layout="fill" objectFit="cover" />
           </ImageContainer>
         </Card>
       </CardContainer>

@@ -71,6 +71,38 @@ export interface IdCheckResponse {
   message: string;
 }
 
+// UserInfoResponse 인터페이스 추가
+export interface UserInfoResponse {
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  position: string;
+  contact: string;
+  company: {
+    id: number;
+    name: string;
+    departmentList: Department[];
+  };
+  department: Department;
+}
+
+// 추가로 UserInfo 인터페이스도 정의
+export interface UserInfo {
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  position: string;
+  contact: string;
+  company: {
+    id: number;
+    name: string;
+    departmentList: Department[];
+  };
+  department: Department;
+}
+
 interface Department {
   id: number;
   name: string;
@@ -82,3 +114,4 @@ interface Department {
 type Recruitment = object
 
 type Applicant = object
+
