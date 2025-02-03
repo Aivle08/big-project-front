@@ -9,7 +9,6 @@ export const Wrapper = tw.div`
   font-montserrat 
   min-h-screen 
   -mt-5 
-  mb-12
 `;
 
 export const Container = tw.div`
@@ -20,7 +19,7 @@ export const Container = tw.div`
   overflow-hidden 
   w-[768px] 
   max-w-full 
-  min-h-[480px]
+  min-h-[520px]
   font-montserrat 
 `;
 
