@@ -10,9 +10,6 @@ const Footer = () => {
     <Wrapper>
         {/* 아이콘 영역 */}
         <IconWrapper>
-          <Image src={instagram} alt="Instagram" width={48} height={48} />
-          <Image src={linked} alt="Linked In" width={48} height={48} />
-          <Image src={mail} alt="Mail" width={48} height={48} />
         </IconWrapper>
 
         {/* 텍스트 영역 */}
