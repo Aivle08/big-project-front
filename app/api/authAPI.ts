@@ -132,10 +132,21 @@ export const authAPI = {
 
   // 이메일 인증코드 발송
   sendVerificationEmail: async (email: string)=> {
-    console.log(email);
-    const response = await axiosInstance.post(`/users/initiate-email?email=${encodeURIComponent(email)}`);
+    try {
+      console.log(email);
+      const response = await axiosInstance.post(`/users/initiate-email?email=${encodeURIComponent(email)}`);
+      return response;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 200) {
+            // 200 상태코드지만 에러로 잡힌 경우 정상 응답으로 처리
+            return error.response;
+        }
+        throw error;
+    }
+    // console.log(email);
+    // const response = await axiosInstance.post(`/users/initiate-email?email=${encodeURIComponent(email)}`);
     
-    return response;
+    // return response;
   },
 
   // 이메일 인증 코드 확인
