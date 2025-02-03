@@ -13,11 +13,6 @@ interface PostDetailProps {
 }
 
 export default function PostDetail({ params }: PostDetailProps) {
-  // const router = useRouter();
-  // const [post, setPost] = useState<Post | null>(null);
-  // const resolvedParams = React.use(params);
-  // const postId = parseInt(resolvedParams.id);
-
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { currentPost: post, loading, error } = useSelector((state: RootState) => state.post);
