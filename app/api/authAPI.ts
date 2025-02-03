@@ -54,11 +54,11 @@ export const authAPI = {
       console.log(credentials);
       const response = await axiosInstance.post('/users/login', credentials);
 
-      console.log(response);
-      console.log(response.headers);
-      const token = response.data;
-      console.log(token);
-      // const token = response.headers['authorization'].replace('Bearer ', '').trim();
+      // console.log(response);
+      // console.log(response.headers);
+      // const token = response.data;
+      // console.log(token);
+      const token = response.headers['authorization'].replace('Bearer ', '').trim();
       // 로그인 성공 시 토큰 저장
       if (token) {
         Cookies.set('token', token, cookieOptions);
@@ -155,11 +155,11 @@ export const authAPI = {
   },
 
   // 아이디 중복 확인 API
-  checkIdAvailability: async (userId: string): Promise<ApiResponse<IdCheckResponse>> => {
+  checkIdAvailability: async (userId: string) => {
     try {
       const response: AxiosResponse<ApiResponse<IdCheckResponse>> = 
-        await axiosInstance.get(`/users/check-id/${userId}`);
-      return response.data;
+        await axiosInstance.get(`/users/check-username?username=${encodeURIComponent(userId)}`);
+      return response;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw {

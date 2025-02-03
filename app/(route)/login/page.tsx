@@ -154,7 +154,7 @@ export default function Login() {
 
       try {
         const response = await authAPI.checkIdAvailability(userId);
-        if (response.available) {
+        if (response.status === 200) {
           setIsIdAvailable(true);
           setIsIdChecked(true);
           setIdError('');
