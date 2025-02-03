@@ -16,7 +16,7 @@ export default function NoticeBoard() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { posts = [], loading } = useSelector((state: RootState) => state.post);
+  const { posts , loading } = useSelector((state: RootState) => state.post);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPost, setNewPost] = useState({
@@ -33,6 +33,8 @@ export default function NoticeBoard() {
     }
   }, [dispatch, user]);
 
+  // console.log(posts);
+  
   // 게시글 상세 페이지로 이동
   const handlePostClick = (post: Post) => {
     localStorage.setItem('currentPost', JSON.stringify(post));
@@ -108,7 +110,6 @@ export default function NoticeBoard() {
     if (confirm('정말로 삭제하시겠습니까?')) {
       try {
         await dispatch(deletePost(id)).unwrap();
-        // 삭제 후엔 별도 fetchPosts()를 해도 되고, reducer에서 알아서 제거해도 됨.
       } catch (error: any) {
         alert(error.message || '게시글 삭제에 실패.');
       }
@@ -141,7 +142,6 @@ export default function NoticeBoard() {
 
       <TitleContainer>
         <span>총</span>
-        {        console.log(posts)        }
         <Num>{posts?.length || 0}</Num>
         <span>건의 글이 있습니다.</span>
       </TitleContainer>
@@ -166,14 +166,16 @@ export default function NoticeBoard() {
             <TableDetail>관리</TableDetail>
           </tr>
         </thead>
+        {/* <div>{String(posts[0])}</div> */}
         <tbody>
-          {posts.map((post) => (
-            <tr key={post.id}>
+          {posts.length > 0 && posts[0].list.map((post) => ( // posts의 0번째는 list임
+            <tr key={String(post.id)}>
               <TableDetail2>{post.id}</TableDetail2>
               <TableDetail2
                 className="cursor-pointer hover:underline"
                 onClick={() => handlePostClick(post)}
               >
+                {/* {post} */}
                 {post.title}
               </TableDetail2>
               <TableDetail2>{post.authorName}</TableDetail2>
