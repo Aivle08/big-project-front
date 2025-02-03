@@ -7,9 +7,8 @@ export function middleware(request: NextRequest) {
   const protectedPaths = [ // 이 경로는 로그인 되어야만 점근 가능능
     '/mypage', 
     '/details', 
-    '/notice_board', 
+    '/posts', 
     '/passer', 
-    'posts', 
     '/result', 
     '/resume'
     ]; 
