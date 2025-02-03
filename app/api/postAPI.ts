@@ -1,4 +1,4 @@
-import type { Post } from '@/app/types/post';
+import type { Post, Posts } from '@/app/types/post';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -29,7 +29,7 @@ postAxiosInstance.interceptors.request.use(
 
 export const postAPI = {
   // 글 목록 조회
-  fetchPosts: async (): Promise<Post[]> => {
+  fetchPosts: async (): Promise<Posts[]> => {
     try {
       const response = await postAxiosInstance.get('/posts');
       console.log(response);
@@ -41,7 +41,7 @@ export const postAPI = {
   },
 
   // 단일 게시글 조화화
-  fetchPostById: async (id: number): Promise<Post> => {
+  fetchPostById: async (id: number): Promise<Posts> => {
     try {
       const response = await postAxiosInstance.get(`/posts/${id}`);
       return response.data;

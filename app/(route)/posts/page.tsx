@@ -141,6 +141,7 @@ export default function NoticeBoard() {
 
       <TitleContainer>
         <span>총</span>
+        {        console.log(posts)        }
         <Num>{posts?.length || 0}</Num>
         <span>건의 글이 있습니다.</span>
       </TitleContainer>
@@ -175,12 +176,12 @@ export default function NoticeBoard() {
               >
                 {post.title}
               </TableDetail2>
-              <TableDetail2>{post.authorId}</TableDetail2>
+              <TableDetail2>{post.authorName}</TableDetail2>
               <TableDetail2>
                 {new Date(post.createdAt).toLocaleDateString()}
               </TableDetail2>
               <TableDetail2>
-                {user && post.authorId === user.username && (
+                {user && post.authorName === user.username ? (
                   <>
                     <FixButton onClick={() => setEditingPost(post)}>
                       수정
@@ -189,7 +190,13 @@ export default function NoticeBoard() {
                       삭제
                     </DeleteButton>
                   </>
-                )}
+                )
+                :
+                (
+                  <>
+                  </>
+                )
+              }
               </TableDetail2>
             </tr>
           ))}
