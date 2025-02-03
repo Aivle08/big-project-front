@@ -174,13 +174,6 @@ export default function Login() {
     }
   };
 
-    // 아이디 입력값 변경 시
-    const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserId(e.target.value);
-        setIsIdChecked(false);
-        setIsIdAvailable(false);
-    };
-
     // 비밀번호 입력 핸들러
     const handlePasswordChange = (e: { target: { value: string } }) => {
       const newPassword = e.target.value;
@@ -244,7 +237,18 @@ export default function Login() {
         alert('모든 필드를 입력해주세요.');
         return;
       }
-    
+
+      if (password !== confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      const numericContact = contact.replace(/[^\d]/g, '');
+      if (numericContact.length < 10 || numericContact.length > 11) {
+        alert('유효한 휴대폰 번호를 입력해주세요.');
+        return;
+      }
+
       const formData = {
         companyName,
         departmentName,
@@ -382,7 +386,7 @@ export default function Login() {
                   value={email}
                   onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
                   disabled={isVerified}
-                  />
+                />
                 <VerifyButton
                   type="button"
                   onClick={handleSendVerification}
@@ -531,8 +535,6 @@ export default function Login() {
       </OverlayContainer>
     </Container>
   </Wrapper>
-
-
   );
 }
 
