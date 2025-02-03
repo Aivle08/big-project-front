@@ -8,6 +8,7 @@ import big2 from "../../../public/images/big_2.png";
 import image115 from "../../../public/images/image115.png";
 import image120 from "../../../public/images/image120.png";
 
+
 export default function Home() {
   return (
     <>
@@ -64,8 +65,8 @@ export default function Home() {
                         src={big1}
                         alt="1"
                         layout="intrinsic"
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={100}
                         className="object-cover"
                     />
                 </ImageContainer>
@@ -78,8 +79,8 @@ export default function Home() {
             </SectionContainer>
             
             {/* 오른쪽 텍스트와 배경 */}
-            <BackgroundSection>
-                <LargeParagraph className="mr-[12vw]"
+            <BackgroundSection className='mt-40'>
+                <LargeParagraph className="mr-[15vw]"
                     initial={{ y: 100, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
@@ -95,13 +96,13 @@ export default function Home() {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     viewport={{ once: true }}
                 >
-                    <YellowBox className="top-[-20vh] right-0 w-[40vw] h-[100vh]" />
+                    <YellowBox className="top-[-16vh] right-0 w-[32vw] h-[70vh]" />
                     <Image
                         src={image115}
                         alt="2"
                         layout="intrinsic"
-                        width={500}
-                        height={500}
+                        width={400}
+                        height={400}
                         className="object-cover relative z-10 mt-[-7vh]"
                     />
                 </ImageContainer>
@@ -122,8 +123,8 @@ export default function Home() {
                         src={big2}
                         alt="2"
                         layout="intrinsic"
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={100}
                         className="object-cover"
                     />
                 </ImageContainer>
@@ -136,7 +137,7 @@ export default function Home() {
             </SectionContainer>
             
             {/* 오른쪽 텍스트와 이미지 */}
-            <BackgroundSection className="mt-60">
+            <BackgroundSection>
                 <LargeParagraph className="mr-[15vw]"
                     initial={{ y: 100, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -153,13 +154,13 @@ export default function Home() {
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     viewport={{ once: true }}
                 >
-                    <YellowBox className="top-[-2.8vh] right-[0] w-[40vw] h-[80vh]" />
+                    <YellowBox className="top-[-5.5vh] right-[0] w-[30vw] h-[60vh]" />
                     <Image
                         src={image120}
                         alt="question list"
                         layout="intrinsic"
-                        width={500}
-                        height={500}
+                        width={400}
+                        height={400}
                         className="object-cover relative z-10"
                     />
                 </ImageContainer>

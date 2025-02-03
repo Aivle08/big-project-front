@@ -17,14 +17,13 @@ export const BackgroundSection = tw.div`
     items-center 
     justify-end 
     pr-[5vw] 
-    mt-80
+    mt-20
 `;
 
 // 큰 제목
 export const Heading = tw(motion.h1)`
     font-bold 
-    text-[64px] 
-    leading-[96px] 
+    text-7xl
     text-[#25282B]
 `;
 
@@ -32,15 +31,15 @@ export const CenterHeadSection = tw.div`
     flex 
     justify-center 
     items-center 
-    mt-[8vh] 
+    mt-[4vh] 
 `;
 
 // 큰 제목 (중앙 정렬)
 export const CenteredHeading = tw(motion.h1)`
     w-[80vw] 
     font-bold 
-    text-[64px] 
-    leading-[96px] 
+    text-4xl
+    leading-[60px] 
     text-center 
     text-[#25282B]
 `;
@@ -55,7 +54,7 @@ export const Paragraph = tw(motion.p)`
 
 // 노란박스 옆 본문
 export const LargeParagraph = tw(motion.p)`
-    text-[30px] 
+    text-2xl 
     font-bold 
     leading-[150%] 
     text-black 
@@ -85,31 +84,31 @@ export const SectionContainer = tw(motion.div)`
     items-center 
     gap-8 
     pl-[10vw] 
-    mt-[20vh]
+    mt-[10vh]
 `;
 
 // 텍스트 박스 섹션
 export const TextBox = tw.div`
     flex 
     flex-col 
-    mt-[20vh]
+    mt-[10vh]
     mx-20
 `;
 
 export const HeroBackground = tw.div`
     w-[100%] 
-    h-[70vh] 
+    h-[60vh] 
     bg-[#FFD167] 
-    mt-[10vh] 
+    mt-[5vh] 
 `;
 
 export const HeroTextSection = tw.div`
     relative 
     w-[858px] 
     left-[32vh] 
-    top-[10vh] 
+    top-[13vh] 
     flex 
     flex-col 
     items-start 
-    gap-[32px]
+    gap-[20px]
 `;
