@@ -17,7 +17,7 @@ export const Container = tw.div`
   shadow-2xl 
   relative
   overflow-hidden 
-  w-[768px] 
+  w-[800px] 
   max-w-full 
   min-h-[520px]
   font-montserrat 
@@ -66,7 +66,7 @@ export const Detail = tw.span`
   text-xs
   text-gray
   my-1
-  font-montserrat 
+
 `;
 
 export const Form1 = tw.input`
@@ -80,9 +80,15 @@ export const Form1 = tw.input`
   text-sm
   my-1
   w-[85%]
-  font-montserrat 
+
 `;
 
+
+export const JobContainer = tw.div`
+  flex
+  w-[85%]
+  gap-4
+`;
 
 export const Form2 = tw.input`
   bg-[#fffff] 
@@ -95,7 +101,6 @@ export const Form2 = tw.input`
   py-2
   my-3 
   w-[85%]
-  font-montserrat 
 `;
 
 export const ContainerButton = tw.button`
@@ -116,7 +121,6 @@ export const ContainerButton = tw.button`
   ease-in 
   active:scale-95 
   focus:outline-none
-  font-montserrat 
 `;
 
 
@@ -134,7 +138,6 @@ export const OverlayContainer = tw.div<{ $isActive?: boolean }>`
   duration-600 
   ease-in-out 
   z-100
-  font-montserrat 
   ${p => p.$isActive && '-translate-x-full'}
 `;
 
@@ -154,7 +157,6 @@ export const OverlayBox = tw.div<{ $isActive?: boolean }>`
   transition-transform 
   duration-600 
   ease-in-out
-  font-montserrat 
   ${p => p.$isActive && 'translate-x-1/2'}
 `;
 
@@ -172,7 +174,6 @@ export const OverlayPanel = tw.div<{ $position: 'left' | 'right'; $isActive?: bo
   transition-transform 
   duration-600 
   ease-in-out
-  font-montserrat 
   ${p => p.$position === 'left' ? `
     -translate-x-[20%]
     ${p.$isActive && 'translate-x-0'}
@@ -192,7 +193,6 @@ export const Description = tw.p`
   my-5 
   mx-0
   px-15
-  font-montserrat 
 `;
 
 export const OverlayButton = tw.button`
