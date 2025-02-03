@@ -95,13 +95,14 @@ export default function Login() {
       // API 호출하여 이메일 인증 요청
       const response = await authAPI.sendVerificationEmail(email);
       
-      if (response.success) {
+      console.log(response);
+      if (response.status === 200) {
         setIsEmailSent(true);
         setEmailError('');
         // 성공 메시지 표시
         alert('인증 메일이 발송되었습니다. 이메일을 확인해주세요.');
       } else {
-        setEmailError(response.message || '이메일 발송에 실패했습니다.');
+        setEmailError('이메일 발송에 실패했습니다. 이미 이메일 요청을 수행했는지 확인해주세요요');
       }
     } catch (error: any) {
       console.error('Email verification error:', error);
@@ -119,33 +120,19 @@ export default function Login() {
     }
   
     try {
-      const response = await authAPI.verifyEmailCode(email, verificationCode);
+      const response = await authAPI.verifyEmailCode(verificationCode);
       
-      if (response.success) {
+      if (response.status === 200) {
         setIsVerified(true);
         setEmailError('');
       } else {
-        setEmailError(response.message || '잘못된 인증번호입니다.');
+        setEmailError('잘못된 인증번호입니다.');
       }
     } catch (error: any) {
       console.error('Code verification error:', error);
       setEmailError(error.response?.data?.message || '인증번호 확인 중 오류가 발생했습니다.');
     }
   };
-  // const handleVerifyCode = () => {
-  //   if (!verificationCode) {
-  //     setEmailError('인증번호를 입력해주세요.');
-  //     return;
-  //   }
-
-  //   // 여기에 실제 인증번호 확인 로직 구현 (인증번호 입력 관련한 코드 수정할 필요 有)
-  //   if (verificationCode === '') { 
-  //     setIsVerified(true);
-  //     setEmailError('');
-  //   } else {
-  //     setEmailError('잘못된 인증번호입니다.');
-  //   }
-  // };
 
     // 아이디 형식 췤 (4-20자의 영문, 숫자만 ok)
     const isValidId = (id: string): boolean => {
@@ -167,7 +154,7 @@ export default function Login() {
 
       try {
         const response = await authAPI.checkIdAvailability(userId);
-        if (response.available) {
+        if (response.status === 200) {
           setIsIdAvailable(true);
           setIsIdChecked(true);
           setIdError('');
@@ -404,15 +391,13 @@ export default function Login() {
                 <EmailInputWrapper>
                   <Form1
                     type="text"
-                    placeholder="인증번호 6자리 입력"
+                    placeholder="이메일 인증코드 입력"
                     value={verificationCode}
                     onChange={(e: { target: { value: SetStateAction<string>; }; }) => setVerificationCode(e.target.value)}
-                    maxLength={6}
                   />
                   <VerifyButton
                     type="button"
                     onClick={handleVerifyCode}
-                    disabled={verificationCode.length !== 6}
                   >
                   확인
                   </VerifyButton>
