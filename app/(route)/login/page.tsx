@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { loginUser, registerUser } from '../../redux/thunks/authThunks';
 import { authAPI } from '../../api/authAPI';
+import LoadingSpinner from "@/components/SmallLoadingSpinner";
 
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -54,7 +55,8 @@ export default function Login() {
   const [loginUserId, setLoginUserId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-
+  // for loading ui
+  const [isEmailSending, setIsEmailSending] = useState(false);
 
   // URL 파라미터를 확인하여 초기 상태 설정
   useEffect(() => {
@@ -90,6 +92,9 @@ export default function Login() {
       setEmailError('올바른 이메일 형식이 아닙니다.');
       return;
     }
+
+    // 로딩 시작
+    setIsEmailSending(true);
   
     try {
       // API 호출하여 이메일 인증 요청
@@ -108,6 +113,8 @@ export default function Login() {
       console.error('Email verification error:', error);
       setEmailError(error.response?.data?.message || '이메일 발송 중 오류가 발생했습니다.');
       setIsEmailSent(false);
+    }finally{
+      setIsEmailSending(false);
     }
   };
   
@@ -166,15 +173,6 @@ export default function Login() {
         setIdError(err.response?.data?.message || '아이디 중복 확인 중 오류가 발생했습니다.');
     }
   };
-
-    // 아이디 입력값 변경 시
-    const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserId(e.target.value);
-        setIsIdChecked(false);
-        setIsIdAvailable(false);
-    };
-
-
 
     // 비밀번호 입력 핸들러
     const handlePasswordChange = (e: { target: { value: string } }) => {
@@ -239,7 +237,18 @@ export default function Login() {
         alert('모든 필드를 입력해주세요.');
         return;
       }
-    
+
+      if (password !== confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      const numericContact = contact.replace(/[^\d]/g, '');
+      if (numericContact.length < 10 || numericContact.length > 11) {
+        alert('유효한 휴대폰 번호를 입력해주세요.');
+        return;
+      }
+
       const formData = {
         companyName,
         departmentName,
@@ -377,13 +386,17 @@ export default function Login() {
                   value={email}
                   onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
                   disabled={isVerified}
-                  />
+                />
                 <VerifyButton
                   type="button"
                   onClick={handleSendVerification}
-                  disabled={isVerified || !email}
+                  disabled={isVerified || !email || isEmailSending}
                 >
-                  {isEmailSent ? '재전송' : '인증하기'}
+                  {isEmailSending ? (
+                    <LoadingSpinner />
+                  ) : (
+                    isEmailSent ? '재전송' : '인증하기'
+                  )}
                 </VerifyButton>
               </EmailInputWrapper>
         
@@ -522,8 +535,6 @@ export default function Login() {
       </OverlayContainer>
     </Container>
   </Wrapper>
-
-
   );
 }
 
