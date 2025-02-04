@@ -1,13 +1,13 @@
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchRecruitmentList } from '@/app/api/resumeAPI';
+import { getRecruitmentList } from '@/app/api/resumeAPI';
 import axios from 'axios';
 
-export const getRecruitmentList = createAsyncThunk(
+export const getRecruitments = createAsyncThunk(
   'recruitment/getRecruitmentList',
   async (_, { rejectWithValue }) => {
     try {
-      const data = await fetchRecruitmentList();
+      const data = await getRecruitmentList();
+      console.log(data);
       return data; // 서버에서 받은 JSON 배열
     } catch (error) {
       if (axios.isAxiosError(error)) {
