@@ -48,7 +48,6 @@ export const saveResumeData = async (data: ResumeAnalysisRequest) => {
   }
 };
 
-
 // PDF 파일 업로드
 export const uploadResumePDF = async (id: number, files: File[]) => {
   const token = getAccessToken();

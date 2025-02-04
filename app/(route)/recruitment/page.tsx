@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { ResumeAnalysisRequest } from '../../types/resume';
 import { useRouter } from 'next/navigation';
-import { saveResume, uploadPDF } from '@/app/redux/features/resumeSlice';
+import { saveResume, uploadPDF, submitResumeAnalysis } from '@/app/redux/features/resumeSlice';
 
 interface FileData {
   file: File;
@@ -107,7 +107,7 @@ export default function Resume() {
         await dispatch(submitResumeAnalysis(analysisData)).unwrap();
         
         alert('이력서 분석이 시작되었습니다.');
-        router.push('/analysis-result'); // 결과 페이지로 이동
+        router.push('/mypage');
       }
     } catch (err) {
       console.error('Error:', err);
@@ -324,7 +324,3 @@ export default function Resume() {
     </Container>
   );
 }
-function submitResumeAnalysis() {
-  throw new Error('Function not implemented.');
-}
-

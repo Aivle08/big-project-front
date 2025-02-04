@@ -77,7 +77,6 @@ export const fetchRecruitmentList = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await getRecruitmentList();
-      // console.log(data);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
