@@ -15,6 +15,8 @@ export default function Mypage() {
     (state: RootState) => state.resume
   );
 
+  console.log(recruitmentList);
+
   // 컴포넌트가 처음 렌더링될 때 요청청
   useEffect(() => {
     dispatch(fetchRecruitmentList());

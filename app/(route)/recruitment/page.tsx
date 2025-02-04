@@ -93,6 +93,8 @@ export default function Resume() {
     try {
       // 1. 먼저 데이터 저장
       const saveResult = await dispatch(saveResume(analysisData)).unwrap();
+
+      console.log(saveResult);
       
       // 2. 저장된 ID로 PDF 파일 업로드
       if (saveResult.id) {
@@ -112,29 +114,6 @@ export default function Resume() {
       alert('처리 중 오류가 발생했습니다.');
     }
   };
-  //   const evaluationList = [
-  //     { item: '인재상', detail: inputs.ideals },
-  //     { item: '학력', detail: inputs.education },
-  //     { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
-  //     { item: '경력', detail: inputs.experience },
-  //   ];
-
-  //   const analysisData: ResumeAnalysisRequest = {
-  //     title: inputs.jobPosting,
-  //     job: job,
-  //     evaluationList: evaluationList
-  //   };
-
-  //   try {
-  //     // Redux Thunk 호출 -> 실제 서버로 요청
-  //     await dispatch(submitResumeAnalysis(analysisData)).unwrap();
-  //     alert('분석 요청 전송완완');
-  //   } catch (err) {
-  //     // 에러 처리
-  //     console.error('failes:', err);
-  //     alert('오류발생.');
-  //   }
-  // };
 
   return (
     <Container>
@@ -345,7 +324,7 @@ export default function Resume() {
     </Container>
   );
 }
-function submitResumeAnalysis(analysisData: ResumeAnalysisRequest): any {
+function submitResumeAnalysis() {
   throw new Error('Function not implemented.');
 }
 

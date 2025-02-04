@@ -4,16 +4,7 @@ import Cookies from 'js-cookie';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
 
-// 토큰을 유틸리티나 서비스로 관리
 const getAccessToken = () => Cookies.get('token');
-// const getAccessToken = () => {
-//   const token = Cookies.get('token');
-//   if (!token) {
-//     throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
-//   }
-//   return token;
-// };
-
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -27,7 +18,7 @@ const api = axios.create({
 // 이력서 데이터 저장
 export const saveResumeData = async (data: ResumeAnalysisRequest) => {
   const token = getAccessToken();
-  
+
   try {
     const requestData = {
       title: data.title,
@@ -37,19 +28,26 @@ export const saveResumeData = async (data: ResumeAnalysisRequest) => {
         detail: item.detail
       }))
     };
-  
-    const response = await api.post('/recruitment', {
+
+    const response = await api.post('/recruitment', requestData, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     });
-    
-    return response.data;
-  } catch (error) {
+
+    console.log(response);
+    return response;
+  } catch (error: any) {
     console.error('이력서 저장 데이터 에러 : ', error);
-    throw new Error('이력서 데이터 저장 중 오류가 발생했습니다.');
+    
+    if (error.response) {
+      throw new Error(error.response.data?.message || '이력서 데이터 저장 중 오류가 발생했습니다.');
+    }
+
+    throw new Error('이력서 데이터 저장 중 네트워크 오류가 발생했습니다.');
   }
 };
+
 
 // PDF 파일 업로드
 export const uploadResumePDF = async (id: number, files: File[]) => {
@@ -89,14 +87,6 @@ export const analyzeResume = async (data: ResumeAnalysisRequest) => {
     console.error('이력서 분석 오류 : ', error);
     throw new Error('이력서 분석 중 오류가 발생했습니다.');
   }
-
-  // try {
-  //   const response = await api.post('/recruitment', data);
-  //   return response.data;
-  // } catch (error) {
-  //   console.error('분석 결과 조회 실패 : ', error);
-  //   throw error;
-  // }
 };
 
 export const getRecruitmentList = async () => {
@@ -106,5 +96,6 @@ export const getRecruitmentList = async () => {
       Authorization: `Bearer ${token}`
     }
   });
-  return response.data; // 서버로부터 받은 리스트
+  console.log(response);
+  return response.data;
 };
