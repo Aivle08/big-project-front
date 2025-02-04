@@ -5,8 +5,9 @@ import { Container, FileList, SectionLine, Section, Label1, Input1, Input2, SubL
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
-import { submitResumeAnalysis } from '../../redux/features/resumeSlice';
 import { ResumeAnalysisRequest } from '../../types/resume';
+import { useRouter } from 'next/navigation';
+import { saveResume, uploadPDF } from '@/app/redux/features/resumeSlice';
 
 interface FileData {
   file: File;
@@ -16,12 +17,12 @@ interface FileData {
 }
 
 export default function Resume() {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.resume);
 
   const [files, setFiles] = useState<FileData[]>([]);
   const [job, setJob] = useState('');
-
   // 각 입력 필드의 값을 관리할 상태
   const [inputs, setInputs] = useState({
     jobPosting: '',     // 채용 공고
@@ -40,12 +41,15 @@ export default function Resume() {
   const handleFileUpload = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     
-    const uploadedFiles: FileData[] = Array.from(event.target.files).map(file => ({
-      file,
-      name: file.name,
-      size: `${Math.round((file.size / 1024) * 100) / 100} KB`,
-      progress: 100 // 실제 업로드 프로그레스 로직 필요 시 변경
-    }));
+    // pdf 파일만 허용
+    const uploadedFiles: FileData[] = Array.from(event.target.files)
+      .filter(file => file.type === 'application/pdf')
+      .map(file => ({
+        file,
+        name: file.name,
+        size: `${Math.round((file.size / 1024) * 100) /100} KB`,
+        progress: 100
+      }))
     
     setFiles((prev) => [...prev, ...uploadedFiles]);
   }, []);
@@ -68,29 +72,69 @@ export default function Resume() {
 
   // "분석하기" 버튼 클릭 시 호출되는 함수
   const handleAnalysis = async () => {
+    if (files.length === 0) {
+      alert('이력서 파일을 업로드해주세요.');
+      return;
+    }
+  
     const evaluationList = [
       { item: '인재상', detail: inputs.ideals },
       { item: '학력', detail: inputs.education },
       { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
       { item: '경력', detail: inputs.experience },
     ];
-
+  
     const analysisData: ResumeAnalysisRequest = {
       title: inputs.jobPosting,
       job: job,
       evaluationList: evaluationList
     };
-
+  
     try {
-      // Redux Thunk 호출 -> 실제 서버로 요청
-      await dispatch(submitResumeAnalysis(analysisData)).unwrap();
-      alert('분석 요청 전송완완');
+      // 1. 먼저 데이터 저장
+      const saveResult = await dispatch(saveResume(analysisData)).unwrap();
+      
+      // 2. 저장된 ID로 PDF 파일 업로드
+      if (saveResult.id) {
+        await dispatch(uploadPDF({
+          id: saveResult.id,
+          files: files.map(f => f.file)
+        })).unwrap();
+        
+        // 3. 분석 요청
+        await dispatch(submitResumeAnalysis(analysisData)).unwrap();
+        
+        alert('이력서 분석이 시작되었습니다.');
+        router.push('/analysis-result'); // 결과 페이지로 이동
+      }
     } catch (err) {
-      // 에러 처리
-      console.error('failes:', err);
-      alert('오류발생.');
+      console.error('Error:', err);
+      alert('처리 중 오류가 발생했습니다.');
     }
   };
+  //   const evaluationList = [
+  //     { item: '인재상', detail: inputs.ideals },
+  //     { item: '학력', detail: inputs.education },
+  //     { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
+  //     { item: '경력', detail: inputs.experience },
+  //   ];
+
+  //   const analysisData: ResumeAnalysisRequest = {
+  //     title: inputs.jobPosting,
+  //     job: job,
+  //     evaluationList: evaluationList
+  //   };
+
+  //   try {
+  //     // Redux Thunk 호출 -> 실제 서버로 요청
+  //     await dispatch(submitResumeAnalysis(analysisData)).unwrap();
+  //     alert('분석 요청 전송완완');
+  //   } catch (err) {
+  //     // 에러 처리
+  //     console.error('failes:', err);
+  //     alert('오류발생.');
+  //   }
+  // };
 
   return (
     <Container>
@@ -301,3 +345,7 @@ export default function Resume() {
     </Container>
   );
 }
+function submitResumeAnalysis(analysisData: ResumeAnalysisRequest): any {
+  throw new Error('Function not implemented.');
+}
+
