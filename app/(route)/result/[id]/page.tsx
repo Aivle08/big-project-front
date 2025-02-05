@@ -2,22 +2,17 @@
 
 import { use, useEffect, useState } from "react";
 import { 
-  Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer,
-  Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, 
-  ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, 
-  PassButton, PassList, People, Right, Score, Section, SectionCon, SectionCon1, SectionLine, SubLabel, TableContainer, 
-  TableHeader, Title, Title1, Title2, YesButton } from "../styles/Page.styled"
+  Box1, Box1Container, Box2, Box3, BoxContainer,
+  Container, EvaluationInput, Img, InputContent, Label1, Label2, Left, 
+  Num, PassButton, PassList, People, Right, Score, Section, SectionCon, SectionLine, SubLabel, 
+  Title, Title1, Title2 } from "../styles/Page.styled"
 import Image from "next/image";
 import Appliant from "../../../../public/images/TotalAppliant.png";
-import Add_Before from "../../../../public/images/add_before.png";
-import Add_After from "../../../../public/images/add_after.png";
-import Info from "../../../../public/images/Info.png";
 import _ from 'lodash';
-import { useParams, useRouter } from "next/navigation";
-import ResumeModal from "@/components/ResumeModal";
-import { getApplicantInRecruiment } from "@/app/api/resumeAPI";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store/store";
+import ApplicantTableContainer from "@/components/ApplicantTableContainer";
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
@@ -96,33 +91,6 @@ export default function Result({ params } : Props) {
     return evaluation?.detail || "";
   };
 
-
-  // 모달 상태 관리
-  const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  // 합격 상태 관리
-  const [approvedApplicants, setApprovedApplicants] = useState<number[]>([]);
-
-  // 모달 열기
-  const handleAddClick = (index: number) => {
-    setSelectedApplicant(index);
-    setShowModal(true);
-  };
-
-  // 모달에서 "예" 선택
-  const handleApprove = () => {
-    if (selectedApplicant !== null) {
-      setApprovedApplicants([...approvedApplicants, selectedApplicant]);
-    }
-    setShowModal(false);
-  };
-
-  // 모달에서 "아니오" 선택
-  const handleReject = () => {
-    setShowModal(false);
-  };
-
-  
   // 지원자 데이터
   type Applicant = {
     name: string; // 이름
@@ -134,144 +102,109 @@ export default function Result({ params } : Props) {
     overallScore: number; // 종합 평점
   };
 
-  // 지원자 목록 생성
-  const renderApplicantRows = (applicants: Applicant[]) => {
-    getApplicantInRecruiment(1);
+  // 임시 데이터
+  const mockApplicants: Applicant[] = [
+    {
+      name: '이준호',
+      jobFit: 4.7,
+      idealCandidate: 4.5,
+      education: 4.2,
+      extracurricular: 3.8,
+      experience: 4.9,
+      overallScore: 4.6,
+    },
+    {
+      name: '김민지',
+      jobFit: 3.9,
+      idealCandidate: 4.1,
+      education: 4.8,
+      extracurricular: 4.0,
+      experience: 3.7,
+      overallScore: 4.2,
+    },
+    {
+      name: '박성훈',
+      jobFit: 4.6,
+      idealCandidate: 4.3,
+      education: 4.4,
+      extracurricular: 4.1,
+      experience: 4.5,
+      overallScore: 4.5,
+    },
+    {
+      name: '최서연',
+      jobFit: 4.2,
+      idealCandidate: 3.8,
+      education: 4.9,
+      extracurricular: 4.5,
+      experience: 4.3,
+      overallScore: 4.4,
+    },
+    {
+      name: '정하영',
+      jobFit: 4.9,
+      idealCandidate: 4.8,
+      education: 4.5,
+      extracurricular: 4.2,
+      experience: 4.6,
+      overallScore: 4.8,
+    },
+    {
+      name: '이도윤',
+      jobFit: 3.7,
+      idealCandidate: 3.9,
+      education: 4.0,
+      extracurricular: 3.5,
+      experience: 4.1,
+      overallScore: 3.8,
+    },
+    {
+      name: '한지민',
+      jobFit: 4.3,
+      idealCandidate: 4.0,
+      education: 4.7,
+      extracurricular: 4.1,
+      experience: 4.4,
+      overallScore: 4.5,
+    },
+    {
+      name: '배승우',
+      jobFit: 4.1,
+      idealCandidate: 3.7,
+      education: 4.2,
+      extracurricular: 3.9,
+      experience: 4.0,
+      overallScore: 4.0,
+    },
+    {
+      name: '윤하늘',
+      jobFit: 4.8,
+      idealCandidate: 4.6,
+      education: 4.4,
+      extracurricular: 4.3,
+      experience: 4.7,
+      overallScore: 4.7,
+    },
+    {
+      name: '조예린',
+      jobFit: 3.8,
+      idealCandidate: 3.6,
+      education: 4.1,
+      extracurricular: 3.7,
+      experience: 3.9,
+      overallScore: 3.9,
+    },
+  ];
+  
 
-    return applicants.map((applicant, idx) => (
-      <ApplicantRow key={idx}>
-        <ImageCell>
-          <div>
-            <ResumeModal
-              name={"유창현"}
-              pdfUrl={"/File.pdf"} 
-            />
-          </div>
-        </ImageCell>
-        <Cell>{applicant.name}</Cell>
-        <Cell>{applicant.jobFit}</Cell>
-        <Cell>{applicant.idealCandidate}</Cell>
-        <Cell>{applicant.education}</Cell>
-        <Cell>{applicant.extracurricular}</Cell>
-        <Cell>{applicant.experience}</Cell>
-        <Cell>{applicant.overallScore}</Cell>
-        <ImageCell>
-          <button onClick={() => handleAddClick(idx)}>
-            <Image
-              src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
-              alt="Details"
-              width={27}
-              height={27}
-              className="object-cover"
-            />
-          </button>
-        </ImageCell>
-      </ApplicantRow>
-    ));
-};
+  // 전체 평점 계산
+  const totalAverage = calculateOverallAverage(mockApplicants);
 
-// 임시 데이터
-const mockApplicants: Applicant[] = [
-  {
-    name: '유창현',
-    jobFit: 4.5,
-    idealCandidate: 4.2,
-    education: 4.8,
-    extracurricular: 4.0,
-    experience: 4.3,
-    overallScore: 4.7,
-  },
-  {
-    name: '김유라',
-    jobFit: 4.0,
-    idealCandidate: 4.1,
-    education: 4.6,
-    extracurricular: 4.3,
-    experience: 4.1,
-    overallScore: 4.4,
-  },
-  {
-    name: '강해찬',
-    jobFit: 4.5,
-    idealCandidate: 4.2,
-    education: 4.8,
-    extracurricular: 4.0,
-    experience: 4.3,
-    overallScore: 4.7,
-  },
-  {
-    name: '박수민',
-    jobFit: 4.0,
-    idealCandidate: 4.1,
-    education: 4.6,
-    extracurricular: 4.3,
-    experience: 4.1,
-    overallScore: 4.4,
-},
-{
-    name: '유창현',
-    jobFit: 4.5,
-    idealCandidate: 4.2,
-    education: 4.8,
-    extracurricular: 4.0,
-    experience: 4.3,
-    overallScore: 4.7,
-  },
-  {
-    name: '심용훈',
-    jobFit: 4.0,
-    idealCandidate: 4.1,
-    education: 4.6,
-    extracurricular: 4.3,
-    experience: 4.1,
-    overallScore: 4.4,
-  },
-  {
-    name: '최찬',
-    jobFit: 4.5,
-    idealCandidate: 4.2,
-    education: 4.8,
-    extracurricular: 4.0,
-    experience: 4.3,
-    overallScore: 4.7,
-  },
-  {
-    name: '강해찬',
-    jobFit: 4.0,
-    idealCandidate: 4.1,
-    education: 4.6,
-    extracurricular: 4.3,
-    experience: 4.1,
-    overallScore: 4.4,
-  },
-  {
-    name: '이정하',
-    jobFit: 4.5,
-    idealCandidate: 4.2,
-    education: 4.8,
-    extracurricular: 4.0,
-    experience: 4.3,
-    overallScore: 4.7,
-  },
-  {
-    name: '유창현',
-    jobFit: 4.0,
-    idealCandidate: 4.1,
-    education: 4.6,
-    extracurricular: 4.3,
-    experience: 4.1,
-    overallScore: 4.4,
-  },
-];
-
-// 전체 평점 계산
-const totalAverage = calculateOverallAverage(mockApplicants);
-
-// 합격자 페이지로 이동하는 함수
-// 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
-const handlePasserClick = () => {
-  router.push('/passer');
-};
+  // 합격자 페이지로 이동하는 함수
+  // 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
+  const handlePasserClick = () => {
+    router.push('/passer');
+  };
 
   return (
     <Container>
@@ -372,68 +305,11 @@ const handlePasserClick = () => {
       <Label1>평점 리스트</Label1>
       <Section></Section>
 
-      <div className="relative">
-        {/* 테이블 */}
-        <TableContainer>
-            {/* 헤더 */}
-            <TableHeader>
-                <BoldCell></BoldCell>
-                <BoldCell>이름</BoldCell>
-                <BoldCell>채용공고 부합</BoldCell>
-                <BoldCell>인재상</BoldCell>
-                <BoldCell>학력</BoldCell>
-                <BoldCell>대외활동 및 기타</BoldCell>
-                <BoldCell>경력</BoldCell>
-                <BoldCell>종합 평점</BoldCell>
-                <BoldCell>합격</BoldCell>
-            </TableHeader>
+      <ApplicantTableContainer
+        applicantList={mockApplicants}
+      />
 
-            {/* 평균 점수 행 */}
-            <AverageRow>
-                <Cell></Cell>
-                <BoldCell>평균점수</BoldCell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell></Cell>
-            </AverageRow>
-
-            {/* 지원자 행 */}
-            {renderApplicantRows(mockApplicants)}
-      
-        </TableContainer>
-
-
-        {/* 확인 모달 */}
-        {showModal && (
-          <ModalOverlay>
-            <ModalContent>
-              {/* 모달 헤더 */}
-              <ModalHeader>
-                <ModalHeader2>
-                  <Image src={Info} alt={"알림"} className="flex-1 w-55" />
-                  {/* <span className="text-gray-500">!</span> */}
-                </ModalHeader2>
-                <Alarm>알림</Alarm>
-              </ModalHeader>
-              <p>선택한 지원자를 합격자 명단에 추가하시겠습니까?</p>
-              <Section></Section>
-              <hr />
-
-              <ModalButtons>
-                <NoButton onClick={handleReject}>취소</NoButton>
-                <YesButton onClick={handleApprove}>추가</YesButton>
-              </ModalButtons>
-            </ModalContent>
-          </ModalOverlay>
-        )}
-    </div>
     </Section>
     </Container>
-
-
   )
 }
