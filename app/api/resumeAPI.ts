@@ -98,3 +98,15 @@ export const getRecruitmentList = async () => {
   console.log(response);
   return response.data;
 };
+
+export const getApplicantInRecruiment = async (id) =>{
+  const token = getAccessToken();
+  const response = await api.get(`/recruitment/${id}/applicant`,{
+    headers:{
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  console.log(response);
+  return response.data;
+}

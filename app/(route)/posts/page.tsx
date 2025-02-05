@@ -142,7 +142,7 @@ export default function NoticeBoard() {
 
       <TitleContainer>
         <span>총</span>
-        <Num>{posts[0].list.length || 0}</Num>
+        <Num>{posts.length || 0}</Num>
         <span>건의 글이 있습니다.</span>
       </TitleContainer>
 
@@ -168,7 +168,7 @@ export default function NoticeBoard() {
         </thead>
         {/* <div>{String(posts[0])}</div> */}
         <tbody>
-          {posts.length > 0 && posts[0].list.map((post) => ( // posts의 0번째는 list임
+          {posts.length > 0 && posts.map((post) => ( // posts의 0번째는 list임
             <tr key={String(post.id)}>
               <TableDetail2>{post.id}</TableDetail2>
               <TableDetail2
