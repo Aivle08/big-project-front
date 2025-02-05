@@ -82,39 +82,39 @@ export default function NoticeBoard() {
     }
   };
 
-  // 글 수정
-  const handleUpdate = async (post: Post) => {
-    if (!user || post.author.name != user.username) {
-      alert('본인 게시글만 수정 가능.');
-      return;
-    }
-    try {
-      await dispatch(updatePost(post)).unwrap();
-      await dispatch(fetchPosts());
-      setEditingPost(null);
-    } catch (error: any) {
-      alert(error.message || '게시글 수정에 실패.');
-    }
-  };
+  // // 글 수정
+  // const handleUpdate = async (post: Post) => {
+  //   if (!user || post.author.name != user.username) {
+  //     alert('본인 게시글만 수정 가능.');
+  //     return;
+  //   }
+  //   try {
+  //     await dispatch(updatePost(post)).unwrap();
+  //     await dispatch(fetchPosts());
+  //     setEditingPost(null);
+  //   } catch (error: any) {
+  //     alert(error.message || '게시글 수정에 실패.');
+  //   }
+  // };
 
-  // 글 삭제
-  const handleDelete = async (id: number) => {
-    const post = posts.find((p) => p.id === id);
-    if (!user || !post) return;
+  // // 글 삭제
+  // const handleDelete = async (id: number) => {
+  //   const post = posts.find((p) => p.id === id);
+  //   if (!user || !post) return;
 
-    if (!user || post.author.name != user.username) {
-      alert('본인 게시글만 삭제 가능능.');
-      return;
-    }
+  //   if (!user || post.author.name != user.username) {
+  //     alert('본인 게시글만 삭제 가능능.');
+  //     return;
+  //   }
 
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      try {
-        await dispatch(deletePost(id)).unwrap();
-      } catch (error: any) {
-        alert(error.message || '게시글 삭제에 실패.');
-      }
-    }
-  };
+  //   if (confirm('정말로 삭제하시겠습니까?')) {
+  //     try {
+  //       await dispatch(deletePost(id)).unwrap();
+  //     } catch (error: any) {
+  //       alert(error.message || '게시글 삭제에 실패.');
+  //     }
+  //   }
+  // };
 
   // 제목 입력 글자수 제한
   const handleTitleChange = (
@@ -165,7 +165,6 @@ export default function NoticeBoard() {
             <TableDetail>제목</TableDetail>
             <TableDetail>작성자</TableDetail>
             <TableDetail>날짜</TableDetail>
-            <TableDetail>관리</TableDetail>
           </tr>
         </thead>
         {/* <div>{String(posts[0])}</div> */}
@@ -184,7 +183,7 @@ export default function NoticeBoard() {
               <TableDetail2>
                 {new Date(post.createdAt).toLocaleDateString()}
               </TableDetail2>
-              <TableDetail2>
+              {/* <TableDetail2>
                 {user && post.author.name === user.username ? (
                   <>
                     <FixButton onClick={() => setEditingPost(post)}>
@@ -201,7 +200,7 @@ export default function NoticeBoard() {
                   </>
                 )
               }
-              </TableDetail2>
+              </TableDetail2> */}
             </tr>
           ))}
         </tbody>
