@@ -168,7 +168,7 @@ export default function Result({ params } : Props) {
         </ImageCell>
       </ApplicantRow>
     ));
-};
+  };
 
 // 임시 데이터
 const mockApplicants: Applicant[] = [
@@ -405,7 +405,6 @@ const handlePasserClick = () => {
             {renderApplicantRows(mockApplicants)}
       
         </TableContainer>
-
 
         {/* 확인 모달 */}
         {showModal && (
