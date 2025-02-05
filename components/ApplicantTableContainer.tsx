@@ -22,11 +22,36 @@ type Applicants = {
     applicantList: Applicant[];
 };
 
-
 export default function ApplicantTableContainer({applicantList} : Applicants) {
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
     const [showModal, setShowModal] = useState(false);
-    
+
+    const [sortBy, setSortBy] = useState("overallScore");
+    const [isAsc, setIsAsc] = useState(true);
+
+    const sortApplicants = (applicants: Applicant[], sortBy: keyof Applicant | null, isAsc: boolean) => {
+      if (!sortBy) return applicants;
+
+      return [...applicants].sort((a, b) => {
+        const aValue = a[sortBy];
+        const bValue = b[sortBy];
+
+        if (aValue === bValue) return 0;
+        return isAsc ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+      });
+    };
+
+    const handleSortClick = (key: keyof Applicant) => {
+      if (sortBy === key) {
+        setIsAsc(!isAsc); // 같은 정렬 기준이면 방향 토글
+      } else {
+        setSortBy(key);
+        setIsAsc(true); // 새 정렬 기준이면 오름차순 기본값
+      }
+    };
+
+    const sortedApplicants = sortApplicants(applicantList, sortBy, isAsc);
+
     // 합격 상태 관리
     const [approvedApplicants, setApprovedApplicants] = useState<number[]>([]);
     
@@ -49,7 +74,10 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
       setShowModal(false);
     };
     
+    // 지원자 목록
     const renderApplicantRows = (applicants: Applicant[]) => {
+        applicants.sort();
+
         return applicants.map((applicant, idx) => (
           <ApplicantRow key={idx}>
             <ImageCell>
@@ -89,13 +117,49 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
             {/* 헤더 */}
             <TableHeader>
                 <BoldCell></BoldCell>
-                <BoldCell>이름</BoldCell>
-                <BoldCell>채용공고 부합</BoldCell>
-                <BoldCell>인재상</BoldCell>
-                <BoldCell>학력</BoldCell>
-                <BoldCell>대외활동 및 기타</BoldCell>
-                <BoldCell>경력</BoldCell>
-                <BoldCell>종합 평점</BoldCell>
+
+                <BoldCell>
+                    <span>이름</span>
+                </BoldCell>
+
+                <BoldCell>
+                  <span>채용공고 부합 </span>
+                  <button
+                   onClick={() => handleSortClick("jobFit")}>
+                    {sortBy === "jobFit" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+                <BoldCell>
+                  <span>인재상 </span>
+                  <button onClick={() => handleSortClick("idealCandidate")}>
+                    {sortBy === "idealCandidate" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+                <BoldCell>
+                  <span>학력 </span>
+                  <button onClick={() => handleSortClick("education")}>
+                    {sortBy === "education" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+                <BoldCell>
+                  <span>대외활동 및 기타 </span>
+                  <button onClick={() => handleSortClick("extracurricular")}>
+                    {sortBy === "extracurricular" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+                <BoldCell>
+                  <span>경력 </span>
+                  <button onClick={() => handleSortClick("experience")}>
+                    {sortBy === "experience" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+                <BoldCell>
+                  <span>종합 평점 </span>
+                  <button onClick={() => handleSortClick("overallScore")}>
+                    {sortBy === "overallScore" ? (isAsc ? "▲" : "▼") : "-"}
+                  </button>
+                </BoldCell>
+
                 <BoldCell>합격</BoldCell>
             </TableHeader>
 
@@ -113,7 +177,7 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
             </AverageRow>
 
             {/* 지원자 행 */}
-            {renderApplicantRows(applicantList)}
+            {renderApplicantRows(sortedApplicants)}
         </TableContainer>
 
         {/* 확인 모달 */}
@@ -124,7 +188,6 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
               <ModalHeader>
                 <ModalHeader2>
                   <Image src={Info} alt={"알림"} className="flex-1 w-55" />
-                  {/* <span className="text-gray-500">!</span> */}
                 </ModalHeader2>
                 <Alarm>알림</Alarm>
               </ModalHeader>
