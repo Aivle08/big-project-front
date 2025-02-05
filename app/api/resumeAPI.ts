@@ -99,7 +99,7 @@ export const getRecruitmentList = async () => {
   return response.data;
 };
 
-export const getApplicantInRecruiment = async (id) =>{
+export const getApplicantInRecruiment = async (id: number) =>{
   const token = getAccessToken();
   const response = await api.get(`/recruitment/${id}/applicant`,{
     headers:{

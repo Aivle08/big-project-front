@@ -5,7 +5,7 @@ import {
   Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer,
   Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, 
   ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, 
-  PassButton, PassList, People, Right, Score, Section, SectionLine, SubLabel, TableContainer, 
+  PassButton, PassList, People, Right, Score, Section, SectionCon, SectionCon1, SectionLine, SubLabel, TableContainer, 
   TableHeader, Title, Title1, Title2, YesButton } from "../styles/Page.styled"
 import Image from "next/image";
 import Appliant from "../../../../public/images/TotalAppliant.png";
@@ -40,14 +40,14 @@ const calculateOverallAverage = (applicants: {
 };
 
 interface Props{
-  params :{
+  params : Promise<{
     id: string
-  }
+  }>;
 }
 
 
-export default function Result({params} : Props) {
-
+export default function Result({ params } : Props) {
+  const resolvedParams = use(params);
   const router = useRouter();
 
   const { recruitmentList, loading, error } = useSelector(
@@ -61,7 +61,7 @@ export default function Result({params} : Props) {
     evaluationList: [],
   });
 
-  const recruitmentId = Number(params.id);
+  const recruitmentId = Number(resolvedParams.id);
 
   useEffect(() => {
     if (!loading && recruitmentList.length > 0) {
@@ -88,6 +88,7 @@ export default function Result({params} : Props) {
       }
     }
   }, [recruitmentList, loading, recruitmentId]);
+
   const getDetailByItem = (itemName: string) => {
     const evaluation = evaluationData.evaluationList.find(
       item => item.item === itemName
@@ -279,6 +280,11 @@ const handlePasserClick = () => {
       <Section></Section>
 
       <Section>
+        <Label1>제목</Label1>
+        <SubLabel>{evaluationData.title}</SubLabel>
+      </Section>
+
+      <Section>
         <Label1>직무</Label1>
         <SubLabel>{evaluationData.job}</SubLabel>
       </Section>
@@ -291,28 +297,28 @@ const handlePasserClick = () => {
         <EvaluationInput>
           {/* 1. 채용 공고 */}
           <Section>
-            <Label2>채용 공고</Label2>
-            <InputContent> {evaluationData.title}</InputContent>
+            <Label2> 채용 공고</Label2>
+            <SectionCon><InputContent> {getDetailByItem("채용 공고")}</InputContent></SectionCon>
           </Section>
           {/* 2. 인재상 */}
           <Section>
-            <Label2>인재상</Label2>
-            <InputContent> {getDetailByItem("인재상")}</InputContent>
+            <Label2> 인재상</Label2>
+            <SectionCon><InputContent> {getDetailByItem("인재상")}</InputContent></SectionCon>
           </Section>
           {/* 3. 학력 */}
           <Section>
-            <Label2>학력</Label2>
-            <InputContent> {getDetailByItem("학력")}</InputContent>
+            <Label2> 학력</Label2>
+            <SectionCon><InputContent> {getDetailByItem("학력")}</InputContent></SectionCon>
           </Section>
           {/* 4. 대외활동 + 수상내역 + 어학 + 대외활동 */}
           <Section>
-            <Label2>대외활동&nbsp;/&nbsp;수상내역&nbsp;/&nbsp;어학&nbsp;/&nbsp;자격증</Label2>
-            <InputContent> {getDetailByItem("대외활동/수상내역/어학/자격증")}</InputContent>
+            <Label2> 대외활동&nbsp;/&nbsp;수상내역&nbsp;/&nbsp;어학&nbsp;/&nbsp;자격증</Label2>
+            <SectionCon><InputContent> {getDetailByItem("대외활동/수상내역/어학/자격증")}</InputContent></SectionCon>
           </Section>
           {/* 5. 경력 */}
           <Section>
-            <Label2>경력</Label2>
-            <InputContent>{getDetailByItem("경력")}</InputContent>
+            <Label2> 경력</Label2>
+            <SectionCon><InputContent>{getDetailByItem("경력")}</InputContent></SectionCon>
           </Section>     
         </EvaluationInput>
 

@@ -26,6 +26,19 @@ export const Section = tw.section`
   mb-8
 `;
 
+export const SectionCon = tw.div`
+ bg-white
+ rounded-[4px]
+ p-5
+ shadow-sm
+`;
+
+export const SectionCon1 = tw.div`
+ bg-yellow
+ rounded-[4px]
+ p-5
+`;
+
 
 export const Label1 = tw.label`
   block 
@@ -51,6 +64,8 @@ export const Label2 = tw.label`
   block 
   text-md
   font-semibold 
+  bg-yellow
+  p-3
 `;
 
 export const InputContent = tw.p`
