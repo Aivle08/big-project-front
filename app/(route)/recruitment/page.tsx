@@ -22,6 +22,7 @@ export default function Resume() {
   const { loading, error } = useSelector((state: RootState) => state.resume);
 
   const [files, setFiles] = useState<FileData[]>([]);
+  const [title, setTitle] = useState('');  // 공고 제목
   const [job, setJob] = useState('');
   // 각 입력 필드의 값을 관리할 상태
   const [inputs, setInputs] = useState({
@@ -31,6 +32,11 @@ export default function Resume() {
     activities: '',     // 대외활동 등
     experience: ''      // 경력
   });
+
+  // 제목 입력 핸들러
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
 
   // 직무 입력 핸들러
   const handleJobChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,10 +65,10 @@ export default function Resume() {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // 각 항목 최대 200자 입력 제한
+  // 각 항목 최대 1000자 입력 제한
   const handleInputChange = (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value.length <= 200) {
+    if (value.length <= 1000) {
       setInputs((prev) => ({
         ...prev,
         [field]: value
@@ -85,7 +91,7 @@ export default function Resume() {
     ];
   
     const analysisData: ResumeAnalysisRequest = {
-      title: inputs.jobPosting,
+      title: title,
       job: job,
       evaluationList: evaluationList
     };
@@ -125,6 +131,16 @@ export default function Resume() {
       <FirstContainer>
         {/* 왼쪽 */}
         <Left>
+        <Section>
+            <Label1>제목</Label1>
+            <Input1
+              type="text"
+              placeholder="공고 제목을 입력하세요."
+              value={title}
+              onChange={handleTitleChange}
+            />
+          </Section>
+
           <Section>
             <Label1>직무</Label1>
             <Input1
@@ -200,14 +216,14 @@ export default function Resume() {
             <CharCount
               style={{
                 color:
-                  inputs.jobPosting.length >= 200
+                  inputs.jobPosting.length >= 1000
                     ? '#ef4444'
-                    : inputs.jobPosting.length >= 180
+                    : inputs.jobPosting.length >= 980
                     ? '#f59e0b'
                     : '#888'
               }}
             >
-              {inputs.jobPosting.length}/200
+              {inputs.jobPosting.length}/1000
             </CharCount>
           </div>
         </Section>
@@ -225,14 +241,14 @@ export default function Resume() {
             <CharCount
               style={{
                 color:
-                  inputs.ideals.length >= 200
+                  inputs.ideals.length >= 1000
                     ? '#ef4444'
-                    : inputs.ideals.length >= 180
+                    : inputs.ideals.length >= 980
                     ? '#f59e0b'
                     : '#888'
               }}
             >
-              {inputs.ideals.length}/200
+              {inputs.ideals.length}/1000
             </CharCount>
           </div>
         </Section>
@@ -250,14 +266,14 @@ export default function Resume() {
             <CharCount
               style={{
                 color:
-                  inputs.education.length >= 200
+                  inputs.education.length >= 1000
                     ? '#ef4444'
-                    : inputs.education.length >= 180
+                    : inputs.education.length >= 980
                     ? '#f59e0b'
                     : '#888'
               }}
             >
-              {inputs.education.length}/200
+              {inputs.education.length}/1000
             </CharCount>
           </div>
         </Section>
@@ -275,14 +291,14 @@ export default function Resume() {
             <CharCount
               style={{
                 color:
-                  inputs.activities.length >= 200
+                  inputs.activities.length >= 1000
                     ? '#ef4444'
-                    : inputs.activities.length >= 180
+                    : inputs.activities.length >= 980
                     ? '#f59e0b'
                     : '#888'
               }}
             >
-              {inputs.activities.length}/200
+              {inputs.activities.length}/1000
             </CharCount>
           </div>
         </Section>
@@ -300,14 +316,14 @@ export default function Resume() {
             <CharCount
               style={{
                 color:
-                  inputs.experience.length >= 200
+                  inputs.experience.length >= 1000
                     ? '#ef4444'
-                    : inputs.experience.length >= 180
+                    : inputs.experience.length >= 980
                     ? '#f59e0b'
                     : '#888'
               }}
             >
-              {inputs.experience.length}/200
+              {inputs.experience.length}/1000
             </CharCount>
           </div>
         </Section>

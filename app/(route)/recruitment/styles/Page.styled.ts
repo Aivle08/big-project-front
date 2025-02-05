@@ -91,9 +91,9 @@ export const FileList = tw.div`
   shadow-sm
   p-16
   overflow-y-scroll 
-  max-h-80
+  max-h-[30rem]
+  min-h-[24rem] 
 `;
-
 
 export const FileItem = tw.div`
   flex 
