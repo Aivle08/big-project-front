@@ -1,15 +1,23 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer, Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, PassButton, PassList, People, Right, Score, Section, SectionLine, SubLabel, TableContainer, TableHeader, Title, Title1, Title2, YesButton } from "./styles/Page.styled"
+import { 
+  Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer,
+  Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, 
+  ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Num, 
+  PassButton, PassList, People, Right, Score, Section, SectionLine, SubLabel, TableContainer, 
+  TableHeader, Title, Title1, Title2, YesButton } from "../styles/Page.styled"
 import Image from "next/image";
-import Appliant from "../../../public/images/TotalAppliant.png";
-import Paper from "../../../public/images/paper.png";
-import Add_Before from "../../../public/images/add_before.png";
-import Add_After from "../../../public/images/add_after.png";
-import Info from "../../../public/images/Info.png";
+import Appliant from "../../../../public/images/TotalAppliant.png";
+import Add_Before from "../../../../public/images/add_before.png";
+import Add_After from "../../../../public/images/add_after.png";
+import Info from "../../../../public/images/Info.png";
 import _ from 'lodash';
 import { useRouter } from "next/navigation";
+import ResumeModal from "@/components/ResumeModal";
+import { getApplicantInRecruiment } from "@/app/api/resumeAPI";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store/store";
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
@@ -31,59 +39,49 @@ const calculateOverallAverage = (applicants: {
   return average.toFixed(2); // 소수점 2자리까지 표시
 };
 
+interface Props{
+  params :{
+    id: string
+  }
+}
 
-export default function Result() {
+
+export default function Result({params} : Props) {
 
   const router = useRouter();
 
-  // 일단 더미 데이터 넣어놓으려고 해놓음
+  const { recruitmentList, loading, error } = useSelector(
+    (state: RootState) => state.resume
+  );
+
   const [evaluationData, setEvaluationData] = useState({
     id: 1,
-    title: "백엔드 개발자",
-    job: "서버 개발 및 데이터베이스 관리",
-    evaluationList: [
-      {
-        id: 1,
-        item: "채용 공고",
-        detail: "서버 개발 및 시스템 아키텍처 설계를 담당할 백엔드 개발자를 모집합니다. Java/Spring 기반의 서버 개발 경험이 있으며, MSA 환경에서의 개발 경험이 있는 분을 우대합니다. 데이터베이스 설계 및 최적화 능력이 필요합니다."
-      },
-      {
-        id: 2,
-        item: "인재상",
-        detail: "새로운 기술에 대한 지속적인 학습 의지가 있고, 팀원들과의 원활한 커뮤니케이션이 가능한 인재를 찾습니다. 문제 해결에 대한 적극적인 태도와 책임감 있는 업무 수행이 가능한 분을 선호합니다."
-      },
-      {
-        id: 3,
-        item: "학력",
-        detail: "컴퓨터공학 또는 관련 학과 학사 이상 (석사 우대). 전공자가 아니더라도 관련 분야에서의 실무 경험이 풍부하다면 지원 가능합니다."
-      },
-      {
-        id: 4,
-        item: "대외활동/수상내역/어학/자격증",
-        detail: "정보처리기사 자격증 소지자 우대, AWS/GCP 등 클라우드 관련 자격증 보유자 우대. TOEIC 700점 이상 또는 이에 준하는 어학 성적 보유자 선호. 개발 관련 대회 수상 경력이 있다면 가점."
-      },
-      {
-        id: 5,
-        item: "경력",
-        detail: "3년 이상의 백엔드 개발 경력 필수. Spring Framework 기반 개발 경험 3년 이상, RESTful API 설계 및 개발 경험, MySQL/PostgreSQL 등 RDBMS 활용 경험이 필요합니다."
-      }
-    ]
+    title: "",
+    job: "",
+    evaluationList: [],
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // API 호출 로직은 나중에
-        // const response = await fetch('/api/evaluation/1');
-        // const data = await response.json();
-        // setEvaluationData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    if (!loading && recruitmentList.length > 0) {
+      // 특정 ID를 기준으로 찾음 (예: id = 1)
+      const selectedRecruitment = recruitmentList.find((item) => item.id === 1);
 
-    fetchData();
-  }, []); // 의존성 배열 수정
+      if (selectedRecruitment) {
+        setEvaluationData({
+          id: selectedRecruitment.id,
+          title: selectedRecruitment.title,
+          job: selectedRecruitment.job,
+          evaluationList: selectedRecruitment.evaluations.map(
+            (evaluation, index) => ({
+              id: index + 1,
+              item: evaluation.item,
+              detail: evaluation.detail,
+            })
+          ),
+        });
+      }
+    }
+  }, [recruitmentList, loading]);
 
   const getDetailByItem = (itemName: string) => {
     const evaluation = evaluationData.evaluationList.find(
@@ -130,24 +128,19 @@ export default function Result() {
     overallScore: number; // 종합 평점
   };
 
-
-  
-
   // 지원자 목록 생성
   const renderApplicantRows = (applicants: Applicant[]) => {
+    getApplicantInRecruiment(1);
+
     return applicants.map((applicant, idx) => (
       <ApplicantRow key={idx}>
         <ImageCell>
-          <button>
-            <Image
-              src={Paper}
-              alt="Resume Link"
-              layout="intrinsic"
-              width={24}
-              height={24}
-              className="object-cover"
+          <div>
+            <ResumeModal
+              name={"유창현"}
+              pdfUrl={"/File.pdf"} 
             />
-          </button>
+          </div>
         </ImageCell>
         <Cell>{applicant.name}</Cell>
         <Cell>{applicant.jobFit}</Cell>
@@ -166,16 +159,6 @@ export default function Result() {
               className="object-cover"
             />
           </button>
-          {/* <button>
-            <Image
-              src={Add_Before}
-              alt="Details"
-              layout="intrinsic"
-              width={27}
-              height={27}
-              className="object-cover"
-            />
-          </button> */}
         </ImageCell>
       </ApplicantRow>
     ));
@@ -279,6 +262,7 @@ const mockApplicants: Applicant[] = [
 const totalAverage = calculateOverallAverage(mockApplicants);
 
 // 합격자 페이지로 이동하는 함수
+// 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
 const handlePasserClick = () => {
   router.push('/passer');
 };
@@ -291,7 +275,7 @@ const handlePasserClick = () => {
 
       <Section>
         <Label1>직무</Label1>
-        <SubLabel>2024년 하반기 CJ제일제당(식품/공통부문) 신입사원</SubLabel>
+        <SubLabel>{evaluationData.job}</SubLabel>
       </Section>
 
       <Section></Section>
@@ -303,7 +287,7 @@ const handlePasserClick = () => {
           {/* 1. 채용 공고 */}
           <Section>
             <Label2>채용 공고</Label2>
-            <InputContent> {getDetailByItem("채용 공고")}</InputContent>
+            <InputContent> {evaluationData.title}</InputContent>
           </Section>
           {/* 2. 인재상 */}
           <Section>
@@ -346,8 +330,6 @@ const handlePasserClick = () => {
                 className="w-[100%] h-[100%] object-contain"
               />
             </Img>
-            {/* <Image src={Appliant} alt={"사진"} className="flex-1 w-55" /> */}
-           
           </Box1Container>
 
         </Box1>

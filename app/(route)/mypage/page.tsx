@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { RootState, AppDispatch } from '@/app/redux/store/store';
 import { fetchRecruitmentList } from '@/app/redux/features/resumeSlice';
+import Link from "next/link";
 
 
 export default function Mypage() {
@@ -52,7 +53,11 @@ export default function Mypage() {
               {item.title} ({item.job})
             </CateTitle>
             <ButtonContainer>
-              <CateButton>이력서 확인</CateButton>
+              <Link
+                href={`/result/${item.id}`}
+              >
+                <CateButton>이력서 확인</CateButton>
+              </Link>
             </ButtonContainer>
           </CategoryContainer>
         ))}
