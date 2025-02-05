@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { 
   Alarm, ApplicantRow, AverageRow, BoldCell, Box1, Box1Container, Box2, Box3, BoxContainer,
   Cell, Container, EvaluationInput, ImageCell, Img, InputContent, Label1, Label2, Left, 
@@ -13,7 +13,7 @@ import Add_Before from "../../../../public/images/add_before.png";
 import Add_After from "../../../../public/images/add_after.png";
 import Info from "../../../../public/images/Info.png";
 import _ from 'lodash';
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ResumeModal from "@/components/ResumeModal";
 import { getApplicantInRecruiment } from "@/app/api/resumeAPI";
 import { useSelector } from "react-redux";
@@ -61,10 +61,16 @@ export default function Result({params} : Props) {
     evaluationList: [],
   });
 
+  const recruitmentId = Number(params.id);
+
   useEffect(() => {
     if (!loading && recruitmentList.length > 0) {
-      // 특정 ID를 기준으로 찾음 (예: id = 1)
-      const selectedRecruitment = recruitmentList.find((item) => item.id === 1);
+      const selectedRecruitment = recruitmentList.find(
+        (item) => item.id === recruitmentId
+      );
+
+      console.log(recruitmentList);
+      console.log(selectedRecruitment);
 
       if (selectedRecruitment) {
         setEvaluationData({
@@ -81,8 +87,7 @@ export default function Result({params} : Props) {
         });
       }
     }
-  }, [recruitmentList, loading]);
-
+  }, [recruitmentList, loading, recruitmentId]);
   const getDetailByItem = (itemName: string) => {
     const evaluation = evaluationData.evaluationList.find(
       item => item.item === itemName
@@ -420,14 +425,7 @@ const handlePasserClick = () => {
           </ModalOverlay>
         )}
     </div>
-
-
     </Section>
-
-
-
-
-
     </Container>
 
 
