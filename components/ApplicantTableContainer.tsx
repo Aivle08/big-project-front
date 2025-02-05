@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Add_Before from "../public/images/add_before.png";
 import Add_After from "../public/images/add_after.png";
 import Info from "../public/images/Info.png";
+import arrowCouple from "../public/images/sort-arrows-couple.png"
 
 type Applicant = {
   name: string; // 이름
@@ -126,37 +127,67 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
                   <span>채용공고 부합 </span>
                   <button
                    onClick={() => handleSortClick("jobFit")}>
-                    {sortBy === "jobFit" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "jobFit" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                        src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                        width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
                 <BoldCell>
                   <span>인재상 </span>
                   <button onClick={() => handleSortClick("idealCandidate")}>
-                    {sortBy === "idealCandidate" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "idealCandidate" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                    width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
                 <BoldCell>
                   <span>학력 </span>
                   <button onClick={() => handleSortClick("education")}>
-                    {sortBy === "education" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "education" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                        src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                        width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
                 <BoldCell>
                   <span>대외활동 및 기타 </span>
                   <button onClick={() => handleSortClick("extracurricular")}>
-                    {sortBy === "extracurricular" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "extracurricular" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                    width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
                 <BoldCell>
                   <span>경력 </span>
                   <button onClick={() => handleSortClick("experience")}>
-                    {sortBy === "experience" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "experience" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                    width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
                 <BoldCell>
                   <span>종합 평점 </span>
                   <button onClick={() => handleSortClick("overallScore")}>
-                    {sortBy === "overallScore" ? (isAsc ? "▲" : "▼") : "-"}
+                    {sortBy === "overallScore" ? (isAsc ? "▲" : "▼") : 
+                    <Image
+                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                    width={12} height={12}
+                    />
+                    }
                   </button>
                 </BoldCell>
 
