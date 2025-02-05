@@ -84,7 +84,7 @@ export default function NoticeBoard() {
 
   // 글 수정
   const handleUpdate = async (post: Post) => {
-    if (!user || post.authorId !== user.username) {
+    if (!user || post.author.name != user.username) {
       alert('본인 게시글만 수정 가능.');
       return;
     }
@@ -102,7 +102,7 @@ export default function NoticeBoard() {
     const post = posts.find((p) => p.id === id);
     if (!user || !post) return;
 
-    if (post.authorId !== user.username) {
+    if (!user || post.author.name != user.username) {
       alert('본인 게시글만 삭제 가능능.');
       return;
     }
@@ -134,6 +134,8 @@ export default function NoticeBoard() {
   if (loading) {
     return <div className="text-center py-10">로딩 중 ...</div>;
   }
+
+  console.log(user);
 
   return (
     <Container>
@@ -178,12 +180,12 @@ export default function NoticeBoard() {
                 {/* {post} */}
                 {post.title}
               </TableDetail2>
-              <TableDetail2>{post.authorName}</TableDetail2>
+              <TableDetail2>{post.author.name}</TableDetail2>
               <TableDetail2>
                 {new Date(post.createdAt).toLocaleDateString()}
               </TableDetail2>
               <TableDetail2>
-                {user && post.authorName === user.username ? (
+                {user && post.author.name === user.username ? (
                   <>
                     <FixButton onClick={() => setEditingPost(post)}>
                       수정
