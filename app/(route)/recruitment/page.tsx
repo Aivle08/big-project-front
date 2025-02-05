@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store/store';
 import { ResumeAnalysisRequest } from '../../types/resume';
 import { useRouter } from 'next/navigation';
-import { saveResume, uploadPDF, submitResumeAnalysis } from '@/app/redux/features/resumeSlice';
+import { saveResume, uploadPDF } from '@/app/redux/features/resumeSlice';
 
 interface FileData {
   file: File;
@@ -84,6 +84,7 @@ export default function Resume() {
     }
   
     const evaluationList = [
+      { item: '채용 공고', details: inputs.jobPosting},
       { item: '인재상', detail: inputs.ideals },
       { item: '학력', detail: inputs.education },
       { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
@@ -95,6 +96,8 @@ export default function Resume() {
       job: job,
       evaluationList: evaluationList
     };
+
+    console.log(analysisData);
   
     try {
       // 1. 먼저 데이터 저장
@@ -108,10 +111,7 @@ export default function Resume() {
           id: saveResult.id,
           files: files.map(f => f.file)
         })).unwrap();
-        
-        // 3. 분석 요청
-        await dispatch(submitResumeAnalysis(analysisData)).unwrap();
-        
+
         alert('이력서 분석이 시작되었습니다.');
         router.push('/mypage');
       }

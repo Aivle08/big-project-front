@@ -19,17 +19,10 @@ const api = axios.create({
 export const saveResumeData = async (data: ResumeAnalysisRequest) => {
   const token = getAccessToken();
 
-  try {
-    const requestData = {
-      title: data.title,
-      job: data.job,
-      evaluationList: data.evaluationList.map(item => ({
-        item: item.item,
-        detail: item.detail
-      }))
-    };
+  console.log(data);
 
-    const response = await api.post('/recruitment', requestData, {
+  try {
+    const response = await api.post('/recruitment', data, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -68,23 +61,6 @@ export const uploadResumePDF = async (id: number, files: File[]) => {
   } catch (error) {
     console.error('Upload PDF error: ', error);
     throw new Error('PDF 파일 업로드 중 오류가 발생했습니다.');
-  }
-};
-
-// 분석 결과 조회
-export const analyzeResume = async (data: ResumeAnalysisRequest) => {
-  const token = getAccessToken();
-
-  try {
-    const response = await api.post('/recruitment', data, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('이력서 분석 오류 : ', error);
-    throw new Error('이력서 분석 중 오류가 발생했습니다.');
   }
 };
 

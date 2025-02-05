@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ResumeAnalysisRequest } from '../../types/resume';
-import { saveResumeData, uploadResumePDF, analyzeResume, getRecruitmentList } from '../../api/resumeAPI';
+import { saveResumeData, uploadResumePDF, getRecruitmentList } from '../../api/resumeAPI';
 import axios from 'axios';
 
 interface ResumeState {
@@ -56,21 +56,6 @@ export const uploadPDF = createAsyncThunk(
   }
 );
 
-// 이력서 분석
-export const submitResumeAnalysis = createAsyncThunk(
-  'resume/analyze',
-  async (data: ResumeAnalysisRequest, { rejectWithValue }) => {
-    try {
-      const response = await analyzeResume(data);
-      return response;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data?.message || '분석 중 오류가 발생했습니다.');
-      }
-      return rejectWithValue('예상치 못한 오류가 발생했습니다.');
-    }
-  }
-);
 
 export const fetchRecruitmentList = createAsyncThunk(
   'recruitment/list',
@@ -143,21 +128,6 @@ const resumeSlice = createSlice({
       .addCase(uploadPDF.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || '파일 업로드 중 오류가 발생했습니다.';
-      });
-
-    builder
-      .addCase(submitResumeAnalysis.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(submitResumeAnalysis.fulfilled, (state, action) => {
-        state.loading = false;
-        state.result = action.payload;
-        state.error = null;
-      })
-      .addCase(submitResumeAnalysis.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string || '분석 중 오류가 발생했습니다.';
       });
   }
 });

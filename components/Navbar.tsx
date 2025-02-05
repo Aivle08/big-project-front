@@ -24,7 +24,7 @@ export default function Navbar() {
 
   // Redux 상태 가져오기
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-  console.log(isAuthenticated, user);
+  // console.log(isAuthenticated, user);
   const dispatch = useDispatch();
 
   // 로그인 안 된 경우는 튜토리얼 제외한 navbar의 페이지는 전부 다 로그인으로 라우팅되게 하려고 함
