@@ -84,7 +84,7 @@ export default function Resume() {
     }
   
     const evaluationList = [
-      { item: '채용 공고', details: inputs.jobPosting},
+      { item: '채용 공고', detail: inputs.jobPosting},
       { item: '인재상', detail: inputs.ideals },
       { item: '학력', detail: inputs.education },
       { item: '대외활동/수상내역/어학/자격증', detail: inputs.activities },
