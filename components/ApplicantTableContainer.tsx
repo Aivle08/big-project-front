@@ -9,18 +9,20 @@ import Add_After from "../public/images/add_after.png";
 import Info from "../public/images/Info.png";
 import arrowCouple from "../public/images/sort-arrows-couple.png"
 
+type EvaluationMetric = {
+  score: number;
+  summary: string;
+  title: string;
+};
+
 type Applicant = {
-  name: string; // 이름
-  jobFit: number; // 채용공고 부합
-  idealCandidate: number; // 인재상
-  education: number; // 학력
-  extracurricular: number; // 대외활동 및 기타
-  experience: number; // 경력
-  overallScore: number; // 종합 평점
+  applicationName: string;
+  recruitmentTitle: string;
+  scoreDetails: EvaluationMetric[];
 };
 
 type Applicants = {
-    applicantList: Applicant[];
+  applicantList: Applicant[];
 };
 
 export default function ApplicantTableContainer({applicantList} : Applicants) {
@@ -42,7 +44,7 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
       });
     };
 
-    const handleSortClick = (key: keyof Applicant) => {
+    const handleSortClick = (key) => {
       if (sortBy === key) {
         setIsAsc(!isAsc); // 같은 정렬 기준이면 방향 토글
       } else {
@@ -77,39 +79,50 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
     
     // 지원자 목록
     const renderApplicantRows = (applicants: Applicant[]) => {
-        applicants.sort();
-
-        return applicants.map((applicant, idx) => (
-          <ApplicantRow key={idx}>
-            <ImageCell>
-              <div>
-                <ResumeModal
-                  name={"유창현"}
-                  pdfUrl={"/File.pdf"} 
-                />
-              </div>
-            </ImageCell>
-            <Cell>{applicant.name}</Cell>
-            <Cell>{applicant.jobFit}</Cell>
-            <Cell>{applicant.idealCandidate}</Cell>
-            <Cell>{applicant.education}</Cell>
-            <Cell>{applicant.extracurricular}</Cell>
-            <Cell>{applicant.experience}</Cell>
-            <Cell>{applicant.overallScore}</Cell>
-            <ImageCell>
-              <button onClick={() => handleAddClick(idx)}>
-                <Image
-                  src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
-                  alt="Details"
-                  width={27}
-                  height={27}
-                  className="object-cover"
-                />
-              </button>
-            </ImageCell>
-          </ApplicantRow>
-        ));
-    };
+      // 지원자 정렬 (localeCompare는 두 문자열을 비교하는 함수라고 함.)
+      applicants.sort((a, b) => a.applicationName.localeCompare(b.applicationName));
+  
+      return applicants.map((applicant, idx) => {
+          // `scoreDetails`에서 각 평가 항목을 찾아 매칭
+          const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || "-";
+          const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || "-";
+          const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || "-";
+          const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || "-";
+          const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
+          const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
+  
+          return (
+              <ApplicantRow key={idx}>
+                  <ImageCell>
+                      <div>
+                          <ResumeModal
+                              name={applicant.applicationName}
+                              pdfUrl={"/File.pdf"} 
+                          />
+                      </div>
+                  </ImageCell>
+                  <Cell>{applicant.applicationName}</Cell>
+                  <Cell>{jobFit}</Cell>
+                  <Cell>{idealCandidate}</Cell>
+                  <Cell>{education}</Cell>
+                  <Cell>{extracurricular}</Cell>
+                  <Cell>{experience}</Cell>
+                  <Cell>{overallScore.toFixed(1)}</Cell> {/* 평균 점수 계산 */}
+                  <ImageCell>
+                      <button onClick={() => handleAddClick(idx)}>
+                          <Image
+                              src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
+                              alt="Details"
+                              width={27}
+                              height={27}
+                              className="object-cover"
+                          />
+                      </button>
+                  </ImageCell>
+              </ApplicantRow>
+          );
+      });
+  };
 
   return (
     <div className="relative">

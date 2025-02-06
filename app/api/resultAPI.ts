@@ -26,8 +26,8 @@ AxiosInstance.interceptors.request.use(
 );
 
 export const resultAPI = {
-  // 모든 지원자 평가 저장
-  async getApplicantsEvaluations(recruitmentId: number, passed: boolean = false) {
+  // 모든 지원자 평가 조회
+  getApplicantsEvaluations: async (recruitmentId: number, passed: boolean = false) => {
     const response = await AxiosInstance.get(`/recruitment/${recruitmentId}/applicants`, {
       params: { passed }
     });
@@ -35,7 +35,7 @@ export const resultAPI = {
   },
 
   // 지원자 평가 조회
-  async getApplicantEvaluation(recruitmentId: number, applicantId: number) {
+  getApplicantEvaluation: async (recruitmentId: number, applicantId: number) => {
     const response = await AxiosInstance.get(`/recruitment/${recruitmentId}/applicant/${applicantId}`);
     return response.data;
   }
