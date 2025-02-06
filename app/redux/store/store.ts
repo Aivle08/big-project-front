@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/authSlice';
 import resumeReducer from '../features/resumeSlice';
 import postReducer from '../features/postSlice';
+import commentReducer from '../features/commentSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     resume: resumeReducer,
     post: postReducer,
+    comments: commentReducer,
   },
 
   /// 미들웨어 설정 추가
