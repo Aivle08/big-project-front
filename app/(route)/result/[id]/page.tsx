@@ -10,9 +10,10 @@ import Image from "next/image";
 import Appliant from "../../../../public/images/TotalAppliant.png";
 import _ from 'lodash';
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/store/store";
 import ApplicantTableContainer from "@/components/ApplicantTableContainer";
+import { fetchRecruitmentList } from "@/app/redux/features/resumeSlice";
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
@@ -43,6 +44,7 @@ interface Props{
 
 export default function Result({ params } : Props) {
   const resolvedParams = use(params);
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const { recruitmentList, loading, error } = useSelector(
@@ -57,6 +59,10 @@ export default function Result({ params } : Props) {
   });
 
   const recruitmentId = Number(resolvedParams.id);
+
+  useEffect(() => {
+    dispatch(fetchRecruitmentList());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!loading && recruitmentList.length > 0) {
