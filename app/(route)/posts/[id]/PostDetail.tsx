@@ -7,6 +7,7 @@ import type { AppDispatch, RootState } from '@/app/redux/store/store';
 import { fetchPostById, deletePost, updatePost } from '@/app/redux/features/postSlice';
 import { BackButton, Container, Content, Detail, Section, Section2, Title } from './styles/Page.styled';
 import { Post } from '@/app/types/post';
+import Comments from './components/Comments';
 
 interface PostDetailProps {
   postId: number;
@@ -190,7 +191,9 @@ export default function PostDetail({ postId }: PostDetailProps) {
                   <button 
                     onClick={() => {
                       setIsEditing(false);
-                      setEditedContent({ title: post.title, content: post.content });
+                      setEditedContent({ title: post.title, content: 
+                        
+                        post.content });
                     }}
                     className="px-4 bg-[#E3E3E3] text-white rounded hover:bg-[#AAA9A9] transition-colors"
                   >
@@ -229,7 +232,10 @@ export default function PostDetail({ postId }: PostDetailProps) {
           <Content>
             {post?.content}
           </Content>
+          
         )}
+
+        <Comments postId={postId} /> 
 
       </Section2>
 
