@@ -110,7 +110,7 @@ export default function Result({ params } : Props) {
   }, [dispatch, recruitmentId]);
 
 
-  console.log(evaluationList);
+  // console.log(evaluationList);
   // 전체 평점 계산
   const totalAverage = calculateOverallAverage(evaluationList);
 
