@@ -8,22 +8,7 @@ import Add_Before from "../public/images/add_before.png";
 import Add_After from "../public/images/add_after.png";
 import Info from "../public/images/Info.png";
 import arrowCouple from "../public/images/sort-arrows-couple.png"
-
-type EvaluationMetric = {
-  score: number;
-  summary: string;
-  title: string;
-};
-
-type Applicant = {
-  applicationName: string;
-  recruitmentTitle: string;
-  scoreDetails: EvaluationMetric[];
-};
-
-type Applicants = {
-  applicantList: Applicant[];
-};
+import { Applicant, Applicants } from "@/app/types/evaluation"
 
 export default function ApplicantTableContainer({applicantList} : Applicants) {
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);

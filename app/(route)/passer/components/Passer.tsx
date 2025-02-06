@@ -1,37 +1,43 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { use, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/store/store";
 import {
   MainContainer,
   SectionLine,
   SectionTitle,
   TextBox,
-  TableContainer,
-  TableHeader,
-  AverageRow,
-  ApplicantRow,
-  ImageCell,
   FooterLine,
-  BoldCell,
-  Cell,
   SmallTitle,
   SmallContent,
 } from '../styles/pageStyled';
-import ResumeModal from '@/components/ResumeModal';
-import detailicon from '../../../../public/images/details_icon.png';
 import { useRouter } from 'next/navigation';
 import { evaluationAPI } from '@/app/api/evaluationAPI';
 import { PassedApplicant, PassedResponse } from '@/app/types/evaluation';
-
+import { fetchApplicantsEvaluations } from '@/app/redux/features/evaluationSlice';
+import ApplicantTableContainer from '@/components/ApplicantTableContainer';
 
 interface PasserProps {
-    recruitmentId: number; 
-  }
+  params : Promise<{
+    id: number; 
+  }>;
+}
 
-  
-export default function Passer({ recruitmentId }: PasserProps) {
+export default function Passer({ params }: PasserProps) {
+    const resolvedParams = use(params);
+    const recruitmentId = Number(resolvedParams.id);
+    const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
+
+    const { evaluationList, status, error: evaluationError } = useSelector((state: RootState) => state.eval);
+    
+    useEffect(() => {
+      dispatch(fetchApplicantsEvaluations({ recruitmentId, passed: false }));
+    }, [dispatch, recruitmentId]);
+  
+    
+    // 밑에가 수민이 state (전역상태 기반으로 교체 예정 )
     const [passedData, setPassedData] = useState<PassedResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -134,8 +140,6 @@ export default function Passer({ recruitmentId }: PasserProps) {
       </div>;
     }
     
-    
-
     return (
         <MainContainer>
             {/* 섹션 제목 */}
@@ -151,70 +155,9 @@ export default function Passer({ recruitmentId }: PasserProps) {
               </SmallContent>
             </TextBox>
 
-            <div className="relative">
-              {/* 테이블 */}
-              <TableContainer>
-                {/* 헤더 */}
-                <TableHeader>
-                    <BoldCell></BoldCell>
-                    <BoldCell>이름</BoldCell>
-                    <BoldCell>채용공고 부합</BoldCell>
-                    <BoldCell>인재상</BoldCell>
-                    <BoldCell>학력</BoldCell>
-                    <BoldCell>대외활동 및 기타</BoldCell>
-                    <BoldCell>경력</BoldCell>
-                    <BoldCell>종합 평점</BoldCell>
-                    <BoldCell>상세</BoldCell>
-                </TableHeader>
-
-                {/* 평균 점수 행 */}
-                <AverageRow>
-                  <Cell></Cell>
-                  <BoldCell>평균점수</BoldCell>
-                  <Cell>{averageScores.jobFit}</Cell>
-                  <Cell>{averageScores.idealCandidate}</Cell>
-                  <Cell>{averageScores.education}</Cell>
-                  <Cell>{averageScores.extracurricular}</Cell>
-                  <Cell>{averageScores.experience}</Cell>
-                  <Cell>
-                  {Number(
-                    (Object.values(averageScores).reduce((a, b) => a + b, 0) / 5).toFixed(1)
-                  )}
-                  </Cell>
-                  <Cell></Cell>
-                </AverageRow>
-
-                {/* 지원자 행 */}
-                {passedData?.passList.map((applicant, idx) => (
-            <ApplicantRow key={idx}>
-              <ImageCell>
-                <ResumeModal 
-                  name={applicant.applicationName}
-                  pdfUrl={`/${applicant.fileName}`}
-                />
-              </ImageCell>
-              <Cell>{applicant.applicationName}</Cell>
-              <Cell>{getApplicantScore(applicant, '채용 공고')}</Cell>
-              <Cell>{getApplicantScore(applicant, '인재상')}</Cell>
-              <Cell>{getApplicantScore(applicant, '학력')}</Cell>
-              <Cell>{getApplicantScore(applicant, '대외활동/수상내역/어학/자격증')}</Cell>
-              <Cell>{getApplicantScore(applicant, '경력')}</Cell>
-              <Cell>{calculateOverallScore(applicant)}</Cell>
-              <ImageCell>
-                <button onClick={() => handleDetailClick(applicant.applicationName)}>
-                  <Image
-                    src={detailicon}
-                    alt="Details"
-                    width={27}
-                    height={27}
-                    className="object-cover"
-                  />
-                </button>
-              </ImageCell>
-            </ApplicantRow>
-          ))}
-        </TableContainer>
-      </div>
+            <ApplicantTableContainer
+              applicantList={evaluationList}
+            />
 
       <FooterLine />
     </MainContainer>
