@@ -44,7 +44,7 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
       });
     };
 
-    const handleSortClick = (key: keyof Applicant) => {
+    const handleSortClick = (key) => {
       if (sortBy === key) {
         setIsAsc(!isAsc); // 같은 정렬 기준이면 방향 토글
       } else {

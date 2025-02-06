@@ -39,9 +39,6 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
       state.error = null;
-      // localStorage.setItem('user', JSON.stringify(action.payload));  // 로컬 스토리지에 저장해주기
-      // localStorage.setItem('isAuthenticated', JSON.stringify(state.isAuthenticated));
-      // localStorage 접근을 클라이언트 사이드에서만 하도록 수정
       if (typeof window !== 'undefined') {
         localStorage.setItem('user', JSON.stringify(action.payload));
         localStorage.setItem('isAuthenticated', 'true');
