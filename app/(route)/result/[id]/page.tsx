@@ -13,7 +13,10 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store/store";
 import ApplicantTableContainer from "@/components/ApplicantTableContainer";
+import { resultAPI } from "@/app/api/resultAPI"
 import { fetchRecruitmentList } from "@/app/redux/features/resumeSlice";
+import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice";
+
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
@@ -47,6 +50,7 @@ export default function Result({ params } : Props) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
+  // 공고 데이터 불러오는 부분분
   const { recruitmentList, loading, error } = useSelector(
     (state: RootState) => state.resume
   );
@@ -97,114 +101,18 @@ export default function Result({ params } : Props) {
     return evaluation?.detail || "";
   };
 
-  // 지원자 데이터
-  type Applicant = {
-    name: string; // 이름
-    jobFit: number; // 채용공고 부합
-    idealCandidate: number; // 인재상
-    education: number; // 학력
-    extracurricular: number; // 대외활동 및 기타
-    experience: number; // 경력
-    overallScore: number; // 종합 평점
-  };
+  // 지원자 데이터 불러오는 부분
 
-  // 임시 데이터
-  const mockApplicants: Applicant[] = [
-    {
-      name: '이준호',
-      jobFit: 4.7,
-      idealCandidate: 4.5,
-      education: 4.2,
-      extracurricular: 3.8,
-      experience: 4.9,
-      overallScore: 4.6,
-    },
-    {
-      name: '김민지',
-      jobFit: 3.9,
-      idealCandidate: 4.1,
-      education: 4.8,
-      extracurricular: 4.0,
-      experience: 3.7,
-      overallScore: 4.2,
-    },
-    {
-      name: '박성훈',
-      jobFit: 4.6,
-      idealCandidate: 4.3,
-      education: 4.4,
-      extracurricular: 4.1,
-      experience: 4.5,
-      overallScore: 4.5,
-    },
-    {
-      name: '최서연',
-      jobFit: 4.2,
-      idealCandidate: 3.8,
-      education: 4.9,
-      extracurricular: 4.5,
-      experience: 4.3,
-      overallScore: 4.4,
-    },
-    {
-      name: '정하영',
-      jobFit: 4.9,
-      idealCandidate: 4.8,
-      education: 4.5,
-      extracurricular: 4.2,
-      experience: 4.6,
-      overallScore: 4.8,
-    },
-    {
-      name: '이도윤',
-      jobFit: 3.7,
-      idealCandidate: 3.9,
-      education: 4.0,
-      extracurricular: 3.5,
-      experience: 4.1,
-      overallScore: 3.8,
-    },
-    {
-      name: '한지민',
-      jobFit: 4.3,
-      idealCandidate: 4.0,
-      education: 4.7,
-      extracurricular: 4.1,
-      experience: 4.4,
-      overallScore: 4.5,
-    },
-    {
-      name: '배승우',
-      jobFit: 4.1,
-      idealCandidate: 3.7,
-      education: 4.2,
-      extracurricular: 3.9,
-      experience: 4.0,
-      overallScore: 4.0,
-    },
-    {
-      name: '윤하늘',
-      jobFit: 4.8,
-      idealCandidate: 4.6,
-      education: 4.4,
-      extracurricular: 4.3,
-      experience: 4.7,
-      overallScore: 4.7,
-    },
-    {
-      name: '조예린',
-      jobFit: 3.8,
-      idealCandidate: 3.6,
-      education: 4.1,
-      extracurricular: 3.7,
-      experience: 3.9,
-      overallScore: 3.9,
-    },
-  ];
-  
+  const { evaluationList, status, error: evaluationError } = useSelector((state: RootState) => state.eval);
 
+  useEffect(() => {
+    dispatch(fetchApplicantsEvaluations({ recruitmentId, passed: false }));
+  }, [dispatch, recruitmentId]);
+
+
+  // console.log(evaluationList);
   // 전체 평점 계산
-  const totalAverage = calculateOverallAverage(mockApplicants);
+  const totalAverage = calculateOverallAverage(evaluationList);
 
   // 합격자 페이지로 이동하는 함수
   // 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
@@ -312,7 +220,7 @@ export default function Result({ params } : Props) {
       <Section></Section>
 
       <ApplicantTableContainer
-        applicantList={mockApplicants}
+        applicantList={evaluationList}
       />
 
     </Section>

@@ -1,11 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { resultAPI } from '../../api/resultAPI';
 
 const initialState = {
-  id: 1,
-  title: "",
-  job: "",
+  id: null,
+  title: '',
+  job: '',
   evaluationList: [],
+  status: 'idle',
+  error: null,
 };
+
+// 모든 지원자 평가 가져오기
+export const fetchApplicantsEvaluations = createAsyncThunk(
+  'evaluation/fetchApplicantsEvaluations',
+  async ({ recruitmentId, passed } : {recruitmentId:number, passed:boolean}, { rejectWithValue }) => {
+    try {
+      const data = await resultAPI.getApplicantsEvaluations(recruitmentId, passed);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// 특정 지원자 평가 가져오기
+export const fetchApplicantEvaluation = createAsyncThunk(
+  'evaluation/fetchApplicantEvaluation',
+  async ({ recruitmentId, applicantId }: {recruitmentId:number, applicantId:number}, { rejectWithValue }) => {
+    try {
+      const data = await resultAPI.getApplicantEvaluation(recruitmentId, applicantId);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
 const evaluationSlice = createSlice({
   name: 'evaluation',
@@ -36,15 +65,44 @@ const evaluationSlice = createSlice({
       state.evaluationList = state.evaluationList.filter(item => item.id !== action.payload);
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchApplicantsEvaluations.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchApplicantsEvaluations.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.evaluationList = action.payload;
+      })
+      .addCase(fetchApplicantsEvaluations.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(fetchApplicantEvaluation.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchApplicantEvaluation.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const { id, title, job, evaluationList } = action.payload;
+        state.id = id;
+        state.title = title;
+        state.job = job;
+        state.evaluationList = evaluationList;
+      })
+      .addCase(fetchApplicantEvaluation.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
+  },
 });
 
-export const { 
-  setEvaluationData, 
-  updateEvaluationTitle, 
-  updateEvaluationJob, 
-  addEvaluationItem, 
-  updateEvaluationItem, 
-  deleteEvaluationItem, 
+export const {
+  setEvaluationData,
+  updateEvaluationTitle,
+  updateEvaluationJob,
+  addEvaluationItem,
+  updateEvaluationItem,
+  deleteEvaluationItem,
 } = evaluationSlice.actions;
 
 export default evaluationSlice.reducer;
