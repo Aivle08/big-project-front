@@ -12,7 +12,6 @@ import { Applicant } from "@/app/types/evaluation"
 import detailicon from '../public/images/details_icon.png';
 import Link from 'next/link';
 
-
 interface Props{
   applicantList: Applicant[],
   pass: boolean
