@@ -11,10 +11,14 @@ import arrowCouple from "../public/images/sort-arrows-couple.png"
 import { Applicant } from "@/app/types/evaluation"
 import detailicon from '../public/images/details_icon.png';
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { setPasser } from '@/app/redux/features/passerSlice';
+import { AppDispatch } from '@/app/redux/store/store';
 
 interface Props{
   applicantList: Applicant[],
-  pass: boolean
+  pass: boolean,
+  recruimentId: number
 }
 
 const getTitleFromKey = (key: string): string => {
@@ -31,7 +35,9 @@ const getTitleFromKey = (key: string): string => {
 };
 
 
-export default function ApplicantTableContainer({applicantList, pass} : Props) {
+export default function ApplicantTableContainer({applicantList, pass, recruimentId} : Props) {
+    const dispatch = useDispatch<AppDispatch>();
+
     // 지원자
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
 
@@ -127,12 +133,14 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
     };
 
     // 모달에서 "예" 선택
-    const handleApprove = () => {
+    const handleApprove = async () => {
       if (selectedApplicant !== null) {
-        setApprovedApplicants([...approvedApplicants, selectedApplicant]);
+        const applicantId = sortedApplicants[selectedApplicant].applicantId;
+        await dispatch(setPasser({ recruitmentId:recruimentId, passerID: applicantId }));
       }
       setShowModal(false);
     };
+    
 
     // 모달에서 "아니오" 선택
     const handleReject = () => {

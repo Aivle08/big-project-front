@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { resultAPI } from '../../api/resultAPI';
+import { evaluationAPI } from '@/app/api/evaluationAPI';
 
 const initialState = {
   id: null,
   title: '',
   job: '',
+  applicantId: '',
   evaluationList: [],
   status: 'idle',
   error: null,
