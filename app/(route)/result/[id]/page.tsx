@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store/store";
 import ApplicantTableContainer from "@/components/ApplicantTableContainer";
-import { resultAPI } from "@/app/api/resultAPI"
 import { fetchRecruitmentList } from "@/app/redux/features/resumeSlice";
 import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice";
 
@@ -21,17 +20,11 @@ import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
     name: string; // 이름
-    // 이름
     jobFit: number; // 채용공고 부합
-    // 채용공고 부합
     idealCandidate: number; // 인재상
-    // 인재상
     education: number; // 학력
-    // 학력
     extracurricular: number; // 대외활동 및 기타
-    // 대외활동 및 기타
     experience: number; // 경력
-    // 경력
     overallScore: number; // 종합 평점
   }[]) => {
   const average = _.meanBy(applicants, 'overallScore');
@@ -117,7 +110,7 @@ export default function Result({ params } : Props) {
   // 합격자 페이지로 이동하는 함수
   // 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
   const handlePasserClick = () => {
-    router.push('/passer');
+    router.push(`/passer/${recruitmentId}`);
   };
 
   return (
@@ -221,6 +214,7 @@ export default function Result({ params } : Props) {
 
       <ApplicantTableContainer
         applicantList={evaluationList}
+        pass={false}
       />
 
     </Section>

@@ -19,7 +19,7 @@ import {
 import ResumeModal from "@/components/ResumeModal";
 import React, { useEffect, useState } from "react";
 
-export default function Home() {
+export default function Details() {
     type Summary = {
         name: string; // 이름
         summary: string; // 요약

@@ -8,24 +8,17 @@ import Add_Before from "../public/images/add_before.png";
 import Add_After from "../public/images/add_after.png";
 import Info from "../public/images/Info.png";
 import arrowCouple from "../public/images/sort-arrows-couple.png"
+import { Applicant, Applicants } from "@/app/types/evaluation"
+import detailicon from '../public/images/details_icon.png';
+import Link from 'next/link';
 
-type EvaluationMetric = {
-  score: number;
-  summary: string;
-  title: string;
-};
 
-type Applicant = {
-  applicationName: string;
-  recruitmentTitle: string;
-  scoreDetails: EvaluationMetric[];
-};
+interface Props{
+  applicantList: Applicant[],
+  pass: boolean
+}
 
-type Applicants = {
-  applicantList: Applicant[];
-};
-
-export default function ApplicantTableContainer({applicantList} : Applicants) {
+export default function ApplicantTableContainer({applicantList, pass} : Props) {
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -108,17 +101,32 @@ export default function ApplicantTableContainer({applicantList} : Applicants) {
                   <Cell>{extracurricular}</Cell>
                   <Cell>{experience}</Cell>
                   <Cell>{overallScore.toFixed(1)}</Cell> {/* 평균 점수 계산 */}
-                  <ImageCell>
+
+                  { !pass ? 
+                    <ImageCell>
                       <button onClick={() => handleAddClick(idx)}>
-                          <Image
-                              src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
-                              alt="Details"
-                              width={27}
-                              height={27}
-                              className="object-cover"
-                          />
+                        <Image
+                            src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
+                            alt="Details"
+                            width={27}
+                            height={27}
+                            className="object-cover"
+                        />
                       </button>
-                  </ImageCell>
+                    </ImageCell> 
+                    :
+                    <ImageCell>
+                      <Link href={`/details`}>
+                        <Image
+                          src={detailicon}
+                          alt="Details"
+                          width={27}
+                          height={27}
+                          className="object-cover"
+                        />
+                      </Link>
+                    </ImageCell>
+                  }
               </ApplicantRow>
           );
       });
