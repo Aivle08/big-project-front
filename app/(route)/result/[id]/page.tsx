@@ -21,17 +21,11 @@ import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: {
     name: string; // 이름
-    // 이름
     jobFit: number; // 채용공고 부합
-    // 채용공고 부합
     idealCandidate: number; // 인재상
-    // 인재상
     education: number; // 학력
-    // 학력
     extracurricular: number; // 대외활동 및 기타
-    // 대외활동 및 기타
     experience: number; // 경력
-    // 경력
     overallScore: number; // 종합 평점
   }[]) => {
   const average = _.meanBy(applicants, 'overallScore');

@@ -2,11 +2,13 @@
 
 import { use, useEffect, useState } from 'react';
 import { fetchApplicantsEvaluations } from '@/app/redux/features/evaluationSlice';
-import { AppDispatch } from '@/app/redux/store/store';
+import { AppDispatch, RootState } from '@/app/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { fetchRecruitmentList } from '@/app/redux/features/resumeSlice';
 import _ from 'lodash';
+import { FooterLine, MainContainer, SectionLine, SectionTitle, SmallContent, SmallTitle, TextBox } from '../styles/pageStyled';
+import ApplicantTableContainer from '@/components/ApplicantTableContainer';
 
 interface Props {
   params : Promise<{
@@ -89,15 +91,37 @@ export default function PasserPage({ params }: Props) {
   }, [dispatch, recruitmentId]);
 
   console.log(evaluationList);
+
   // 전체 평점 계산
   const totalAverage = calculateOverallAverage(evaluationList);
-
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!recruitmentId) return <div>No recruitment found</div>;
 
   return <>
-    <p>hello</p>
+    <MainContainer>
+        {/* 섹션 제목 */}
+        <SectionTitle>합격 명단</SectionTitle>
+        <SectionLine />
+        <TextBox>
+          <SmallTitle>
+            직무
+          </SmallTitle>
+          <SmallContent>
+            {evaluationData?.job}
+          </SmallContent>
+        </TextBox>
+        {
+          evaluationList.length > 0 ?
+          <ApplicantTableContainer
+            applicantList={evaluationList}
+          />
+          :
+          <>
+          </>
+        }
+      <FooterLine />
+    </MainContainer>
   </>;
 }

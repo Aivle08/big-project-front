@@ -141,24 +141,21 @@ export default function Passer({ params }: PasserProps) {
     }
     
     return (
-        <MainContainer>
-            {/* 섹션 제목 */}
-            <SectionTitle>합격 명단</SectionTitle>
-            <SectionLine />
-
-            <TextBox>
-              <SmallTitle>
-                직무
-              </SmallTitle>
-              <SmallContent>
-                {passedData?.recruitmentTitle}
-              </SmallContent>
-            </TextBox>
-
-            <ApplicantTableContainer
-              applicantList={evaluationList}
-            />
-
+      <MainContainer>
+        {/* 섹션 제목 */}
+        <SectionTitle>합격 명단</SectionTitle>
+        <SectionLine />
+        <TextBox>
+          <SmallTitle>
+            직무
+          </SmallTitle>
+          <SmallContent>
+            {passedData?.recruitmentTitle}
+          </SmallContent>
+        </TextBox>
+        <ApplicantTableContainer
+          applicantList={evaluationList}
+        />
       <FooterLine />
     </MainContainer>
   );
