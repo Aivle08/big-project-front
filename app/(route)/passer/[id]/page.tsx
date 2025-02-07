@@ -116,6 +116,7 @@ export default function PasserPage({ params }: Props) {
           evaluationList.length > 0 ?
           <ApplicantTableContainer
             applicantList={evaluationList}
+            pass={true}
           />
           :
           <>

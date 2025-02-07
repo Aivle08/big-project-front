@@ -155,6 +155,7 @@ export default function Passer({ params }: PasserProps) {
         </TextBox>
         <ApplicantTableContainer
           applicantList={evaluationList}
+          pass={true}
         />
       <FooterLine />
     </MainContainer>

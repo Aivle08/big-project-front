@@ -215,6 +215,7 @@ export default function Result({ params } : Props) {
 
       <ApplicantTableContainer
         applicantList={evaluationList}
+        pass={false}
       />
 
     </Section>
