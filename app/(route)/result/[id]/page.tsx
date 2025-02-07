@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from "@/app/redux/store/store";
 import ApplicantTableContainer from "@/components/ApplicantTableContainer";
 import { fetchRecruitmentList } from "@/app/redux/features/resumeSlice";
 import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice";
-
+import { Applicant } from "@/app/types/evaluation";
 
 // 전체 평점 계산 함수
 const calculateOverallAverage = (applicants: Applicant[]) => {
@@ -188,7 +188,6 @@ export default function Result({ params } : Props) {
           <Title2>전체 평점</Title2>
           {/* 추후에 전체 평점 계산하는 로직 추가해야함 */}
           <Score>{totalAverage}</Score>
-
         </Box2>
 
         <Box3>
@@ -212,6 +211,7 @@ export default function Result({ params } : Props) {
       <ApplicantTableContainer
         applicantList={evaluationList}
         pass={false}
+        recruimentId={recruitmentId}
       />
 
     </Section>

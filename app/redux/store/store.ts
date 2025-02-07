@@ -4,6 +4,7 @@ import resumeReducer from '../features/resumeSlice';
 import postReducer from '../features/postSlice';
 import commentReducer from '../features/commentSlice';
 import evalauationReducer from '../features/evaluationSlice'
+import passerReducer from '../features/passerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     resume: resumeReducer,
     post: postReducer,
     comments: commentReducer,
-    eval: evalauationReducer
+    eval: evalauationReducer,
+    passer: passerReducer
   },
 
   /// 미들웨어 설정 추가
