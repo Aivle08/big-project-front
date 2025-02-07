@@ -95,7 +95,6 @@ export default function Result({ params } : Props) {
   };
 
   // 지원자 데이터 불러오는 부분
-
   const { evaluationList, status, error: evaluationError } = useSelector((state: RootState) => state.eval);
 
   useEffect(() => {
@@ -103,7 +102,7 @@ export default function Result({ params } : Props) {
   }, [dispatch, recruitmentId]);
 
 
-  // console.log(evaluationList);
+  console.log(evaluationList);
   // 전체 평점 계산
   const totalAverage = calculateOverallAverage(evaluationList);
 
@@ -165,16 +164,16 @@ export default function Result({ params } : Props) {
     </Section>
 
     <Section></Section>
-
+    
     <Section>
       <BoxContainer>
       <Left>
         <Box1>
           <Title1>총 지원자 수</Title1>
           <Box1Container>
-            <People>544</People>
+            <People>{evaluationList.length}</People>
             <Num>명</Num>
-            <Img> {/* 원하는 크기로 조절 */}
+            <Img>
               <Image 
                 src={Appliant} 
                 alt="사진" 
