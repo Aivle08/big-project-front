@@ -4,18 +4,6 @@ export interface ScoreDetail {
   title: string;
 }
 
-// export interface PassedApplicant {
-//   [x: string]: any;
-//   recruitmentTitle: string;
-//   applicationName: string;
-//   scoreDetails: ScoreDetail[];
-// }
-
-// export interface PassedResponse {
-//   recruitmentTitle: string;
-//   passList: PassedApplicant[];
-// }
-
 export type EvaluationMetric = {
   score: number;
   summary: string;
@@ -30,4 +18,8 @@ export type Applicant = {
 
 export type Applicants = {
   applicantList: Applicant[];
+};
+
+export type IsPassedApplicant = {
+  passedList: boolean[];
 };
