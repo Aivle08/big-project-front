@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alarm, ApplicantRow, AverageRow, BoldCell, Cell, ImageCell, ModalButtons, ModalContent, ModalHeader, ModalHeader2, ModalOverlay, NoButton, Section, TableContainer, TableHeader, YesButton } from './styles/tableStyled';
 import ResumeModal from './ResumeModal';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import Add_Before from "../public/images/add_before.png";
 import Add_After from "../public/images/add_after.png";
 import Info from "../public/images/Info.png";
 import arrowCouple from "../public/images/sort-arrows-couple.png"
-import { Applicant, Applicants } from "@/app/types/evaluation"
+import { Applicant } from "@/app/types/evaluation"
 import detailicon from '../public/images/details_icon.png';
 import Link from 'next/link';
 
@@ -19,23 +19,80 @@ interface Props{
 }
 
 export default function ApplicantTableContainer({applicantList, pass} : Props) {
+    // 지원자
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
+
+    // 모달 보여줄지 여부
     const [showModal, setShowModal] = useState(false);
 
+    // 정렬을 위함함
     const [sortBy, setSortBy] = useState("overallScore");
     const [isAsc, setIsAsc] = useState(true);
 
-    const sortApplicants = (applicants: Applicant[], sortBy: keyof Applicant | null, isAsc: boolean) => {
-      if (!sortBy) return applicants;
+    // 총점 합산을 위함 
+    const [totalScores, setTotalScores] = useState([0,0,0,0,0,0]);
 
-      return [...applicants].sort((a, b) => {
-        const aValue = a[sortBy];
-        const bValue = b[sortBy];
-
-        if (aValue === bValue) return 0;
-        return isAsc ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+    useEffect(() => {
+      if (applicantList.length === 0) {
+          setTotalScores([0, 0, 0, 0, 0, 0]);
+          return;
+      }
+  
+      const sumScores = [0, 0, 0, 0, 0, 0];
+      let count = 0;
+  
+      applicantList.forEach(applicant => {
+          const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || 0;
+          const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || 0;
+          const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || 0;
+          const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || 0;
+          const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || 0;
+          const overallScore = applicant.scoreDetails.length > 0 
+              ? applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length 
+              : 0;
+  
+          sumScores[0] += jobFit;
+          sumScores[1] += idealCandidate;
+          sumScores[2] += education;
+          sumScores[3] += extracurricular;
+          sumScores[4] += experience;
+          sumScores[5] += overallScore;
+          count++;
       });
+  
+      const averageScores: number[] = count > 0 
+          ? sumScores.map(score => parseFloat((score / count).toFixed(1))) 
+          : [0, 0, 0, 0, 0, 0];
+  
+      setTotalScores(averageScores);
+  }, [applicantList]);
+  
+  const getTitleFromKey = (key: string): string => {
+    const mapping: { [key: string]: string } = {
+      jobFit: "채용 공고",
+      idealCandidate: "인재상",
+      education: "학력",
+      extracurricular: "대외활동/수상내역/어학/자격증",
+      experience: "경력",
+      overallScore: "종합 평점"
     };
+  
+    return mapping[key] || key;
+  };
+  
+  const sortApplicants = (applicants: Applicant[], sortBy: string | null, isAsc: boolean) => {
+    if (!sortBy) return applicants;
+  
+    return [...applicants].sort((a, b) => {
+      let aValue: number | string = 0;
+      let bValue: number | string = 0;
+  
+      aValue = a.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score || 0;
+      bValue = b.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score || 0;
+  
+      return isAsc ? (aValue as number) - (bValue as number) : (bValue as number) - (aValue as number);
+    });
+  };
 
     const handleSortClick = (key) => {
       if (sortBy === key) {
@@ -71,7 +128,7 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
     };
     
     // 지원자 목록
-    const renderApplicantRows = (applicants: Applicant[]) => {
+  const updateApplicantRows = (applicants: Applicant[]) => {
       // 지원자 정렬 (localeCompare는 두 문자열을 비교하는 함수라고 함.)
       applicants.sort((a, b) => a.applicationName.localeCompare(b.applicationName));
   
@@ -83,7 +140,7 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
           const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || "-";
           const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
           const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
-  
+
           return (
               <ApplicantRow key={idx}>
                   <ImageCell>
@@ -219,17 +276,17 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
             <AverageRow>
                 <Cell></Cell>
                 <BoldCell>평균점수</BoldCell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
-                <Cell>5.0</Cell>
+                <Cell>{ totalScores[0] }</Cell>
+                <Cell>{ totalScores[1] }</Cell>
+                <Cell>{ totalScores[2] }</Cell>
+                <Cell>{ totalScores[3] }</Cell>
+                <Cell>{ totalScores[4] }</Cell>
+                <Cell>{ totalScores[5] }</Cell>
                 <Cell></Cell>
             </AverageRow>
 
             {/* 지원자 행 */}
-            {renderApplicantRows(sortedApplicants)}
+            {updateApplicantRows(sortedApplicants)}
         </TableContainer>
 
         {/* 확인 모달 */}

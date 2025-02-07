@@ -37,7 +37,6 @@ interface Props{
   }>;
 }
 
-
 export default function Result({ params } : Props) {
   const resolvedParams = use(params);
   const dispatch = useDispatch<AppDispatch>();
