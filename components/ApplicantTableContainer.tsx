@@ -18,6 +18,20 @@ interface Props{
   pass: boolean
 }
 
+const getTitleFromKey = (key: string): string => {
+  const mapping: { [key: string]: string } = {
+    jobFit: "채용 공고",
+    idealCandidate: "인재상",
+    education: "학력",
+    extracurricular: "대외활동/수상내역/어학/자격증",
+    experience: "경력",
+    overallScore: "종합 평점"
+  };
+
+  return mapping[key] || key;
+};
+
+
 export default function ApplicantTableContainer({applicantList, pass} : Props) {
     // 지원자
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
@@ -65,34 +79,33 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
           : [0, 0, 0, 0, 0, 0];
   
       setTotalScores(averageScores);
-  }, [applicantList]);
+    }, [applicantList]);
   
-  const getTitleFromKey = (key: string): string => {
-    const mapping: { [key: string]: string } = {
-      jobFit: "채용 공고",
-      idealCandidate: "인재상",
-      education: "학력",
-      extracurricular: "대외활동/수상내역/어학/자격증",
-      experience: "경력",
-      overallScore: "종합 평점"
+    const sortApplicants = (applicants: Applicant[], sortBy: string | null, isAsc: boolean) => {
+      if (!sortBy) return applicants;
+  
+      return [...applicants].sort((a, b) => {
+          let aValue, bValue;
+  
+          if (sortBy === "overallScore") {
+              // 종합 평점(평균) 계산
+              aValue = a.scoreDetails.length > 0 
+                  ? a.scoreDetails.reduce((acc, item) => acc + item.score, 0) / a.scoreDetails.length 
+                  : 0;
+  
+              bValue = b.scoreDetails.length > 0 
+                  ? b.scoreDetails.reduce((acc, item) => acc + item.score, 0) / b.scoreDetails.length 
+                  : 0;
+          } else {
+              // 일반 점수 정렬
+              aValue = a.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
+              bValue = b.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
+          }
+  
+          return isAsc ? aValue - bValue : bValue - aValue;
+      });
     };
   
-    return mapping[key] || key;
-  };
-  
-  const sortApplicants = (applicants: Applicant[], sortBy: string | null, isAsc: boolean) => {
-    if (!sortBy) return applicants;
-  
-    return [...applicants].sort((a, b) => {
-      let aValue: number | string = 0;
-      let bValue: number | string = 0;
-  
-      aValue = a.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score || 0;
-      bValue = b.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score || 0;
-  
-      return isAsc ? (aValue as number) - (bValue as number) : (bValue as number) - (aValue as number);
-    });
-  };
 
     const handleSortClick = (key) => {
       if (sortBy === key) {
@@ -129,9 +142,6 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
     
     // 지원자 목록
   const updateApplicantRows = (applicants: Applicant[]) => {
-      // 지원자 정렬 (localeCompare는 두 문자열을 비교하는 함수라고 함.)
-      applicants.sort((a, b) => a.applicationName.localeCompare(b.applicationName));
-  
       return applicants.map((applicant, idx) => {
           // `scoreDetails`에서 각 평가 항목을 찾아 매칭
           const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || "-";
