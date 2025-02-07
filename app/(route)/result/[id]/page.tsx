@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store/store";
 import ApplicantTableContainer from "@/components/ApplicantTableContainer";
-import { resultAPI } from "@/app/api/resultAPI"
 import { fetchRecruitmentList } from "@/app/redux/features/resumeSlice";
 import { fetchApplicantsEvaluations } from "@/app/redux/features/evaluationSlice";
 
@@ -111,7 +110,7 @@ export default function Result({ params } : Props) {
   // 합격자 페이지로 이동하는 함수
   // 해당 페이지로 넘어가기 전 합격자 목록을 보내기.
   const handlePasserClick = () => {
-    router.push('/passer');
+    router.push(`/passer/${recruitmentId}`);
   };
 
   return (

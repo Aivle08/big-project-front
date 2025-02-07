@@ -14,7 +14,7 @@ import Link from 'next/link';
 
 
 interface Props{
-  applicantList: Applicants,
+  applicantList: Applicant[],
   pass: boolean
 }
 

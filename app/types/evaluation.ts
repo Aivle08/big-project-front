@@ -4,17 +4,17 @@ export interface ScoreDetail {
   title: string;
 }
 
-export interface PassedApplicant {
-  [x: string]: any;
-  recruitmentTitle: string;
-  applicationName: string;
-  scoreDetails: ScoreDetail[];
-}
+// export interface PassedApplicant {
+//   [x: string]: any;
+//   recruitmentTitle: string;
+//   applicationName: string;
+//   scoreDetails: ScoreDetail[];
+// }
 
-export interface PassedResponse {
-  recruitmentTitle: string;
-  passList: PassedApplicant[];
-}
+// export interface PassedResponse {
+//   recruitmentTitle: string;
+//   passList: PassedApplicant[];
+// }
 
 export type EvaluationMetric = {
   score: number;

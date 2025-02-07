@@ -4,7 +4,6 @@ import { use, useEffect, useState } from 'react';
 import { fetchApplicantsEvaluations } from '@/app/redux/features/evaluationSlice';
 import { AppDispatch, RootState } from '@/app/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 import { fetchRecruitmentList } from '@/app/redux/features/resumeSlice';
 import _ from 'lodash';
 import { FooterLine, MainContainer, SectionLine, SectionTitle, SmallContent, SmallTitle, TextBox } from '../styles/pageStyled';
@@ -76,13 +75,6 @@ export default function PasserPage({ params }: Props) {
     }
   }, [recruitmentList, loading, recruitmentId]);
 
-  const getDetailByItem = (itemName: string) => {
-    const evaluation = evaluationData.evaluationList.find(
-      item => item.item === itemName
-    );
-    return evaluation?.detail || "";
-  };
-
   // 지원자 데이터 불러오는 부분
   const { evaluationList, status, error: evaluationError } = useSelector((state: RootState) => state.eval);
 
@@ -91,9 +83,6 @@ export default function PasserPage({ params }: Props) {
   }, [dispatch, recruitmentId]);
 
   console.log(evaluationList);
-
-  // 전체 평점 계산
-  const totalAverage = calculateOverallAverage(evaluationList);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
