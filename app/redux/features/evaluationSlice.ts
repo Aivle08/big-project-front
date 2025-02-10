@@ -26,11 +26,14 @@ export const fetchApplicantsEvaluations = createAsyncThunk(
 // 특정 지원자 평가 가져오기
 export const fetchApplicantEvaluation = createAsyncThunk(
   'evaluation/fetchApplicantEvaluation',
-  async ({ recruitmentId, applicantId }: {recruitmentId:number, applicantId:number}, { rejectWithValue }) => {
+  async ({ recruitmentId, applicantId }: {recruitmentId: number, applicantId: number}, { rejectWithValue }) => {
     try {
+      console.log('Fetching evaluation for:', { recruitmentId, applicantId }); // 디버깅용
       const data = await resultAPI.getApplicantEvaluation(recruitmentId, applicantId);
+      console.log('Fetched data!!!!!!!!!!!!!!!:', data); // 디버깅용
       return data;
     } catch (error) {
+      console.error('Error fetching evaluation:', error); // 디버깅용
       return rejectWithValue(error.response?.data || error.message);
     }
   }

@@ -14,7 +14,8 @@ import Link from 'next/link';
 
 interface Props{
   applicantList: Applicant[],
-  pass: boolean
+  pass: boolean,
+  recruitmentId: number;
 }
 
 const getTitleFromKey = (key: string): string => {
@@ -31,7 +32,7 @@ const getTitleFromKey = (key: string): string => {
 };
 
 
-export default function ApplicantTableContainer({applicantList, pass} : Props) {
+export default function ApplicantTableContainer({applicantList, pass, recruitmentId} : Props) {
     // 지원자
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
 
@@ -150,6 +151,7 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
           const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
           const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
 
+
           return (
               <ApplicantRow key={idx}>
                   <ImageCell>
@@ -182,7 +184,7 @@ export default function ApplicantTableContainer({applicantList, pass} : Props) {
                     </ImageCell> 
                     :
                     <ImageCell>
-                      <Link href={`/details`}>
+                      <Link href={`/details/${recruitmentId}/${applicant.applicantId}`}>
                         <Image
                           src={detailicon}
                           alt="Details"

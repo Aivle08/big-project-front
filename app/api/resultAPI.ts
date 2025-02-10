@@ -36,7 +36,10 @@ export const resultAPI = {
 
   // 지원자 평가 조회
   getApplicantEvaluation: async (recruitmentId: number, applicantId: number) => {
-    const response = await AxiosInstance.get(`/recruitment/${recruitmentId}/applicant/${applicantId}`);
+    console.log('API call params:', { recruitmentId, applicantId }); // 디버깅용
+    const response = await AxiosInstance.get(
+      `/recruitment/${recruitmentId}/applicant/${applicantId}`
+    );
     return response.data;
   }
 };
