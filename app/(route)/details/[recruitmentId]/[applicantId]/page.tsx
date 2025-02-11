@@ -26,12 +26,20 @@ interface Props {
   }>;
 }
 
+interface QuestionCategory {
+  title: string;
+  finalQuestion: string[];
+  chunk: string[];
+}
+
+
 export default function Details({ params }: Props) {
   const resolvedParams = use(params);
   const recruitmentId = Number(resolvedParams.recruitmentId);
   const applicantId = Number(resolvedParams.applicantId);
 
   // API 호출 관련 상태
+  // const [applicantData, setApplicantData] = useState<ApplicantData | null>(null);
   const [applicantData, setApplicantData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
@@ -68,16 +76,38 @@ export default function Details({ params }: Props) {
   }, [recruitmentId, applicantId]);
 
   const handleGenerateQuestions = () => {
-    const defaultQuestions = [
-      "본인을 간단히 소개해주세요.",
-      "가장 어려웠던 프로젝트와 그 문제를 어떻게 해결했는지 설명해주세요.",
-      "팀 프로젝트에서 발생했던 갈등 상황을 공유하고, 이를 어떻게 해결했는지 말씀해주세요.",
-      "지금까지의 경험 중 지원하신 직무에 가장 적합한 사례를 이야기해주세요.",
-      "우리 회사에서 이루고 싶은 목표는 무엇이며, 그를 위해 어떻게 기여할 수 있다고 생각하나요?",
+    // 임시 데이터 구조
+    const mockQuestions: QuestionCategory[] = [
+      {
+        title: "직무",
+        finalQuestion: [
+          "현재 지원하신 직무와 관련된 전문 지식이나 기술을 어떻게 습득하셨나요?",
+          "이 직무에서 가장 중요하다고 생각하는 역량은 무엇이며, 그 이유는 무엇인가요?"
+        ],
+        chunk: ["string"]
+      },
+      {
+        title: "경험",
+        finalQuestion: [
+          "지금까지의 경험 중 가장 도전적이었던 순간은 언제였으며, 어떻게 극복하셨나요?",
+          "팀 프로젝트에서 맡았던 역할과 그 과정에서 배운 점을 공유해주세요."
+        ],
+        chunk: ["string"]
+      },
+      {
+        title: "일",
+        finalQuestion: [
+          "업무 수행 시 우선순위를 어떻게 결정하시나요?",
+          "스트레스가 많은 상황에서 본인만의 업무 관리 방법은 무엇인가요?"
+        ],
+        chunk: ["string"]
+      }
     ];
-    setQuestions(defaultQuestions);
+
+    setQuestions(mockQuestions);
     setQuestionsVisible(true);
   };
+
 
   if (loading) return <div>Loading...</div>;
   if (fetchError) return <div>Error: {fetchError}</div>;
@@ -117,7 +147,7 @@ export default function Details({ params }: Props) {
       <FloatingButton>
         <div>
           <ResumeModal
-            name={applicant.applicationName}
+            name={applicant.applicantName}
             recruitmentId={recruitmentId}
             applicantId={applicantId}
           />
@@ -132,6 +162,23 @@ export default function Details({ params }: Props) {
 
         {questionsVisible && (
           <QuestionSection>
+            {questions.map((category, categoryIndex) => (
+              <div key={categoryIndex} className="mb-6">
+                <QustionTitle>{category.title}</QustionTitle>
+                <QuestionListSection>
+                  {category.finalQuestion.map((question, questionIndex) => (
+                    <QuestionListItem key={questionIndex}>
+                      <p>{question}</p>
+                    </QuestionListItem>
+                  ))}
+                </QuestionListSection>
+              </div>
+            ))}
+          </QuestionSection>
+        )}
+
+        {/* {questionsVisible && (
+          <QuestionSection>
             <QustionTitle>맞춤 질문 리스트</QustionTitle>
             <QuestionListSection>
               {questions.map((question, index) => (
@@ -141,7 +188,7 @@ export default function Details({ params }: Props) {
               ))}
             </QuestionListSection>
           </QuestionSection>
-        )}
+        )} */}
       </TextContent>
     </MainContainer>
   );

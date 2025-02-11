@@ -157,12 +157,12 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
                   <ImageCell>
                       <div>
                           <ResumeModal
-                              name={applicant.applicationName}
+                              name={applicant.applicantName}
                               pdfUrl={"/File.pdf"} 
                           />
                       </div>
                   </ImageCell>
-                  <Cell>{applicant.applicationName}</Cell>
+                  <Cell>{applicant.applicantName}</Cell>
                   <Cell>{jobFit}</Cell>
                   <Cell>{idealCandidate}</Cell>
                   <Cell>{education}</Cell>
