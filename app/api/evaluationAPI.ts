@@ -58,5 +58,25 @@ export const evaluationAPI = {
       console.error('Error fetching passed applicants:', error);
       throw error;
     }
+  },
+  setPasser: async (recruitmentId: number, passerID : number): Promise<PassedResponse> => {
+    try {
+      console.log('Post passed applicants for recruitmentId:', recruitmentId);
+      const response = await evaluationAxiosInstance.post(
+        `/recruitment/${recruitmentId}/applicants/pass`, 
+        [passerID],
+        { 
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        }
+      );
+      console.log('Passed applicants response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching passed applicants:', error);
+      throw error;
+    }
   }
 };

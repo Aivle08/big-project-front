@@ -13,6 +13,7 @@ export type EvaluationMetric = {
 export type Applicant = {
   applicantName: string;
   recruitmentTitle: string;
+  applicantId: number;
   scoreDetails: EvaluationMetric[];
 };
 
