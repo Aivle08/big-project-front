@@ -106,7 +106,7 @@ export default function PasserPage({ params }: Props) {
           <ApplicantTableContainer
             applicantList={evaluationList}
             pass={true}
-            recruimentId={recruitmentId}
+            recruitmentId={recruitmentId}
           />
           :
           <>

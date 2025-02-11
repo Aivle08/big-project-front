@@ -18,7 +18,7 @@ import { AppDispatch } from '@/app/redux/store/store';
 interface Props{
   applicantList: Applicant[],
   pass: boolean,
-  recruimentId: number
+  recruitmentId: number;
 }
 
 const getTitleFromKey = (key: string): string => {
@@ -35,9 +35,7 @@ const getTitleFromKey = (key: string): string => {
 };
 
 
-export default function ApplicantTableContainer({applicantList, pass, recruimentId} : Props) {
-    const dispatch = useDispatch<AppDispatch>();
-
+export default function ApplicantTableContainer({applicantList, pass, recruitmentId} : Props) {
     // 지원자
     const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
 
@@ -158,17 +156,18 @@ export default function ApplicantTableContainer({applicantList, pass, recruiment
           const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
           const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
 
+
           return (
               <ApplicantRow key={idx}>
                   <ImageCell>
                       <div>
                           <ResumeModal
-                              name={applicant.applicationName}
+                              name={applicant.applicantName}
                               pdfUrl={"/File.pdf"} 
                           />
                       </div>
                   </ImageCell>
-                  <Cell>{applicant.applicationName}</Cell>
+                  <Cell>{applicant.applicantName}</Cell>
                   <Cell>{jobFit}</Cell>
                   <Cell>{idealCandidate}</Cell>
                   <Cell>{education}</Cell>
@@ -190,7 +189,7 @@ export default function ApplicantTableContainer({applicantList, pass, recruiment
                     </ImageCell> 
                     :
                     <ImageCell>
-                      <Link href={`/details`}>
+                      <Link href={`/details/${recruitmentId}/${applicant.applicantId}`}>
                         <Image
                           src={detailicon}
                           alt="Details"
