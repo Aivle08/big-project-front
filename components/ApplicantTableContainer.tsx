@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { setPasser } from '@/app/redux/features/passerSlice';
 import { AppDispatch } from '@/app/redux/store/store';
+import { fetchApplicantsEvaluations } from '@/app/redux/features/evaluationSlice';
 
 interface Props{
   applicantList: Applicant[],
@@ -36,116 +37,199 @@ const getTitleFromKey = (key: string): string => {
 
 
 export default function ApplicantTableContainer({applicantList, pass, recruitmentId} : Props) {
-    // 지원자
-    const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
+  const dispatch = useDispatch<AppDispatch>(); 
 
-    // 모달 보여줄지 여부
-    const [showModal, setShowModal] = useState(false);
+  // recruitmentId가 유효한지 확인
+  useEffect(() => {
+    if (!recruitmentId) {
+      console.error('Invalid recruitmentId 확인해ㅐㅐㅐㅐㅐㅐ:', recruitmentId);
+    }
+  }, [recruitmentId]);
 
-    // 정렬을 위함함
-    const [sortBy, setSortBy] = useState("overallScore");
-    const [isAsc, setIsAsc] = useState(true);
+  // 지원자
+  const [selectedApplicant, setSelectedApplicant] = useState<number | null>(null);
 
-    // 총점 합산을 위함 
-    const [totalScores, setTotalScores] = useState([0,0,0,0,0,0]);
+  // 모달 보여줄지 여부
+  const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-      if (applicantList.length === 0) {
-          setTotalScores([0, 0, 0, 0, 0, 0]);
-          return;
-      }
-  
-      const sumScores = [0, 0, 0, 0, 0, 0];
-      let count = 0;
-  
-      applicantList.forEach(applicant => {
-          const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || 0;
-          const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || 0;
-          const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || 0;
-          const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || 0;
-          const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || 0;
-          const overallScore = applicant.scoreDetails.length > 0 
-              ? applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length 
-              : 0;
-  
-          sumScores[0] += jobFit;
-          sumScores[1] += idealCandidate;
-          sumScores[2] += education;
-          sumScores[3] += extracurricular;
-          sumScores[4] += experience;
-          sumScores[5] += overallScore;
-          count++;
-      });
-  
-      const averageScores: number[] = count > 0 
-          ? sumScores.map(score => parseFloat((score / count).toFixed(1))) 
-          : [0, 0, 0, 0, 0, 0];
-  
-      setTotalScores(averageScores);
-    }, [applicantList]);
-  
-    const sortApplicants = (applicants: Applicant[], sortBy: string | null, isAsc: boolean) => {
-      if (!sortBy) return applicants;
-  
-      return [...applicants].sort((a, b) => {
-          let aValue, bValue;
-  
-          if (sortBy === "overallScore") {
-              // 종합 평점(평균) 계산
-              aValue = a.scoreDetails.length > 0 
-                  ? a.scoreDetails.reduce((acc, item) => acc + item.score, 0) / a.scoreDetails.length 
-                  : 0;
-  
-              bValue = b.scoreDetails.length > 0 
-                  ? b.scoreDetails.reduce((acc, item) => acc + item.score, 0) / b.scoreDetails.length 
-                  : 0;
-          } else {
-              // 일반 점수 정렬
-              aValue = a.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
-              bValue = b.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
-          }
-  
-          return isAsc ? aValue - bValue : bValue - aValue;
-      });
-    };
-  
+  // 정렬을 위함함
+  const [sortBy, setSortBy] = useState("overallScore");
+  const [isAsc, setIsAsc] = useState(true);
 
-    const handleSortClick = (key) => {
-      if (sortBy === key) {
-        setIsAsc(!isAsc); // 같은 정렬 기준이면 방향 토글
-      } else {
-        setSortBy(key);
-        setIsAsc(true); // 새 정렬 기준이면 오름차순 기본값
-      }
-    };
+  // 총점 합산을 위함 
+  const [totalScores, setTotalScores] = useState([0,0,0,0,0,0]);
 
-    const sortedApplicants = sortApplicants(applicantList, sortBy, isAsc);
+  useEffect(() => {
+    if (applicantList.length === 0) {
+        setTotalScores([0, 0, 0, 0, 0, 0]);
+        return;
+    }
 
-    // 합격 상태 관리
-    const [approvedApplicants, setApprovedApplicants] = useState<number[]>([]);
-    
-    // 모달 열기
-    const handleAddClick = (index: number) => {
-      setSelectedApplicant(index);
-      setShowModal(true);
-    };
+    const sumScores = [0, 0, 0, 0, 0, 0];
+    let count = 0;
 
-    // 모달에서 "예" 선택
-    const handleApprove = async () => {
-      if (selectedApplicant !== null) {
+    applicantList.forEach(applicant => {
+        const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || 0;
+        const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || 0;
+        const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || 0;
+        const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || 0;
+        const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || 0;
+        const overallScore = applicant.scoreDetails.length > 0 
+            ? applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length 
+            : 0;
+
+        sumScores[0] += jobFit;
+        sumScores[1] += idealCandidate;
+        sumScores[2] += education;
+        sumScores[3] += extracurricular;
+        sumScores[4] += experience;
+        sumScores[5] += overallScore;
+        count++;
+    });
+
+    const averageScores: number[] = count > 0 
+        ? sumScores.map(score => parseFloat((score / count).toFixed(1))) 
+        : [0, 0, 0, 0, 0, 0];
+
+    setTotalScores(averageScores);
+  }, [applicantList]);
+
+  const sortApplicants = (applicants: Applicant[], sortBy: string | null, isAsc: boolean) => {
+    if (!sortBy) return applicants;
+
+    return [...applicants].sort((a, b) => {
+        let aValue, bValue;
+
+        if (sortBy === "overallScore") {
+            // 종합 평점(평균) 계산
+            aValue = a.scoreDetails.length > 0 
+                ? a.scoreDetails.reduce((acc, item) => acc + item.score, 0) / a.scoreDetails.length 
+                : 0;
+
+            bValue = b.scoreDetails.length > 0 
+                ? b.scoreDetails.reduce((acc, item) => acc + item.score, 0) / b.scoreDetails.length 
+                : 0;
+        } else {
+            // 일반 점수 정렬
+            aValue = a.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
+            bValue = b.scoreDetails.find(item => item.title === getTitleFromKey(sortBy))?.score ?? 0;
+        }
+
+        return isAsc ? aValue - bValue : bValue - aValue;
+    });
+  };
+
+
+  const handleSortClick = (key) => {
+    if (sortBy === key) {
+      setIsAsc(!isAsc); // 같은 정렬 기준이면 방향 토글
+    } else {
+      setSortBy(key);
+      setIsAsc(true); // 새 정렬 기준이면 오름차순 기본값
+    }
+  };
+
+  const sortedApplicants = sortApplicants(applicantList, sortBy, isAsc);
+
+  // 합격 상태 관리
+  const [approvedApplicants, setApprovedApplicants] = useState<number[]>([]);
+  
+  // 모달 열기
+  const handleAddClick = (index: number) => {
+    setSelectedApplicant(index);
+    setShowModal(true);
+  };
+
+  // 모달에서 "예" 선택
+  // const handleApprove = async () => {
+  //   if (selectedApplicant !== null) {
+  //     const applicantId = sortedApplicants[selectedApplicant].applicantId;
+  //     await dispatch(setPasser({ recruitmentId:recruimentId, passerID: applicantId }));
+  //   }
+  //   setShowModal(false);
+  // };
+  // const handleApprove = async () => {
+  //   if (selectedApplicant !== null) {
+  //     try {
+  //       const applicantId = sortedApplicants[selectedApplicant].applicantId;
+        
+  //       // API 호출로 합격자 처리
+  //       await dispatch(setPasser({ 
+  //         recruitmentId: recruitmentId, 
+  //         passerID: [applicantId]  // 배열로 전달
+  //       })).unwrap();
+        
+  //       // 즉시 UI 업데이트를 위해 현재 applicant를 필터링
+  //       setApprovedApplicants(prev => [...prev, selectedApplicant]);
+        
+  //       // 모달 닫기
+  //       setShowModal(false);
+        
+  //       // 성공 메시지 표시
+  //       alert('지원자가 합격자 명단에 추가되었습니다.');
+  
+  //       // 서버에서 업데이트된 목록 다시 가져오기
+  //       await dispatch(fetchApplicantsEvaluations({ 
+  //         recruitmentId, 
+  //         passed: false
+  //       }));
+  
+  //     } catch (error) {
+  //       console.error('Error approving applicant:', error);
+  //       alert('합격자 처리 중 오류가 발생했습니다.');
+  //       setShowModal(false);
+  //     }
+  //   }
+  // };
+  // 모달에서 "예" 선택
+  const handleApprove = async () => {
+    if (selectedApplicant !== null && recruitmentId) {
+      try {
         const applicantId = sortedApplicants[selectedApplicant].applicantId;
-        await dispatch(setPasser({ recruitmentId:recruimentId, passerID: applicantId }));
-      }
-      setShowModal(false);
-    };
-    
+        
+        console.log('Sending request with:', {
+          recruitmentId,
+          applicantId
+        });
 
-    // 모달에서 "아니오" 선택
-    const handleReject = () => {
+        // API 호출로 합격자 처리
+        await dispatch(setPasser({ 
+          recruitmentId: Number(recruitmentId), 
+          passerIds: [applicantId]
+        })).unwrap();
+        
+        // 성공시 UI 업데이트
+        setApprovedApplicants(prev => [...prev, selectedApplicant]);
+        setShowModal(false);
+        
+        // 성공 메시지 표시
+        alert('지원자가 합격자 명단에 추가되었습니다.');
+  
+        // 리스트 새로고침하여 합격자 제거된 목록 표시
+        await dispatch(fetchApplicantsEvaluations({ 
+          recruitmentId: Number(recruitmentId), 
+          passed: false
+        }));
+  
+      } catch (error) {
+        console.error('Error approving applicant:', error);
+        alert('합격자 처리 중 오류가 발생했습니다.');
+        setShowModal(false);
+      }
+    } else {
+      console.error('Invalid selectedApplicant or recruitmentId:', { selectedApplicant, recruitmentId });
+      alert('필요한 정보가 누락되었습니다.');
       setShowModal(false);
-    };
-    
-    // 지원자 목록
+    }
+  };
+  
+
+  // 모달에서 "아니오" 선택
+  const handleReject = () => {
+    setShowModal(false);
+  };
+  
+  // 지원자 목록
   const updateApplicantRows = (applicants: Applicant[]) => {
       return applicants.map((applicant, idx) => {
           // `scoreDetails`에서 각 평가 항목을 찾아 매칭

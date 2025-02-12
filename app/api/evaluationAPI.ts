@@ -63,8 +63,9 @@ export const evaluationAPI = {
     try {
       console.log('Post passed applicants for recruitmentId:', recruitmentId);
       const response = await evaluationAxiosInstance.post(
-        `/recruitment/${recruitmentId}/applicants/pass`, 
-        [passerID],
+        `/recruitment/${recruitmentId}/applicants/pass`,
+        { applicantIds: passerID },  // 배열을 객체 내부 필드로 전송
+        // [passerID],
         { 
           headers: {
             'Accept': 'application/json',
