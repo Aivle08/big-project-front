@@ -143,8 +143,7 @@ export default function Details({ params }: Props) {
         <div>
           <ResumeModal
             name={applicant.applicantName}
-            recruitmentId={recruitmentId}
-            applicantId={applicantId}
+            pdfUrl={applicantId}
           />
         </div>
       </FloatingButton>
