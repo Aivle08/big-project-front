@@ -99,7 +99,6 @@ export default function Result({ params } : Props) {
     dispatch(fetchApplicantsEvaluations({ recruitmentId, passed: false }));
   }, [dispatch, recruitmentId]);
 
-
   console.log(evaluationList);
   // 전체 평점 계산
   const totalAverage = calculateOverallAverage(evaluationList);
@@ -211,7 +210,7 @@ export default function Result({ params } : Props) {
       <ApplicantTableContainer
         applicantList={evaluationList}
         pass={false}
-        recruimentId={recruitmentId}
+        recruitmentId={recruitmentId}
       />
 
     </Section>

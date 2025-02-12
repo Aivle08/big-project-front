@@ -34,6 +34,8 @@ export default function PasserPage({ params }: Props) {
   // const router = useRouter();
   const recruitmentId = Number(resolvedParams.id);
 
+  console.log(recruitmentId+"resike")
+
   const { recruitmentList, loading, error } = useSelector(
     (state: RootState) => state.resume
   );
@@ -82,6 +84,7 @@ export default function PasserPage({ params }: Props) {
     dispatch(fetchApplicantsEvaluations({ recruitmentId, passed: true }));
   }, [dispatch, recruitmentId]);
 
+  console.log(recruitmentId+"aaaaa");
   console.log(evaluationList);
 
   if (loading) return <div>Loading...</div>;

@@ -42,7 +42,7 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
   // recruitmentId가 유효한지 확인
   useEffect(() => {
     if (!recruitmentId) {
-      console.error('Invalid recruitmentId 확인해ㅐㅐㅐㅐㅐㅐ:', recruitmentId);
+      console.error('Invalid recruitmentId 확인해ㅐㅐㅐㅐㅐㅐ:'+recruitmentId);
     }
   }, [recruitmentId]);
 
@@ -191,11 +191,11 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
           recruitmentId,
           applicantId
         });
-
+        
         // API 호출로 합격자 처리
         await dispatch(setPasser({ 
           recruitmentId: Number(recruitmentId), 
-          passerIds: [applicantId]
+          passerID: Number(applicantId)
         })).unwrap();
         
         // 성공시 UI 업데이트

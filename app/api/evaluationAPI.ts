@@ -59,13 +59,12 @@ export const evaluationAPI = {
       throw error;
     }
   },
-  setPasser: async (recruitmentId: number, passerID : number): Promise<PassedResponse> => {
+  setPasser: async (recruitmentId: number, passerID: number): Promise<PassedResponse> => {
     try {
-      console.log('Post passed applicants for recruitmentId:', recruitmentId);
+      console.log('Post passed applicants for recruitmentId:' + recruitmentId + "passerID" + passerID);
       const response = await evaluationAxiosInstance.post(
         `/recruitment/${recruitmentId}/applicants/pass`,
-        { applicantIds: passerID },  // 배열을 객체 내부 필드로 전송
-        // [passerID],
+        [passerID],  // 객체에서 배열 형식으로 변경
         { 
           headers: {
             'Accept': 'application/json',
