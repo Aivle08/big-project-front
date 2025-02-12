@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ResumeAnalysisRequest } from '../types/resume';
 import Cookies from 'js-cookie';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://backend-api:8080/api/v1';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 const getAccessToken = () => Cookies.get('token');
 
