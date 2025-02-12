@@ -163,7 +163,7 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
                       <div>
                           <ResumeModal
                               name={applicant.applicantName}
-                              pdfUrl={"/File.pdf"} 
+                              pdfUrl={applicant.applicantId.toString()} 
                           />
                       </div>
                   </ImageCell>
