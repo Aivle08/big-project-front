@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
+import { Providers } from './providers'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Providers>
         {!excludeRoutes.includes(pathname) && <Navbar />}
         {children}
         {!excludeRoutes.includes(pathname) && <Footer />}
+        </Providers>
       </body>
     </html>
   );

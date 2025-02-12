@@ -69,11 +69,10 @@ export const TableDetail = tw.th`
   border-b-2 
   border-yellow 
   p-4 
-  text-left
 `;
 
 export const TableDetail2 = tw.th`
-  border-b 
+  border-b
   border-gray 
   p-4
 `;

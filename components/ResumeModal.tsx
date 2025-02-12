@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { CloseButton, ModalBackground, ModalContainer, ModalContent, ModalHeader, ModalSubtitle, ModalTitle, PDFViewer, TitleContainer } from "./styles/modalStyled";
 import modalcloseicon from '../public/images/modalclose_icon.png';
@@ -16,6 +16,43 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
     const handleModal = () => {
       setModal(!openModal);
     };
+
+    const [pdfs, setPdfs] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+      const fetchPdfUrl = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/api/v1/recruitment/0/applicant/${pdfUrl}/pdf`,
+            {
+              headers: {
+                Accept: "*/*",
+              },
+            }
+          );
+  
+          if (!response.ok) {
+            throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+          }
+  
+          // Blob 데이터를 가져와서 브라우저에서 사용할 URL 생성
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          setPdfs(url);
+        } catch (err: any) {
+          console.error("Error fetching PDF:", err);
+          setError("PDF를 불러오는 중 오류가 발생했습니다.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchPdfUrl();
+    }, [pdfUrl]);
+
+    
   
     return (
       <div>
@@ -52,7 +89,7 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
               <ModalContent>
                 <PDFViewer>
                   <iframe
-                    src={pdfUrl + "#toolbar=0"}
+                    src={pdfs + "#toolbar=0"}
                     title="pdfView"
                     width="100%"
                     height="100%"

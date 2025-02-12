@@ -213,7 +213,6 @@ export const QuestionSection = tw.div`
   p-4 
   shadow-md 
   mt-10 
-  max-h-[70vh]
 `;
 
 export const QuestionListSection = tw.div`

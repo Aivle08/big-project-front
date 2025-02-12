@@ -3,7 +3,7 @@
 import { NAV_LINK } from '@/constants';
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Ul, 
   Wrapper, 
@@ -12,31 +12,53 @@ import {
   BlackButton, 
   YellowButton 
 } from './styles/componentStyled';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store/store';
+import { logout } from '@/app/redux/features/authSlice';
+import logo from '@/public/images/logo.png';
+import profile from '@/public/images/avatar.png';
+import { authAPI } from '@/app/api/authAPI';
+// import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
 
-  // 아래 state는 목업을 위한 임시 state임. 나중에 redux를 이용한 구문으로 수정해야함
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // Redux 상태 가져오기
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+  // console.log(isAuthenticated, user);
+  const dispatch = useDispatch();
 
-  const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
+  // 로그인 안 된 경우는 튜토리얼 제외한 navbar의 페이지는 전부 다 로그인으로 라우팅되게 하려고 함
+  // const handleNavigation = (href: string) => {
+  //   // 로그인 필요한 페이지 목록
+  //   const authRequiredPages = ['/resume', '/', '/mypage'];
+
+  //   if (!isAuthenticated && authRequiredPages.includes(href)) {
+  //     router.push('/login');
+  //   } else {
+  //     router.push(href);
+  //   }
+  // };
+
+  const handleLogout = () => {
+    authAPI.logout();
+    dispatch(logout());
+    console.log('로그아웃 완료');
+  };
 
   return (
     <Wrapper>
       <Nav>
         {/* 로고 */}
-        <Link
-          href="/"
-        >
-          <Image src="/logo.png" alt="logo" width={300} height={50} />
+        <Link href="/">
+          <Image src={logo} alt="logo" width={300} height={50} />
         </Link>
 
         {/* 링크 리스트 */}
         <Ul>
           {NAV_LINK.map((link) => (
             <Link
-              href={link.href}
               key={link.key}
+              href={link.href}
               className="text-black text-xl cursor-pointer transition-all hover:font-bold"
             >
               {link.label}
@@ -45,45 +67,32 @@ export default function Navbar() {
         </Ul>
 
         {/* 버튼 */}
-
-        {!isLoggedIn ? (
+        {!isAuthenticated ? (
           <NavButtons>
             <Link href="/login?form=signin">
               <BlackButton>회원가입</BlackButton>
             </Link>
-
-            {/* 아래 로그인 버튼의 본래 route는 "/login"이나, 테스트를 위해 상태 변경함수를 적용했음. 당황안해도 됨 */}
-            <Link
-              href="/"
-              onClick={handleLogin}
-            > 
+            <Link href="/login">
               <YellowButton>로그인</YellowButton>
             </Link>
           </NavButtons>
-          ) :
-          (
-            <NavButtons
-              className='mr-5'
-            >
+        ) : (
+          <NavButtons className="mr-5">
+            <span className="flex items-center">
               <Image
-                src="/images/avatar.png" alt="profile" width={32} height={32}
+                src={profile}
+                alt="profile"
+                width={32}
+                height={32}
+                className="mr-2"
               />
-              <Link 
-                href="/"
-              >
-                <span>KT 기업회원 / </span>
-              </Link>
-
-              <Link 
-                href="/"
-                onClick={handleLogout}
-              >
-                <span>로그아웃</span>
-              </Link>
-
-            </NavButtons>
-          )
-        }
+              <span>{user?.name || "kt기업회원"} / </span>
+            </span>
+            <Link href="/" onClick={handleLogout}>
+              <span>로그아웃</span>
+            </Link>
+          </NavButtons>
+        )}
       </Nav>
     </Wrapper>
   );
