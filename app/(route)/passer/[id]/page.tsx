@@ -107,6 +107,7 @@ export default function PasserPage({ params }: Props) {
             applicantList={evaluationList}
             pass={true}
             recruitmentId={recruitmentId}
+            isResultPage={false} 
           />
           :
           <>

@@ -176,19 +176,6 @@ export default function Details({ params }: Props) {
             ))}
           </QuestionSection>
         )}
-
-        {/* {questionsVisible && (
-          <QuestionSection>
-            <QustionTitle>맞춤 질문 리스트</QustionTitle>
-            <QuestionListSection>
-              {questions.map((question, index) => (
-                <QuestionListItem key={index}>
-                  <p>{question}</p>
-                </QuestionListItem>
-              ))}
-            </QuestionListSection>
-          </QuestionSection>
-        )} */}
       </TextContent>
     </MainContainer>
   );

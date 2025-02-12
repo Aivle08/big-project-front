@@ -65,8 +65,8 @@ export default function Result({ params } : Props) {
         (item) => item.id === recruitmentId
       );
 
-      console.log(recruitmentList);
-      console.log(selectedRecruitment);
+      // console.log(recruitmentList);
+      // console.log(selectedRecruitment);
 
       if (selectedRecruitment) {
         setEvaluationData({
@@ -211,7 +211,8 @@ export default function Result({ params } : Props) {
       <ApplicantTableContainer
         applicantList={evaluationList}
         pass={false}
-        recruimentId={recruitmentId}
+        recruitmentId={recruitmentId}
+        isResultPage={true}  // Result 페이지임을 명시
       />
 
     </Section>

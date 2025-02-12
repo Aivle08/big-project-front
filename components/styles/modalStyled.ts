@@ -102,6 +102,14 @@ export const SectionTitle = tw.div`
   text-[#25282B]
 `;
 
+export const SectionTitle2 = tw.div`
+  text-left
+  font-bold 
+  text-2xl
+  mb-2
+  text-[#25282B]
+`;
+
 export const SectionLine = tw.div`
   w-[100px] 
   h-[4px] 
@@ -109,8 +117,25 @@ export const SectionLine = tw.div`
   rounded-[2px]
   mt-0
 `;
+export const SectionLine2 = tw.div`
+  w-[65px] 
+  h-[4px] 
+  bg-[#FDC435] 
+  rounded-[2px]
+`;
 
-// 단랙 내 소제목목
+export const SmallTitle2 = tw.div`
+    font-bold
+    mt-5
+    text-lg
+    bg-lightyellow
+    rounded-lg
+    px-3
+    leading-[48px] 
+    text-[#25282B]
+`;
+
+// 단랙 내 소제목
 export const SmallTitle = tw.div`
     font-semibold 
     mt-5
@@ -118,3 +143,4 @@ export const SmallTitle = tw.div`
     leading-[48px] 
     text-[#25282B]
 `;
+

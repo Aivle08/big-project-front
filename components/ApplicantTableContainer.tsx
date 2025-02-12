@@ -15,11 +15,13 @@ import { useDispatch } from 'react-redux';
 import { setPasser } from '@/app/redux/features/passerSlice';
 import { AppDispatch } from '@/app/redux/store/store';
 import { fetchApplicantsEvaluations } from '@/app/redux/features/evaluationSlice';
+import DetailsModal from './DetailsModal';
 
 interface Props{
   applicantList: Applicant[],
   pass: boolean,
   recruitmentId: number;
+  isResultPage?: boolean; // 새로 추가
 }
 
 const getTitleFromKey = (key: string): string => {
@@ -36,7 +38,7 @@ const getTitleFromKey = (key: string): string => {
 };
 
 
-export default function ApplicantTableContainer({applicantList, pass, recruitmentId} : Props) {
+export default function ApplicantTableContainer({applicantList, pass, recruitmentId, isResultPage = false} : Props) {
   const dispatch = useDispatch<AppDispatch>(); 
 
   // recruitmentId가 유효한지 확인
@@ -69,27 +71,27 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
     let count = 0;
 
     applicantList.forEach(applicant => {
-        const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || 0;
-        const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || 0;
-        const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || 0;
-        const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || 0;
-        const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || 0;
-        const overallScore = applicant.scoreDetails.length > 0 
-            ? applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length 
-            : 0;
+      const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || 0;
+      const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || 0;
+      const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || 0;
+      const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || 0;
+      const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || 0;
+      const overallScore = applicant.scoreDetails.length > 0 
+          ? applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length 
+          : 0;
 
-        sumScores[0] += jobFit;
-        sumScores[1] += idealCandidate;
-        sumScores[2] += education;
-        sumScores[3] += extracurricular;
-        sumScores[4] += experience;
-        sumScores[5] += overallScore;
-        count++;
+      sumScores[0] += jobFit;
+      sumScores[1] += idealCandidate;
+      sumScores[2] += education;
+      sumScores[3] += extracurricular;
+      sumScores[4] += experience;
+      sumScores[5] += overallScore;
+      count++;
     });
 
     const averageScores: number[] = count > 0 
-        ? sumScores.map(score => parseFloat((score / count).toFixed(1))) 
-        : [0, 0, 0, 0, 0, 0];
+      ? sumScores.map(score => parseFloat((score / count).toFixed(1))) 
+      : [0, 0, 0, 0, 0, 0];
 
     setTotalScores(averageScores);
   }, [applicantList]);
@@ -195,7 +197,7 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
         // API 호출로 합격자 처리
         await dispatch(setPasser({ 
           recruitmentId: Number(recruitmentId), 
-          passerIds: [applicantId]
+          passerID: [applicantId]
         })).unwrap();
         
         // 성공시 UI 업데이트
@@ -231,186 +233,206 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
   
   // 지원자 목록
   const updateApplicantRows = (applicants: Applicant[]) => {
-      return applicants.map((applicant, idx) => {
-          // `scoreDetails`에서 각 평가 항목을 찾아 매칭
-          const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || "-";
-          const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || "-";
-          const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || "-";
-          const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || "-";
-          const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
-          const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
+    return applicants.map((applicant, idx) => {
+      // `scoreDetails`에서 각 평가 항목을 찾아 매칭
+      const jobFit = applicant.scoreDetails.find(item => item.title === "채용 공고")?.score || "-";
+      const idealCandidate = applicant.scoreDetails.find(item => item.title === "인재상")?.score || "-";
+      const education = applicant.scoreDetails.find(item => item.title === "학력")?.score || "-";
+      const extracurricular = applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.score || "-";
+      const experience = applicant.scoreDetails.find(item => item.title === "경력")?.score || "-";
+      const overallScore = applicant.scoreDetails.reduce((acc, item) => acc + item.score, 0) / applicant.scoreDetails.length;
 
+      return (
+        <ApplicantRow key={idx}>
+          <ImageCell>
+            <div>
+              <ResumeModal
+                name={applicant.applicantName}
+                pdfUrl={"/File.pdf"} 
+              />
+            </div>
+          </ImageCell>
 
-          return (
-              <ApplicantRow key={idx}>
-                  <ImageCell>
-                      <div>
-                          <ResumeModal
-                              name={applicant.applicantName}
-                              pdfUrl={"/File.pdf"} 
-                          />
-                      </div>
-                  </ImageCell>
-                  <Cell>{applicant.applicantName}</Cell>
-                  <Cell>{jobFit}</Cell>
-                  <Cell>{idealCandidate}</Cell>
-                  <Cell>{education}</Cell>
-                  <Cell>{extracurricular}</Cell>
-                  <Cell>{experience}</Cell>
-                  <Cell>{overallScore.toFixed(1)}</Cell> {/* 평균 점수 계산 */}
-
-                  { !pass ? 
-                    <ImageCell>
-                      <button onClick={() => handleAddClick(idx)}>
-                        <Image
-                            src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
-                            alt="Details"
-                            width={27}
-                            height={27}
-                            className="object-cover"
-                        />
-                      </button>
-                    </ImageCell> 
-                    :
-                    <ImageCell>
-                      <Link href={`/details/${recruitmentId}/${applicant.applicantId}`}>
-                        <Image
-                          src={detailicon}
-                          alt="Details"
-                          width={27}
-                          height={27}
-                          className="object-cover"
-                        />
-                      </Link>
-                    </ImageCell>
-                  }
-              </ApplicantRow>
-          );
-      });
+          {isResultPage ? (
+            <Cell>
+              <DetailsModal
+                name={applicant.applicantName}
+                summary={applicant.resumeSummary} 
+                jobFit={applicant.scoreDetails.find(item => item.title === "채용 공고")?.summary || ""}
+                education={applicant.scoreDetails.find(item => item.title === "학력")?.summary || ""}
+                teamFit={applicant.scoreDetails.find(item => item.title === "인재상")?.summary || ""}
+                activity={applicant.scoreDetails.find(item => item.title === "대외활동/수상내역/어학/자격증")?.summary || ""}
+                experience={applicant.scoreDetails.find(item => item.title === "경력")?.summary || ""}
+                jobFitScore={Number(jobFit)}
+                educationScore={Number(education)}
+                teamFitScore={Number(idealCandidate)}
+                activityScore={Number(extracurricular)}
+                experienceScore={Number(experience)}
+              />
+            </Cell>
+          ) : (
+            <Cell>{applicant.applicantName}</Cell>
+          )}
+          <Cell>{jobFit}</Cell>
+          <Cell>{idealCandidate}</Cell>
+          <Cell>{education}</Cell>
+          <Cell>{extracurricular}</Cell>
+          <Cell>{experience}</Cell>
+          <Cell>{overallScore.toFixed(1)}</Cell> {/* 평균 점수 계산 */}
+                
+          { !pass ? 
+            <ImageCell>
+              {/* 합격자 추가 버튼 */}
+              <button onClick={() => handleAddClick(idx)}>
+                <Image
+                  src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
+                  alt="add"
+                  width={27}
+                  height={27}
+                  className="object-cover"
+                />
+              </button>
+            </ImageCell> 
+            :
+            <ImageCell>
+              {/* 합격자 페이지에서 상세 페이지로가는  아이콘 */}
+              <Link href={`/details/${recruitmentId}/${applicant.applicantId}`}>
+                <Image
+                  src={detailicon}
+                  alt="Details"
+                  width={27}
+                  height={27}
+                  className="object-cover"
+                />
+              </Link>
+            </ImageCell>
+          }
+        </ApplicantRow>
+      );
+    });
   };
 
   return (
     <div className="relative">
-        {/* 테이블 */}
-        <TableContainer>
-            {/* 헤더 */}
-            <TableHeader>
-                <BoldCell></BoldCell>
+      {/* 테이블 */}
+      <TableContainer>
+        {/* 헤더 */}
+        <TableHeader>
+          <BoldCell></BoldCell>
+          <BoldCell>
+              <span>이름</span>
+          </BoldCell>
 
-                <BoldCell>
-                    <span>이름</span>
-                </BoldCell>
+          <BoldCell>
+            <span>채용공고 부합 </span>
+            <button
+              onClick={() => handleSortClick("jobFit")}>
+              {sortBy === "jobFit" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
+          <BoldCell>
+            <span>인재상 </span>
+            <button onClick={() => handleSortClick("idealCandidate")}>
+              {sortBy === "idealCandidate" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
+          <BoldCell>
+            <span>학력 </span>
+            <button onClick={() => handleSortClick("education")}>
+              {sortBy === "education" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
+          <BoldCell>
+            <span>대외활동 및 기타 </span>
+            <button onClick={() => handleSortClick("extracurricular")}>
+              {sortBy === "extracurricular" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
+          <BoldCell>
+            <span>경력 </span>
+            <button onClick={() => handleSortClick("experience")}>
+              {sortBy === "experience" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
+          <BoldCell>
+            <span>종합 평점 </span>
+            <button onClick={() => handleSortClick("overallScore")}>
+              {sortBy === "overallScore" ? (isAsc ? "▲" : "▼") : 
+              <Image
+                src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
+                width={12} height={12}
+              />
+              }
+            </button>
+          </BoldCell>
 
-                <BoldCell>
-                  <span>채용공고 부합 </span>
-                  <button
-                   onClick={() => handleSortClick("jobFit")}>
-                    {sortBy === "jobFit" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                        src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                        width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
-                <BoldCell>
-                  <span>인재상 </span>
-                  <button onClick={() => handleSortClick("idealCandidate")}>
-                    {sortBy === "idealCandidate" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                    width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
-                <BoldCell>
-                  <span>학력 </span>
-                  <button onClick={() => handleSortClick("education")}>
-                    {sortBy === "education" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                        src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                        width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
-                <BoldCell>
-                  <span>대외활동 및 기타 </span>
-                  <button onClick={() => handleSortClick("extracurricular")}>
-                    {sortBy === "extracurricular" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                    width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
-                <BoldCell>
-                  <span>경력 </span>
-                  <button onClick={() => handleSortClick("experience")}>
-                    {sortBy === "experience" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                    width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
-                <BoldCell>
-                  <span>종합 평점 </span>
-                  <button onClick={() => handleSortClick("overallScore")}>
-                    {sortBy === "overallScore" ? (isAsc ? "▲" : "▼") : 
-                    <Image
-                    src={arrowCouple} alt={"정렬전 화살표"} className="flex-1 w-55" 
-                    width={12} height={12}
-                    />
-                    }
-                  </button>
-                </BoldCell>
+          <BoldCell>합격</BoldCell>
+        </TableHeader>
 
-                <BoldCell>합격</BoldCell>
-            </TableHeader>
+        {/* 평균 점수 행 */}
+        <AverageRow>
+          <Cell></Cell>
+          <BoldCell>평균점수</BoldCell>
+          <Cell>{ totalScores[0] }</Cell>
+          <Cell>{ totalScores[1] }</Cell>
+          <Cell>{ totalScores[2] }</Cell>
+          <Cell>{ totalScores[3] }</Cell>
+          <Cell>{ totalScores[4] }</Cell>
+          <Cell>{ totalScores[5] }</Cell>
+          <Cell></Cell>
+        </AverageRow>
 
-            {/* 평균 점수 행 */}
-            <AverageRow>
-                <Cell></Cell>
-                <BoldCell>평균점수</BoldCell>
-                <Cell>{ totalScores[0] }</Cell>
-                <Cell>{ totalScores[1] }</Cell>
-                <Cell>{ totalScores[2] }</Cell>
-                <Cell>{ totalScores[3] }</Cell>
-                <Cell>{ totalScores[4] }</Cell>
-                <Cell>{ totalScores[5] }</Cell>
-                <Cell></Cell>
-            </AverageRow>
+        {/* 지원자 행 */}
+        {updateApplicantRows(sortedApplicants)}
+      </TableContainer>
 
-            {/* 지원자 행 */}
-            {updateApplicantRows(sortedApplicants)}
-        </TableContainer>
+      {/* 확인 모달 */}
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            {/* 모달 헤더 */}
+            <ModalHeader>
+              <ModalHeader2>
+                <Image src={Info} alt={"알림"} className="flex-1 w-55" />
+              </ModalHeader2>
+              <Alarm>알림</Alarm>
+            </ModalHeader>
+            <p>선택한 지원자를 합격자 명단에 추가하시겠습니까?</p>
+            <Section></Section>
+            <hr />
 
-        {/* 확인 모달 */}
-        {showModal && (
-          <ModalOverlay>
-            <ModalContent>
-              {/* 모달 헤더 */}
-              <ModalHeader>
-                <ModalHeader2>
-                  <Image src={Info} alt={"알림"} className="flex-1 w-55" />
-                </ModalHeader2>
-                <Alarm>알림</Alarm>
-              </ModalHeader>
-              <p>선택한 지원자를 합격자 명단에 추가하시겠습니까?</p>
-              <Section></Section>
-              <hr />
-
-              <ModalButtons>
-                <NoButton onClick={handleReject}>취소</NoButton>
-                <YesButton onClick={handleApprove}>추가</YesButton>
-              </ModalButtons>
-            </ModalContent>
-          </ModalOverlay>
-        )}
+            <ModalButtons>
+              <NoButton onClick={handleReject}>취소</NoButton>
+              <YesButton onClick={handleApprove}>추가</YesButton>
+            </ModalButtons>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </div>
   )
 }

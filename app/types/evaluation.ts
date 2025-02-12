@@ -15,6 +15,7 @@ export type Applicant = {
   recruitmentTitle: string;
   applicantId: number;
   scoreDetails: EvaluationMetric[];
+  resumeSummary: string; 
 };
 
 export type Applicants = {
