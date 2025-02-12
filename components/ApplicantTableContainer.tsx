@@ -244,13 +244,13 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
 
       return (
         <ApplicantRow key={idx}>
-          <ImageCell>
-            <div>
-              <ResumeModal
-                name={applicant.applicantName}
-                pdfUrl={"/File.pdf"} 
-              />
-            </div>
+           <ImageCell>
+              <div>
+                <ResumeModal
+                  name={applicant.applicantName}
+                  pdfUrl={applicant.applicantId.toString()} 
+                />
+              </div>
           </ImageCell>
 
           {isResultPage ? (
@@ -282,20 +282,18 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
                 
           { !pass ? 
             <ImageCell>
-              {/* 합격자 추가 버튼 */}
               <button onClick={() => handleAddClick(idx)}>
                 <Image
-                  src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
-                  alt="add"
-                  width={27}
-                  height={27}
-                  className="object-cover"
+                    src={approvedApplicants.includes(idx) ? Add_After : Add_Before}
+                    alt="Details"
+                    width={27}
+                    height={27}
+                    className="object-cover"
                 />
               </button>
             </ImageCell> 
             :
             <ImageCell>
-              {/* 합격자 페이지에서 상세 페이지로가는  아이콘 */}
               <Link href={`/details/${recruitmentId}/${applicant.applicantId}`}>
                 <Image
                   src={detailicon}
@@ -307,9 +305,9 @@ export default function ApplicantTableContainer({applicantList, pass, recruitmen
               </Link>
             </ImageCell>
           }
-        </ApplicantRow>
+      </ApplicantRow>
       );
-    });
+  });
   };
 
   return (

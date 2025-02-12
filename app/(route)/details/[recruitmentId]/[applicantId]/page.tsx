@@ -75,37 +75,32 @@ export default function Details({ params }: Props) {
     }
   }, [recruitmentId, applicantId]);
 
-  const handleGenerateQuestions = () => {
-    // 임시 데이터 구조
-    const mockQuestions: QuestionCategory[] = [
-      {
-        title: "직무",
-        finalQuestion: [
-          "현재 지원하신 직무와 관련된 전문 지식이나 기술을 어떻게 습득하셨나요?",
-          "이 직무에서 가장 중요하다고 생각하는 역량은 무엇이며, 그 이유는 무엇인가요?"
-        ],
-        chunk: ["string"]
-      },
-      {
-        title: "경험",
-        finalQuestion: [
-          "지금까지의 경험 중 가장 도전적이었던 순간은 언제였으며, 어떻게 극복하셨나요?",
-          "팀 프로젝트에서 맡았던 역할과 그 과정에서 배운 점을 공유해주세요."
-        ],
-        chunk: ["string"]
-      },
-      {
-        title: "일",
-        finalQuestion: [
-          "업무 수행 시 우선순위를 어떻게 결정하시나요?",
-          "스트레스가 많은 상황에서 본인만의 업무 관리 방법은 무엇인가요?"
-        ],
-        chunk: ["string"]
+  const handleGenerateQuestions = async () => {
+    try {
+      console.log("start")
+      // POST 요청 보내기 (요청 본문은 curl에서 -d ''로 빈 값 전송하므로, 여기서는 빈 객체로 전송)
+      const response = await fetch("http://localhost:8080/api/v1/ai-api/"+applicantId+"/question", {
+        method: "POST",
+        headers: {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}) // 요청 본문이 필요없다면 빈 객체 혹은 빈 문자열("") 전송
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    ];
-
-    setQuestions(mockQuestions);
-    setQuestionsVisible(true);
+  
+      // API 응답을 JSON 형태로 파싱 (응답 형식에 따라 조정)
+      const data: QuestionCategory[] = await response.json();
+  
+      // 받아온 질문 데이터를 상태에 저장하고, 질문 리스트 보이도록 설정
+      setQuestions(data);
+      setQuestionsVisible(true);
+    } catch (error) {
+      console.error("Error generating questions:", error);
+    }
   };
 
 
@@ -148,8 +143,7 @@ export default function Details({ params }: Props) {
         <div>
           <ResumeModal
             name={applicant.applicantName}
-            recruitmentId={recruitmentId}
-            applicantId={applicantId}
+            pdfUrl={applicantId}
           />
         </div>
       </FloatingButton>
