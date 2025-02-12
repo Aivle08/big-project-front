@@ -51,7 +51,7 @@ export default function Details({ params }: Props) {
   useEffect(() => {
     console.log("Details component params:", { recruitmentId, applicantId }); // 디버깅용
     if (recruitmentId && applicantId) {
-      fetch(`http://localhost:8080/api/v1/recruitment/${recruitmentId}/applicant/${applicantId}`, {
+      fetch(`http://backend-api:8080/api/v1/recruitment/${recruitmentId}/applicant/${applicantId}`, {
         headers: {
           accept: "*/*",
         },
@@ -79,7 +79,7 @@ export default function Details({ params }: Props) {
     try {
       console.log("start")
       // POST 요청 보내기 (요청 본문은 curl에서 -d ''로 빈 값 전송하므로, 여기서는 빈 객체로 전송)
-      const response = await fetch("http://localhost:8080/api/v1/ai-api/"+applicantId+"/question", {
+      const response = await fetch("http://backend-api:8080/api/v1/ai-api/"+applicantId+"/question", {
         method: "POST",
         headers: {
           "Accept": "*/*",
