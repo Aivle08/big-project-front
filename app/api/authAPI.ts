@@ -15,7 +15,7 @@ interface EmailVerificationResponse {
   success: boolean;
   message: string;
 }
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://picks-up.site/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://ec2-34-199-179-95.compute-1.amazonaws.com:8080/api/v1';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
