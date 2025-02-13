@@ -25,7 +25,7 @@ export default function ResumeModal({ name, pdfUrl }: ResumeModalProps) {
       const fetchPdfUrl = async () => {
         try {
           const response = await fetch(
-            `http://localhost:8080/api/v1/recruitment/0/applicant/${pdfUrl}/pdf`,
+            `https://picks-up.site/api/recruitment/0/applicant/${pdfUrl}/pdf`,
             {
               headers: {
                 Accept: "*/*",
