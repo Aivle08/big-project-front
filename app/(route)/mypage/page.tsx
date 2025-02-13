@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { RootState, AppDispatch } from '@/app/redux/store/store';
 import { fetchRecruitmentList } from '@/app/redux/features/resumeSlice';
 import Link from "next/link";
+import ResumeActionButtons from "@/components/ResumeActionButtons";
+
 
 
 export default function Mypage() {
@@ -23,6 +25,18 @@ export default function Mypage() {
     dispatch(fetchRecruitmentList());
   }, [dispatch]);
 
+  const handleLoadData = async (id: string) => {
+    // 데이터 불러오기 로직 구현
+    await new Promise(resolve => setTimeout(resolve, 2000)); 
+    // 실제 데이터 로딩 로직으로 교체 필요
+  };
+
+  const handleEvaluate = async (id: string) => {
+    // 평가 처리 로직 구현
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    // 실제 평가 처리 로직으로 교체 필요
+  };
+
   return (
     <Container>
       <Title>마이페이지</Title>
@@ -33,7 +47,11 @@ export default function Mypage() {
       <UserContainer>
         <UserArea>
           <Company>{user?.company?.name}</Company>
-          <Dept>{user?.department?.name}</Dept>
+          <div className="flex space-x-2">
+            <Dept>{user?.department?.name}</Dept>
+            <Dept>/</Dept>
+            <Dept>{user?.position}</Dept>
+          </div>
           <UserName>{user?.name}</UserName>
           <Etc>
             <p>{user?.contact}</p>
@@ -53,11 +71,15 @@ export default function Mypage() {
               {item.title} ({item.job})
             </CateTitle>
             <ButtonContainer>
-              <Link
+            <ResumeActionButtons
+              id={item.id}
+              isNewUpload={!item.isCompleted}
+            />
+              {/* <Link
                 href={`/result/${item.id}`}
               >
                 <CateButton>이력서 확인</CateButton>
-              </Link>
+              </Link> */}
             </ButtonContainer>
           </CategoryContainer>
         ))}

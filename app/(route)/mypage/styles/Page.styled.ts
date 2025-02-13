@@ -93,3 +93,16 @@ export const CateButton = tw.button`
   transition-colors 
   duration-200
 `;
+
+// export const CateButton2 = tw.button`
+//   px-4 
+//   py-2 
+//   border 
+//   border-gray-300 
+//   rounded-full 
+//   text-sm
+//   text-gray-600 
+//   hover:bg-gray-50 
+//   transition-colors 
+//   duration-200
+// `;

@@ -10,6 +10,7 @@ interface ResumeState {
   savedId: number | null;
 
   recruitmentList: Array<{
+    [x: string]: string;
     title: string;
     job: string;
     evaluations: Array<{ item: string; detail: string }>;

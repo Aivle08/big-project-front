@@ -334,7 +334,7 @@ export default function Resume() {
           onClick={handleAnalysis}
           disabled={loading || !job || !inputs.jobPosting}
         >
-          {loading ? '분석 중...' : '분석하기'}
+          {loading ? '등록 중...' : '등록하기'}
         </AnalysisButton>
       </ButtonArea>
     </Container>
