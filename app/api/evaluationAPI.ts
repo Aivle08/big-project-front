@@ -64,7 +64,7 @@ export const evaluationAPI = {
       console.log('Post passed applicants for recruitmentId:' + recruitmentId + "passerID" + passerID);
       const response = await evaluationAxiosInstance.post(
         `/recruitment/${recruitmentId}/applicants/pass`,
-        [passerID],  // 객체에서 배열 형식으로 변경
+        passerID,  // 객체에서 배열 형식으로 변경
         { 
           headers: {
             'Accept': 'application/json',
