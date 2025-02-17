@@ -18,6 +18,7 @@ import {
   YellowButton,
 } from "../../styles/pageStyled";
 import ResumeModal from "@/components/ResumeModal";
+
 interface Props {
   params: Promise<{
     recruitmentId: string;
@@ -89,3 +90,87 @@ export default function Details({ params }: Props) {
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      // API 응답을 JSON 형태로 파싱 (응답 형식에 따라 조정)
+      const data: QuestionCategory[] = await response.json();
+  
+      // 받아온 질문 데이터를 상태에 저장하고, 질문 리스트 보이도록 설정
+      setQuestions(data);
+      setQuestionsVisible(true);
+    } catch (error) {
+      console.error("Error generating questions:", error);
+    }
+  };
+
+
+  if (loading) return <div>Loading...</div>;
+  if (fetchError) return <div>Error: {fetchError}</div>;
+  if (!applicantData) return <div>No data available</div>;
+
+  const applicant = applicantData; // API에서 반환된 데이터
+
+  return (
+    <MainContainer>
+      <TextContent>
+        {/* 이름은 사이즈 좀 키우기 */}
+        <div className="flex items-center">
+          <SectionTitle>지원자 {applicant.applicantName} 상세사항</SectionTitle>
+        </div>
+        <SectionLine />
+
+        <Section></Section>
+
+        {applicant.scoreDetails.map((detail: any, index: number) => (
+          <React.Fragment key={index}>
+            <InfoRow>
+              <SmallTitle>{detail.title}</SmallTitle>
+              <p className="text-gray-600">{detail.score}점</p>
+            </InfoRow>
+            <p>{detail.summary}</p>
+            <Section></Section>
+          </React.Fragment>
+        ))}
+      </TextContent>
+
+      <CenterRow>
+        <YellowButton className="mt-[10vh]" onClick={handleGenerateQuestions}>
+          질문 생성
+        </YellowButton>
+      </CenterRow>
+
+      <FloatingButton>
+        <div>
+          <ResumeModal
+            name={applicant.applicantName}
+            pdfUrl={applicantId}
+          />
+        </div>
+      </FloatingButton>
+
+      <TextContent>
+        <SectionHeader className="mt-[1vh]">
+          <SectionTitle>질문 리스트</SectionTitle>
+          <SectionLine />
+        </SectionHeader>
+
+        {questionsVisible && (
+          <QuestionSection>
+            {questions.map((category, categoryIndex) => (
+              <div key={categoryIndex} className="mb-6">
+                <QustionTitle>{category.title}</QustionTitle>
+                <QuestionListSection>
+                  {category.finalQuestion.map((question, questionIndex) => (
+                    <QuestionListItem key={questionIndex}>
+                      <p>{question}</p>
+                    </QuestionListItem>
+                  ))}
+                </QuestionListSection>
+              </div>
+            ))}
+          </QuestionSection>
+        )}
+      </TextContent>
+    </MainContainer>
+  );
+}
