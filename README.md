@@ -88,7 +88,7 @@ PICK UP은 기업의 직무 별 평가항목을 입력하고, 그에 따른 평�
 ## 💡 주요 기능
 |    회원가입 & 로그인    |
 | :--------------: |
-| <img src="./public/images/회원가입.png" width="200"> <img src="./public/images/로그인1.png" width="200"> |
+| <img src="./public/images/회원가입_완료.png" width="200"> <img src="./public/images/로그인1.png" width="200"> |
 | - 회원가입 시, 이메일 인증을 통한 본인 확인<br/>- 회사명, 직무, 부서 등을 입력하여 회원가입 가능 |
 
 <br/>
